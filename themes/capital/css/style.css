@@ -1,0 +1,38 @@
+/**
+ * Place your custom styles here.
+ */
+
+/**
+ * Footer
+ */
+footer.footer{
+width:auto;
+text-align: center;
+    background-color: #222;
+    border-color: #080808;
+color: white;
+margin-top: 0px;
+}
+
+/**
+ * Navbar
+ */
+#navbar{
+  margin-bottom: 0px; 
+min-height: 30px;
+}
+
+
+/**
+ * Main
+ */
+@media (min-width: 768px){
+.main-container {
+min-height: 600px;
+}
+}
+
+body.navbar-is-fixed-top {
+    margin-top: 51px;
+padding-top: 15px;
+}
