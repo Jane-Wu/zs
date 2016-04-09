@@ -1,0 +1,11 @@
+langcode: zh-hans
+status: true
+dependencies:
+  module:
+    - user
+id: user_search
+label: 用户
+path: user
+weight: 0
+plugin: user_search
+configuration: {  }

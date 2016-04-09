@@ -1,0 +1,9 @@
+langcode: zh-hans
+status: true
+dependencies:
+  module:
+    - user
+id: user.compact
+label: 压缩紧凑型
+targetEntityType: user
+cache: true

@@ -1,0 +1,8 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+name: 标签
+vid: tags
+description: 用标签将相似的文章分门别类。
+hierarchy: 0
+weight: 0

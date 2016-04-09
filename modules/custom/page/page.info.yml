@@ -1,0 +1,11 @@
+name: 'Basic page'
+description: 'Provides Basic page content type and related configuration. 对您的静态内容使用<em>基本页面</em>，比如“关于我们”页面。'
+type: module
+core: 8.x
+dependencies:
+  - field
+  - node
+  - path
+  - rdf
+  - text
+  - user

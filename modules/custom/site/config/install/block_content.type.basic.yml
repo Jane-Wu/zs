@@ -1,0 +1,7 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+id: basic
+label: 基本区块
+revision: 0
+description: 一个基本区块包含标题和内容。

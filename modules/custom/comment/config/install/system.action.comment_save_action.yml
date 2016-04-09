@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  module:
+    - comment
+id: comment_save_action
+label: 保存评论
+type: comment
+plugin: comment_save_action
+configuration: {  }

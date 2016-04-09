@@ -1,0 +1,7 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+id: comment
+label: 默认评论
+target_entity_type_id: node
+description: 允许对内容评论

@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+name: 基本页面
+type: page
+description: 对您的静态内容使用<em>基本页面</em>，比如“关于我们”页面。
+help: ''
+new_revision: false
+preview_mode: 1
+display_submitted: false

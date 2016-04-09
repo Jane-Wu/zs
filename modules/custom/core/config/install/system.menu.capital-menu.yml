@@ -1,0 +1,7 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+id: capital-menu
+label: 'Capital menu'
+description: ''
+locked: false

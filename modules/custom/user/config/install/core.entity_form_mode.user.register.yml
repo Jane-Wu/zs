@@ -1,0 +1,9 @@
+langcode: zh-hans
+status: true
+dependencies:
+  module:
+    - user
+id: user.register
+label: 注册
+targetEntityType: user
+cache: true

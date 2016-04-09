@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  module:
+    - user
+id: user_unblock_user_action
+label: 解除封锁选定的用户
+type: user
+plugin: user_unblock_user_action
+configuration: {  }

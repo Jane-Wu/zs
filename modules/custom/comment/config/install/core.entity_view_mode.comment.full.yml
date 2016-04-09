@@ -1,0 +1,9 @@
+langcode: zh-hans
+status: false
+dependencies:
+  module:
+    - comment
+id: comment.full
+label: 评论全文
+targetEntityType: comment
+cache: true

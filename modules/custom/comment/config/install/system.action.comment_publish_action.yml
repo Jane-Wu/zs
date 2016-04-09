@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  module:
+    - comment
+id: comment_publish_action
+label: 发表评论
+type: comment
+plugin: comment_publish_action
+configuration: {  }
