@@ -1,0 +1,22 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_registered_capital
+    - node.type.company
+id: node.company.field_registered_capital
+field_name: field_registered_capital
+entity_type: node
+bundle: company
+label: 注册资本
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: 万元
+field_type: integer

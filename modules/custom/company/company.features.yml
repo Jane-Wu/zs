@@ -1,0 +1,10 @@
+excluded:
+  - field.field.field_collection_item.field_served_companies.field_company
+  - field.field.node.staff.field_company
+  - field.field.node.staff.field_introduction
+  - core.entity_form_display.field_collection_item.field_served_companies.default
+  - core.entity_form_display.node.staff.default
+  - core.entity_view_display.field_collection_item.field_served_companies.default
+  - core.entity_view_display.node.staff.default
+  - core.entity_view_display.node.staff.teaser
+required: true

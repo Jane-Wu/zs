@@ -1,0 +1,151 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.node.company.field_asset_under_management
+    - field.field.node.company.field_decision_making_process
+    - field.field.node.company.field_establishment_date
+    - field.field.node.company.field_human_resource
+    - field.field.node.company.field_introduction
+    - field.field.node.company.field_introduction_original
+    - field.field.node.company.field_investment_culture
+    - field.field.node.company.field_investment_process
+    - field.field.node.company.field_office_address
+    - field.field.node.company.field_organization_architecture
+    - field.field.node.company.field_registered_capital
+    - field.field.node.company.field_researcher_staff
+    - field.field.node.company.field_risk_control
+    - field.field.node.company.field_talent_management
+    - field.field.node.company.field_total_staff
+    - field.field.node.company.field_website
+    - field.field.node.company.field_wechat
+    - node.type.company
+  module:
+    - datetime
+    - field_collection
+    - link
+    - text
+    - user
+id: node.company.default
+targetEntityType: node
+bundle: company
+mode: default
+content:
+  field_asset_under_management:
+    weight: 9
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: field_collection_items
+  field_decision_making_process:
+    weight: 14
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_establishment_date:
+    weight: 4
+    label: above
+    settings:
+      format_type: html_date
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  field_human_resource:
+    weight: 12
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_introduction:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_introduction_original:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_investment_culture:
+    weight: 6
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_investment_process:
+    weight: 15
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_office_address:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_organization_architecture:
+    weight: 13
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_registered_capital:
+    weight: 3
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+  field_researcher_staff:
+    weight: 11
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: field_collection_items
+  field_risk_control:
+    weight: 17
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_talent_management:
+    weight: 16
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_total_staff:
+    weight: 10
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: field_collection_items
+  field_website:
+    weight: 7
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+  field_wechat:
+    weight: 8
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  links:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

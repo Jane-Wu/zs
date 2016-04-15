@@ -1,0 +1,16 @@
+name: 公司
+description: 'Provides 公司 内容类型 and related configuration. 基金公司基本资料'
+type: module
+core: 8.x
+dependencies:
+  - datetime
+  - field
+  - field_collection
+  - image
+  - language
+  - link
+  - menu_ui
+  - node
+  - options
+  - text
+  - user

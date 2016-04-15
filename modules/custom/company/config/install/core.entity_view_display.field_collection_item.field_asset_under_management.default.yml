@@ -1,0 +1,36 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.field_collection_item.field_asset_under_management.field_asset_number
+    - field.field.field_collection_item.field_asset_under_management.field_data_collection_date
+    - field.field.field_collection_item.field_asset_under_management.field_data_source
+    - field_collection.field_collection.field_asset_under_management
+  module:
+    - datetime
+id: field_collection_item.field_asset_under_management.default
+targetEntityType: field_collection_item
+bundle: field_asset_under_management
+mode: default
+content:
+  field_asset_number:
+    type: number_unformatted
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+  field_data_collection_date:
+    type: datetime_default
+    weight: 2
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: html_date
+    third_party_settings: {  }
+  field_data_source:
+    type: basic_string
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

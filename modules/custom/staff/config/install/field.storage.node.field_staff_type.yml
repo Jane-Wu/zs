@@ -1,0 +1,29 @@
+langcode: zh-hans
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.field_staff_type
+field_name: field_staff_type
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: 关键人物
+      label: 关键人物
+    -
+      value: 核心团队
+      label: 核心团队
+    -
+      value: 投研团队
+      label: 投研团队
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

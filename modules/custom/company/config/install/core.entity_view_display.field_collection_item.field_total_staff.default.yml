@@ -1,0 +1,31 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.field_collection_item.field_total_staff.field_data_collection_date
+    - field.field.field_collection_item.field_total_staff.field_total_staff_number
+    - field_collection.field_collection.field_total_staff
+  module:
+    - datetime
+id: field_collection_item.field_total_staff.default
+targetEntityType: field_collection_item
+bundle: field_total_staff
+mode: default
+content:
+  field_data_collection_date:
+    type: datetime_default
+    weight: 1
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: html_date
+    third_party_settings: {  }
+  field_total_staff_number:
+    type: number_integer
+    weight: 0
+    label: above
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+hidden: {  }

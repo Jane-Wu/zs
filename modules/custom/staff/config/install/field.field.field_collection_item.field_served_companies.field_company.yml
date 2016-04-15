@@ -1,0 +1,25 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.field_collection_item.field_company
+    - field_collection.field_collection.field_served_companies
+    - node.type.company
+id: field_collection_item.field_served_companies.field_company
+field_name: field_company
+entity_type: field_collection_item
+bundle: field_served_companies
+label: 公司
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      company: company
+    sort:
+      field: _none
+field_type: entity_reference

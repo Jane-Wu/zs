@@ -1,0 +1,20 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.field_collection_item.field_accession_date
+    - field_collection.field_collection.field_served_companies
+  module:
+    - datetime
+id: field_collection_item.field_served_companies.field_accession_date
+field_name: field_accession_date
+entity_type: field_collection_item
+bundle: field_served_companies
+label: 入职日期
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

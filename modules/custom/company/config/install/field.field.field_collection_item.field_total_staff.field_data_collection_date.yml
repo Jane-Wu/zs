@@ -1,0 +1,20 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.field_collection_item.field_data_collection_date
+    - field_collection.field_collection.field_total_staff
+  module:
+    - datetime
+id: field_collection_item.field_total_staff.field_data_collection_date
+field_name: field_data_collection_date
+entity_type: field_collection_item
+bundle: field_total_staff
+label: 数据时间
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

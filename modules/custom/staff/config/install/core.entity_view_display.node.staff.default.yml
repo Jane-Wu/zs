@@ -1,0 +1,110 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.node.staff.field_accession_date
+    - field.field.node.staff.field_born
+    - field.field.node.staff.field_company
+    - field.field.node.staff.field_dimission_date
+    - field.field.node.staff.field_educational_background
+    - field.field.node.staff.field_gender
+    - field.field.node.staff.field_introduction
+    - field.field.node.staff.field_practice_date
+    - field.field.node.staff.field_served_companies
+    - field.field.node.staff.field_staff_image
+    - field.field.node.staff.field_staff_type
+    - node.type.staff
+  module:
+    - datetime
+    - field_collection
+    - image
+    - options
+    - user
+id: node.staff.default
+targetEntityType: node
+bundle: staff
+mode: default
+content:
+  field_accession_date:
+    weight: 2
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: html_date
+    third_party_settings: {  }
+    type: datetime_default
+  field_born:
+    weight: 6
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: html_date
+    third_party_settings: {  }
+    type: datetime_default
+  field_company:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_dimission_date:
+    weight: 11
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: html_date
+    third_party_settings: {  }
+    type: datetime_default
+  field_educational_background:
+    weight: 7
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+  field_gender:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+  field_introduction:
+    weight: 8
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_practice_date:
+    weight: 10
+    label: above
+    settings:
+      timezone_override: ''
+      format_type: html_date
+    third_party_settings: {  }
+    type: datetime_default
+  field_served_companies:
+    weight: 12
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: field_collection_list
+  field_staff_image:
+    weight: 4
+    label: above
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+  field_staff_type:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+  links:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

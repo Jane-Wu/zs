@@ -1,0 +1,20 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_asset_under_management
+    - node.type.company
+  module:
+    - field_collection
+id: node.company.field_asset_under_management
+field_name: field_asset_under_management
+entity_type: node
+bundle: company
+label: 管理规模
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: field_collection

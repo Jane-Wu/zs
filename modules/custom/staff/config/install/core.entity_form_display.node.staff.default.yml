@@ -1,0 +1,102 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.node.staff.field_accession_date
+    - field.field.node.staff.field_born
+    - field.field.node.staff.field_company
+    - field.field.node.staff.field_dimission_date
+    - field.field.node.staff.field_educational_background
+    - field.field.node.staff.field_gender
+    - field.field.node.staff.field_introduction
+    - field.field.node.staff.field_practice_date
+    - field.field.node.staff.field_served_companies
+    - field.field.node.staff.field_staff_image
+    - field.field.node.staff.field_staff_type
+    - image.style.thumbnail
+    - node.type.staff
+  module:
+    - datetime
+    - field_collection
+    - image
+id: node.staff.default
+targetEntityType: node
+bundle: staff
+mode: default
+content:
+  field_accession_date:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  field_born:
+    weight: 6
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  field_company:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_dimission_date:
+    weight: 26
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  field_educational_background:
+    weight: 7
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+  field_gender:
+    weight: 5
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+  field_introduction:
+    weight: 8
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+  field_practice_date:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  field_served_companies:
+    weight: 27
+    settings: {  }
+    third_party_settings: {  }
+    type: field_collection_embed
+  field_staff_image:
+    weight: 4
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: image_image
+  field_staff_type:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+  title:
+    type: string_textfield
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  langcode: true
+  path: true
+  promote: true
+  sticky: true
+  uid: true

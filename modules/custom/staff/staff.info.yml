@@ -1,0 +1,18 @@
+name: 公司人员
+description: 'Provides 公司人员 内容类型 and related configuration. 基金公司人员信息'
+type: module
+core: 8.x
+dependencies:
+  - company
+  - datetime
+  - field
+  - field_collection
+  - file
+  - image
+  - language
+  - link
+  - menu_ui
+  - node
+  - options
+  - text
+  - user

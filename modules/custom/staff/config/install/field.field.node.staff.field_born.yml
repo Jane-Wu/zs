@@ -1,0 +1,20 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_born
+    - node.type.staff
+  module:
+    - datetime
+id: node.staff.field_born
+field_name: field_born
+entity_type: node
+bundle: staff
+label: 出生日期
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

@@ -1,0 +1,51 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.company.field_asset_under_management
+    - field.field.node.company.field_decision_making_process
+    - field.field.node.company.field_establishment_date
+    - field.field.node.company.field_human_resource
+    - field.field.node.company.field_introduction
+    - field.field.node.company.field_introduction_original
+    - field.field.node.company.field_investment_culture
+    - field.field.node.company.field_investment_process
+    - field.field.node.company.field_office_address
+    - field.field.node.company.field_organization_architecture
+    - field.field.node.company.field_registered_capital
+    - field.field.node.company.field_researcher_staff
+    - field.field.node.company.field_risk_control
+    - field.field.node.company.field_talent_management
+    - field.field.node.company.field_total_staff
+    - field.field.node.company.field_website
+    - field.field.node.company.field_wechat
+    - node.type.company
+  module:
+    - user
+id: node.company.teaser
+targetEntityType: node
+bundle: company
+mode: teaser
+content:
+  links:
+    weight: 100
+hidden:
+  field_asset_under_management: true
+  field_decision_making_process: true
+  field_establishment_date: true
+  field_human_resource: true
+  field_introduction: true
+  field_introduction_original: true
+  field_investment_culture: true
+  field_investment_process: true
+  field_office_address: true
+  field_organization_architecture: true
+  field_registered_capital: true
+  field_researcher_staff: true
+  field_risk_control: true
+  field_talent_management: true
+  field_total_staff: true
+  field_website: true
+  field_wechat: true
+  langcode: true

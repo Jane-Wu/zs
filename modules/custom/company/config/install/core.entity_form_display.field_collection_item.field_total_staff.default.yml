@@ -1,0 +1,26 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.field_collection_item.field_total_staff.field_data_collection_date
+    - field.field.field_collection_item.field_total_staff.field_total_staff_number
+    - field_collection.field_collection.field_total_staff
+  module:
+    - datetime
+id: field_collection_item.field_total_staff.default
+targetEntityType: field_collection_item
+bundle: field_total_staff
+mode: default
+content:
+  field_data_collection_date:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  field_total_staff_number:
+    weight: 0
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+hidden: {  }

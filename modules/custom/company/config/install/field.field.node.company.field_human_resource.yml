@@ -1,0 +1,18 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_human_resource
+    - node.type.company
+id: node.company.field_human_resource
+field_name: field_human_resource
+entity_type: node
+bundle: company
+label: 人力状况描述
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

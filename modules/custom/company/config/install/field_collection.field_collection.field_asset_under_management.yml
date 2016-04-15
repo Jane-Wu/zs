@@ -1,0 +1,5 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+id: field_asset_under_management
+label: field_asset_under_management

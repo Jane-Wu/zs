@@ -1,0 +1,18 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.field_collection_item.field_data_source
+    - field_collection.field_collection.field_asset_under_management
+id: field_collection_item.field_asset_under_management.field_data_source
+field_name: field_data_source
+entity_type: field_collection_item
+bundle: field_asset_under_management
+label: 数据来源
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

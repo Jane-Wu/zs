@@ -1,0 +1,18 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_investment_culture
+    - node.type.company
+id: node.company.field_investment_culture
+field_name: field_investment_culture
+entity_type: node
+bundle: company
+label: 投资文化
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

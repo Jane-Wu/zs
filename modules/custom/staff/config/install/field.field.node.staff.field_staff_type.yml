@@ -1,0 +1,20 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_staff_type
+    - node.type.staff
+  module:
+    - options
+id: node.staff.field_staff_type
+field_name: field_staff_type
+entity_type: node
+bundle: staff
+label: 人员类型
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

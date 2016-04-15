@@ -1,0 +1,18 @@
+langcode: zh-hans
+status: true
+dependencies:
+  module:
+    - field_collection
+    - node
+id: node.field_asset_under_management
+field_name: field_asset_under_management
+entity_type: node
+type: field_collection
+settings: {  }
+module: field_collection
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

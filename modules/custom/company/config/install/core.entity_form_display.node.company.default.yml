@@ -1,0 +1,156 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.node.company.field_asset_under_management
+    - field.field.node.company.field_decision_making_process
+    - field.field.node.company.field_establishment_date
+    - field.field.node.company.field_human_resource
+    - field.field.node.company.field_introduction
+    - field.field.node.company.field_introduction_original
+    - field.field.node.company.field_investment_culture
+    - field.field.node.company.field_investment_process
+    - field.field.node.company.field_office_address
+    - field.field.node.company.field_organization_architecture
+    - field.field.node.company.field_registered_capital
+    - field.field.node.company.field_researcher_staff
+    - field.field.node.company.field_risk_control
+    - field.field.node.company.field_talent_management
+    - field.field.node.company.field_total_staff
+    - field.field.node.company.field_website
+    - field.field.node.company.field_wechat
+    - node.type.company
+  module:
+    - datetime
+    - field_collection
+    - link
+    - text
+id: node.company.default
+targetEntityType: node
+bundle: company
+mode: default
+content:
+  field_asset_under_management:
+    type: field_collection_embed
+    weight: 9
+    settings: {  }
+    third_party_settings: {  }
+  field_decision_making_process:
+    weight: 14
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  field_establishment_date:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  field_human_resource:
+    weight: 12
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+  field_introduction:
+    weight: 1
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+  field_introduction_original:
+    weight: 2
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+  field_investment_culture:
+    weight: 6
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+  field_investment_process:
+    weight: 15
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  field_office_address:
+    weight: 5
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+  field_organization_architecture:
+    weight: 13
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  field_registered_capital:
+    weight: 3
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+  field_researcher_staff:
+    type: field_collection_embed
+    weight: 11
+    settings: {  }
+    third_party_settings: {  }
+  field_risk_control:
+    weight: 17
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  field_talent_management:
+    weight: 16
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  field_total_staff:
+    type: field_collection_embed
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+  field_website:
+    weight: 7
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  field_wechat:
+    weight: 8
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  title:
+    type: string_textfield
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  langcode: true
+  path: true
+  promote: true
+  sticky: true
+  uid: true

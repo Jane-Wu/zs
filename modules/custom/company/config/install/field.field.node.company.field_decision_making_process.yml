@@ -1,0 +1,20 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_decision_making_process
+    - node.type.company
+  module:
+    - text
+id: node.company.field_decision_making_process
+field_name: field_decision_making_process
+entity_type: node
+bundle: company
+label: 决策机制
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long
