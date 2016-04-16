@@ -6,12 +6,12 @@
  * Footer
  */
 footer.footer{
-width:auto;
-text-align: center;
-    background-color: #222;
-    border-color: #080808;
-color: white;
-margin-top: 0px;
+  width:auto;
+  text-align: center;
+  background-color: #222;
+  border-color: #080808;
+  color: white;
+  margin-top: 0px;
 }
 
 /**
@@ -19,20 +19,23 @@ margin-top: 0px;
  */
 #navbar{
   margin-bottom: 0px; 
-min-height: 30px;
+  min-height: 30px;
 }
 
+#navbar .logo img {
+  width: 40px;
+}
 
 /**
  * Main
  */
 @media (min-width: 768px){
-.main-container {
-min-height: 600px;
-}
+  .main-container {
+    min-height: 600px;
+  }
 }
 
 body.navbar-is-fixed-top {
-    margin-top: 51px;
-padding-top: 15px;
+  margin-top: 51px;
+  padding-top: 15px;
 }
