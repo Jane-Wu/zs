@@ -6,9 +6,15 @@ dependencies:
   - article
   - block_content
   - ckeditor
+  - comment
   - contact
+  - core
   - editor
   - field
   - filter
+  - image
+  - path
   - rdf
+  - taxonomy
   - text
+  - user

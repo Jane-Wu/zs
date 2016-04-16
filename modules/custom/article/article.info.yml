@@ -1,15 +1,18 @@
-name: Article
-description: 'Provides Article content type and related configuration. 使用<em>文章</em>发布有关时间的内容，如消息，新闻或日志。'
+name: 文章
+description: 'Provides 文章 内容类型 and related configuration. 使用<em>文章</em>发布有关时间的内容，如消息，新闻或日志。'
 type: module
 core: 8.x
 dependencies:
   - comment
+  - core
+  - feature_comment
   - field
   - file
   - image
   - node
   - path
   - rdf
+  - site
   - taxonomy
   - text
   - user

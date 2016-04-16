@@ -3,6 +3,7 @@ description: 'Provides 公司 内容类型 and related configuration. 基金公�
 type: module
 core: 8.x
 dependencies:
+  - core
   - datetime
   - field
   - field_collection

@@ -1,9 +1,8 @@
 langcode: zh-hans
 status: true
 dependencies: {  }
-id: feedback
-label: 网站反馈
-recipients:
-  - admin@capital.com
+id: personal
+label: 个人联络表单
+recipients: {  }
 reply: ''
 weight: 0

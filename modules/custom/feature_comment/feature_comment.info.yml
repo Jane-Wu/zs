@@ -1,0 +1,16 @@
+name: 默认评论
+description: 'Provides 默认评论 评论类型 and related configuration. 允许对内容评论'
+type: module
+core: 8.x
+dependencies:
+  - article
+  - comment
+  - core
+  - field
+  - image
+  - node
+  - path
+  - rdf
+  - system
+  - text
+  - user

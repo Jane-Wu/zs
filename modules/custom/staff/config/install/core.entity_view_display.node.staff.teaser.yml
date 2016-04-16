@@ -24,8 +24,6 @@ mode: teaser
 content:
   links:
     weight: 100
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   field_accession_date: true
   field_born: true

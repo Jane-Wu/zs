@@ -1,8 +1,10 @@
-name: User
-description: 'Provide User related configuration.'
+name: 用户
+description: 'Provide 用户 related configuration.'
 type: module
 core: 8.x
 dependencies:
+  - contact
+  - core
   - field
   - file
   - image
