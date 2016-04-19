@@ -1,0 +1,26 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.field_collection_item.field_position
+    - field_collection.field_collection.field_served_companies
+    - taxonomy.vocabulary.position
+id: field_collection_item.field_served_companies.field_position
+field_name: field_position
+entity_type: field_collection_item
+bundle: field_served_companies
+label: 职位
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      position: position
+    sort:
+      field: _none
+    auto_create: true
+field_type: entity_reference

@@ -3,13 +3,14 @@ status: true
 dependencies:
   module:
     - node
-    - taxonomy
-id: node.field_staff_type
-field_name: field_staff_type
+id: node.field_postcode
+field_name: field_postcode
 entity_type: node
-type: entity_reference
+type: string
 settings:
-  target_type: taxonomy_term
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
 module: core
 locked: false
 cardinality: 1

@@ -3,14 +3,13 @@ status: true
 dependencies:
   module:
     - node
-    - taxonomy
-id: node.field_staff_type
-field_name: field_staff_type
+    - telephone
+id: node.field_fax_number
+field_name: field_fax_number
 entity_type: node
-type: entity_reference
-settings:
-  target_type: taxonomy_term
-module: core
+type: telephone
+settings: {  }
+module: telephone
 locked: false
 cardinality: 1
 translatable: true

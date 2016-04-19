@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.education_background
+id: taxonomy_term.education_background
+target_entity_type_id: taxonomy_term
+target_bundle: education_background
+default_langcode: site_default
+language_alterable: false

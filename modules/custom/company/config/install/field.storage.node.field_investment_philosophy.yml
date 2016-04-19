@@ -3,14 +3,13 @@ status: true
 dependencies:
   module:
     - node
-    - taxonomy
-id: node.field_staff_type
-field_name: field_staff_type
+    - text
+id: node.field_investment_philosophy
+field_name: field_investment_philosophy
 entity_type: node
-type: entity_reference
-settings:
-  target_type: taxonomy_term
-module: core
+type: text_long
+settings: {  }
+module: text
 locked: false
 cardinality: 1
 translatable: true

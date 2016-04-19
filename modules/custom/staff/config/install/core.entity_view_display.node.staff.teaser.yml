@@ -7,9 +7,10 @@ dependencies:
     - field.field.node.staff.field_born
     - field.field.node.staff.field_company
     - field.field.node.staff.field_dimission_date
-    - field.field.node.staff.field_educational_background
+    - field.field.node.staff.field_education_background
     - field.field.node.staff.field_gender
     - field.field.node.staff.field_introduction
+    - field.field.node.staff.field_position
     - field.field.node.staff.field_practice_date
     - field.field.node.staff.field_served_companies
     - field.field.node.staff.field_staff_image
@@ -29,9 +30,10 @@ hidden:
   field_born: true
   field_company: true
   field_dimission_date: true
-  field_educational_background: true
+  field_education_background: true
   field_gender: true
   field_introduction: true
+  field_position: true
   field_practice_date: true
   field_served_companies: true
   field_staff_image: true

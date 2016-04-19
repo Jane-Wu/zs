@@ -1,0 +1,20 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_phone_number
+    - node.type.company
+  module:
+    - telephone
+id: node.company.field_phone_number
+field_name: field_phone_number
+entity_type: node
+bundle: company
+label: 电话
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: telephone

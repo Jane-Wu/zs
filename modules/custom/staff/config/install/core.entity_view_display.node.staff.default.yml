@@ -6,9 +6,10 @@ dependencies:
     - field.field.node.staff.field_born
     - field.field.node.staff.field_company
     - field.field.node.staff.field_dimission_date
-    - field.field.node.staff.field_educational_background
+    - field.field.node.staff.field_education_background
     - field.field.node.staff.field_gender
     - field.field.node.staff.field_introduction
+    - field.field.node.staff.field_position
     - field.field.node.staff.field_practice_date
     - field.field.node.staff.field_served_companies
     - field.field.node.staff.field_staff_image
@@ -26,60 +27,60 @@ bundle: staff
 mode: default
 content:
   field_accession_date:
-    weight: 2
-    label: above
+    weight: 5
+    label: inline
     settings:
       timezone_override: ''
-      format_type: html_date
+      format_type: html_month
     third_party_settings: {  }
     type: datetime_default
   field_born:
-    weight: 6
-    label: above
+    weight: 7
+    label: inline
     settings:
       timezone_override: ''
       format_type: html_date
     third_party_settings: {  }
     type: datetime_default
   field_company:
-    weight: 1
-    label: above
+    weight: 2
+    label: inline
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-  field_dimission_date:
-    weight: 11
-    label: above
+  field_education_background:
+    weight: 8
+    label: inline
     settings:
-      timezone_override: ''
-      format_type: html_date
+      link: false
     third_party_settings: {  }
-    type: datetime_default
-  field_educational_background:
-    weight: 7
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: list_default
+    type: entity_reference_label
   field_gender:
-    weight: 5
-    label: above
+    weight: 6
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_default
   field_introduction:
-    weight: 8
+    weight: 10
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+  field_position:
+    weight: 4
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
   field_practice_date:
-    weight: 10
-    label: above
+    weight: 9
+    label: inline
     settings:
       timezone_override: ''
-      format_type: html_date
+      format_type: html_month
     third_party_settings: {  }
     type: datetime_default
   field_served_companies:
@@ -87,10 +88,10 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: field_collection_list
+    type: field_collection_table
   field_staff_image:
-    weight: 4
-    label: above
+    weight: 0
+    label: hidden
     settings:
       image_style: ''
       image_link: ''
@@ -98,13 +99,15 @@ content:
     type: image
   field_staff_type:
     weight: 3
-    label: above
-    settings: {  }
+    label: inline
+    settings:
+      link: false
     third_party_settings: {  }
-    type: list_default
+    type: entity_reference_label
   links:
-    weight: 0
+    weight: 1
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_dimission_date: true
   langcode: true

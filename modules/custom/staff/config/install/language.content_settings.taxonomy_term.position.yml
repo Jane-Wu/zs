@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.position
+id: taxonomy_term.position
+target_entity_type_id: taxonomy_term
+target_bundle: position
+default_langcode: site_default
+language_alterable: false

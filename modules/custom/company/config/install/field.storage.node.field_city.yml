@@ -4,8 +4,8 @@ dependencies:
   module:
     - node
     - taxonomy
-id: node.field_staff_type
-field_name: field_staff_type
+id: node.field_city
+field_name: field_city
 entity_type: node
 type: entity_reference
 settings:

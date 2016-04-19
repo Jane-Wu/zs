@@ -2,14 +2,14 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - field.storage.node.field_staff_type
-    - node.type.staff
-    - taxonomy.vocabulary.staff_type
-id: node.staff.field_staff_type
-field_name: field_staff_type
+    - field.storage.node.field_company_type
+    - node.type.company
+    - taxonomy.vocabulary.company_type
+id: node.company.field_company_type
+field_name: field_company_type
 entity_type: node
-bundle: staff
-label: 人员类型
+bundle: company
+label: 公司类别
 description: ''
 required: true
 translatable: false
@@ -19,7 +19,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      staff_type: staff_type
+      company_type: company_type
     sort:
       field: _none
     auto_create: false

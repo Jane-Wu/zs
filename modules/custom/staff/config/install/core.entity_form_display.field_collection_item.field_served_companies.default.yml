@@ -6,6 +6,7 @@ dependencies:
     - field.field.field_collection_item.field_served_companies.field_company
     - field.field.field_collection_item.field_served_companies.field_company_not_listed
     - field.field.field_collection_item.field_served_companies.field_dimission_date
+    - field.field.field_collection_item.field_served_companies.field_position
     - field_collection.field_collection.field_served_companies
   module:
     - datetime
@@ -15,12 +16,12 @@ bundle: field_served_companies
 mode: default
 content:
   field_accession_date:
-    weight: 2
+    weight: 0
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
   field_company:
-    weight: 0
+    weight: 2
     settings:
       match_operator: CONTAINS
       size: 60
@@ -28,15 +29,23 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   field_company_not_listed:
-    weight: 1
+    weight: 3
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
   field_dimission_date:
-    weight: 3
+    weight: 1
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
+  field_position:
+    weight: 4
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
 hidden: {  }

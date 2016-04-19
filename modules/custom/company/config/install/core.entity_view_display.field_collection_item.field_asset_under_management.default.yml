@@ -14,14 +14,18 @@ bundle: field_asset_under_management
 mode: default
 content:
   field_asset_number:
-    type: number_unformatted
+    type: number_decimal
     weight: 0
     label: above
-    settings: {  }
+    settings:
+      thousand_separator: ''
+      decimal_separator: .
+      scale: 2
+      prefix_suffix: true
     third_party_settings: {  }
   field_data_collection_date:
     type: datetime_default
-    weight: 2
+    weight: 1
     label: above
     settings:
       timezone_override: ''
@@ -29,7 +33,7 @@ content:
     third_party_settings: {  }
   field_data_source:
     type: basic_string
-    weight: 1
+    weight: 2
     label: above
     settings: {  }
     third_party_settings: {  }

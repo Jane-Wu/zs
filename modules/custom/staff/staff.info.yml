@@ -3,6 +3,7 @@ description: 'Provides 公司人员 内容类型 and related configuration. 基�
 type: module
 core: 8.x
 dependencies:
+  - block
   - company
   - core
   - datetime
@@ -15,5 +16,7 @@ dependencies:
   - menu_ui
   - node
   - options
+  - taxonomy
   - text
   - user
+  - views

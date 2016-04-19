@@ -1,0 +1,8 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+name: 公司类别
+vid: company_type
+description: ''
+hierarchy: 0
+weight: 0

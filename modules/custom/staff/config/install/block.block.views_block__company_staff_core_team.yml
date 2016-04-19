@@ -1,0 +1,31 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - views.view.company_staff
+  module:
+    - node
+    - views
+  theme:
+    - capital
+id: views_block__company_staff_core_team
+theme: capital
+region: content
+weight: -7
+provider: null
+plugin: 'views_block:company_staff-core_team'
+settings:
+  id: 'views_block:company_staff-core_team'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      company: company
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

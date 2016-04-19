@@ -3,13 +3,13 @@ status: true
 dependencies:
   module:
     - node
-id: node.field_investment_culture
-field_name: field_investment_culture
+    - telephone
+id: node.field_phone_number
+field_name: field_phone_number
 entity_type: node
-type: string_long
-settings:
-  case_sensitive: false
-module: core
+type: telephone
+settings: {  }
+module: telephone
 locked: false
 cardinality: 1
 translatable: true

@@ -1,0 +1,8 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+name: 人员类型
+vid: staff_type
+description: ''
+hierarchy: 0
+weight: 0

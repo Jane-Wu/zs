@@ -1,0 +1,20 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_fax_number
+    - node.type.company
+  module:
+    - telephone
+id: node.company.field_fax_number
+field_name: field_fax_number
+entity_type: node
+bundle: company
+label: 传真
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: telephone

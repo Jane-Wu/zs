@@ -2,16 +2,16 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - field.storage.node.field_staff_type
-    - node.type.staff
-    - taxonomy.vocabulary.staff_type
-id: node.staff.field_staff_type
-field_name: field_staff_type
+    - field.storage.node.field_city
+    - node.type.company
+    - taxonomy.vocabulary.city
+id: node.company.field_city
+field_name: field_city
 entity_type: node
-bundle: staff
-label: 人员类型
+bundle: company
+label: 所在城市
 description: ''
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -19,8 +19,8 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      staff_type: staff_type
+      city: city
     sort:
       field: _none
-    auto_create: false
+    auto_create: true
 field_type: entity_reference

@@ -7,4 +7,8 @@ excluded:
   - core.entity_view_display.field_collection_item.field_served_companies.default
   - core.entity_view_display.node.staff.default
   - core.entity_view_display.node.staff.teaser
+  - views.view.company_staff
+  - block.block.views_block__company_staff_core_team
+  - block.block.views_block__company_staff_key_person
+  - block.block.views_block__company_staff_researcher_team
 required: true
