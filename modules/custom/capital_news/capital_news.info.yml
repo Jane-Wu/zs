@@ -1,0 +1,5 @@
+name: 'Capital News'
+type: module
+description: 'Capital News.'
+package: Development
+core: '8.x'

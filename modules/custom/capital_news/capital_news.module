@@ -1,0 +1,13 @@
+<?php
+
+/**
+* Implements hook_theme().
+*/
+function capital_news_theme() {
+  $items = [
+    'news_element' => [
+      'render element' => 'element',
+    ],
+  ];
+  return $items;
+}
