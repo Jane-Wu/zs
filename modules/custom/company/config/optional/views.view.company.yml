@@ -720,8 +720,31 @@ display:
             label: ''
           granularity: second
       title: 私募信息库
-      header: {  }
-      footer: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: '<a href="node/add/company" class="btn-info btn pull-right">添加公司</a>'
+            format: full_html
+          plugin_id: text
+      footer:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          content: '显示条目 @start - @end 总共 @total条'
+          plugin_id: result
       empty: {  }
       relationships:
         field_asset_under_management_value:
