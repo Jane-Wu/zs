@@ -24,6 +24,7 @@ class NewsElement extends RenderElement {
       '#theme' => 'news_element',
       '#label' => 'Default Label',
       '#description' => 'Default Description',
+      '#url' => 'http://www.drupal.org',
       '#pre_render' => [
         [$class, 'preRenderNewsElement'],
       ],
@@ -35,10 +36,11 @@ class NewsElement extends RenderElement {
    */
   public static function preRenderNewsElement($element) {
     // Create a link render array using our #label.
+\Drupal::logger('my_module')->notice($element['#url']);
     $element['link'] = [
       '#type' => 'link',
       '#title' => $element['#label'],
-      '#url' => Url::fromUri('http://www.drupal.org'),
+      '#url' => Url::fromUri($element['#url']),
     ];
  
     // Create a description render array using #description.
@@ -49,9 +51,6 @@ class NewsElement extends RenderElement {
     $element['pre_render_addition'] = [
       '#markup' => 'Additional text.'
     ];
- 
-    // Create a variable.
-    $element['#random_number'] = rand(0,100);
  
     return $element;
   }
