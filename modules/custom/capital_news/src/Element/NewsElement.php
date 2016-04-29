@@ -36,7 +36,7 @@ class NewsElement extends RenderElement {
    */
   public static function preRenderNewsElement($element) {
     // Create a link render array using our #label.
-\Drupal::logger('my_module')->notice($element['#url']);
+//\Drupal::logger('my_module')->notice($element['#url']);
     $element['link'] = [
       '#type' => 'link',
       '#title' => $element['#label'],

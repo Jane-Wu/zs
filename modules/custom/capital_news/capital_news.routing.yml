@@ -2,6 +2,6 @@ capital_news.content:
   path: '/news'
   defaults:
     _controller: '\Drupal\capital_news\Controller\NewsController::content'
-    _title: 'News'
+    _title: '产业动向'
   requirements:
     _permission: 'access content'

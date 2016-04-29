@@ -1,0 +1,41 @@
+<?php
+
+/**
+* Implements hook_theme().
+*/
+function capital_common_get_rest_api($url, $headers = array()) {
+// sendRequest
+// note how referer is set manually
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_REFERER, "capital-dev");
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+$body = curl_exec($ch);
+curl_close($ch);
+
+// now, process the JSON string
+return json_decode($body);
+
+}
+function capital_common_get_google_search($key) {
+$url = "https://ajax.googleapis.com/ajax/services/search/web?v=1.0&"
+    . "q=" . urlencode($key) . "&userip=USERS-IP-ADDRESS&rsz=20";
+
+return (capital_common_get_rest_api($url));
+
+}
+function capital_common_get_rest_custom_search($key) {
+$url = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyBFd0XbsVD25OJRFoISXL9vcWsbKW7Wk4o&cx=018080705000233201596:0gmsj1aupvc&q=' . urlencode($key);
+
+return (capital_common_get_rest_api($url));
+
+}
+function capital_common_get_tl_search($url) {
+$url = "https://api.wmcloud.com:443/data/v1/api/" . $url;
+
+$headers = array();
+$headers[] = 'Authorization: Bearer bd0f3acf153580238b16ffb84edd1e89304e5e59f33e8b2eab271ba90e003b95';
+
+return (capital_common_get_rest_api($url, $headers));
+}
