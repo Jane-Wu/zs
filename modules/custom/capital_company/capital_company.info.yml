@@ -1,4 +1,4 @@
-name: Capital Company Views Handlers
-description: 'Define handlers for the company Views'
+name: Capital Company Customization
+description: 'Customization code for company content type'
 type: module
 core: 8.x

@@ -3,13 +3,14 @@ status: true
 dependencies:
   module:
     - node
-    - text
-id: node.field_investment_objective
-field_name: field_investment_objective
+id: node.field_product_count
+field_name: field_product_count
 entity_type: node
-type: text_long
-settings: {  }
-module: text
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
 locked: false
 cardinality: 1
 translatable: true

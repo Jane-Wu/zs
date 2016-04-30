@@ -5,18 +5,17 @@ dependencies:
     - field.storage.field_collection_item.field_asset_number
     - field.storage.node.field_city
     - field.storage.node.field_establishment_date
-    - field.storage.node.field_phone_number
+    - field.storage.node.field_product_count
     - field.storage.node.field_website
     - node.type.company
     - taxonomy.vocabulary.company_type
   module:
-    - capital_company
+    - capital_views
     - datetime
     - field_collection
     - link
     - node
     - taxonomy
-    - telephone
     - user
 id: company
 label: 基金公司
@@ -51,9 +50,9 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: 应用
+          submit_button: 查询
           reset_button: true
-          reset_button_label: 重置
+          reset_button_label: 清空条件
           exposed_sorts_label: 排序依据
           expose_sort_order: true
           sort_asc_label: 升序
@@ -94,10 +93,11 @@ display:
             title: title
             field_establishment_date: field_establishment_date
             field_city: field_city
+            company_staff: company_staff
             field_asset_number: field_asset_number
+            field_product_count: field_product_count
             field_website: field_website
             field_phone_number: field_phone_number
-            field_company_type: field_company_type
           info:
             title:
               sortable: true
@@ -120,7 +120,21 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
+            company_staff:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             field_asset_number:
+              sortable: true
+              default_sort_order: desc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_product_count:
               sortable: true
               default_sort_order: desc
               align: ''
@@ -133,13 +147,6 @@ display:
               empty_column: false
               responsive: ''
             field_phone_number:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_company_type:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -404,7 +411,7 @@ display:
           relationship: field_asset_under_management_value
           group_type: group
           admin_label: ''
-          label: 管理规模
+          label: 管理规模（亿元）
           exclude: false
           alter:
             alter_text: false
@@ -449,9 +456,73 @@ display:
           type: number_decimal
           settings:
             thousand_separator: ''
-            prefix_suffix: true
+            prefix_suffix: false
             decimal_separator: .
-            scale: 2
+            scale: 0
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_product_count:
+          id: field_product_count
+          table: node__field_product_count
+          field: field_product_count
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 产品数量
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -520,68 +591,6 @@ display:
             rel: '0'
             target: _blank
           group_column: ''
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_phone_number:
-          id: field_phone_number
-          table: node__field_phone_number
-          field: field_phone_number
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 电话
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: telephone_link
-          settings: {  }
-          group_column: value
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -721,19 +730,18 @@ display:
           granularity: second
       title: 私募信息库
       header:
-        area:
-          id: area
+        view_area_button_area:
+          id: view_area_button_area
           table: views
-          field: area
+          field: view_area_button_area
           relationship: none
           group_type: group
           admin_label: ''
           empty: true
-          tokenize: false
-          content:
-            value: '<a href="node/add/company" class="btn-info btn pull-right">添加公司</a>'
-            format: full_html
-          plugin_id: text
+          viewareabuttonrequiredpermission: 'create company content'
+          viewareabuttonlabel: 添加公司
+          viewareabuttonuri: /node/add/company
+          plugin_id: view_area_button_area
       footer:
         result:
           id: result
@@ -778,7 +786,7 @@ display:
         - 'config:field.storage.field_collection_item.field_asset_number'
         - 'config:field.storage.node.field_city'
         - 'config:field.storage.node.field_establishment_date'
-        - 'config:field.storage.node.field_phone_number'
+        - 'config:field.storage.node.field_product_count'
         - 'config:field.storage.node.field_website'
   page_1:
     display_plugin: page
@@ -802,5 +810,5 @@ display:
         - 'config:field.storage.field_collection_item.field_asset_number'
         - 'config:field.storage.node.field_city'
         - 'config:field.storage.node.field_establishment_date'
-        - 'config:field.storage.node.field_phone_number'
+        - 'config:field.storage.node.field_product_count'
         - 'config:field.storage.node.field_website'

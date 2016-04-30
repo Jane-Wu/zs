@@ -2,10 +2,10 @@
 
 /**
  * @file
- * Contains \Drupal\capital_company\Plugin\views\field\CompanyStaff.
+ * Contains \Drupal\capital_views\Plugin\views\field\CompanyStaff.
  */
 
-namespace Drupal\capital_company\Plugin\views\field;
+namespace Drupal\capital_views\Plugin\views\field;
 
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Form\FormStateInterface;
@@ -110,7 +110,7 @@ class CompanyStaff extends PrerenderList {
       '#default_value' => $this->options['staff_type'],
       '#options' => $options,
     );
- 
+
     $form['staff_link'] = array(
       '#title' => $this->t('Link to entity'),
       '#type' => 'checkbox',

@@ -10,7 +10,7 @@ id: node.company.field_investment_philosophy
 field_name: field_investment_philosophy
 entity_type: node
 bundle: company
-label: 投资理念
+label: 投资文化
 description: ''
 required: false
 translatable: false

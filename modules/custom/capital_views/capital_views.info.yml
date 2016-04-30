@@ -1,0 +1,4 @@
+name: Capital Views Handlers
+description: 'Define handlers for the Views'
+type: module
+core: 8.x

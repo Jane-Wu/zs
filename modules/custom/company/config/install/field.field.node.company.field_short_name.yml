@@ -2,19 +2,17 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - field.storage.node.field_investment_objective
+    - field.storage.node.field_short_name
     - node.type.company
-  module:
-    - text
-id: node.company.field_investment_objective
-field_name: field_investment_objective
+id: node.company.field_short_name
+field_name: field_short_name
 entity_type: node
 bundle: company
-label: 投资目标
+label: 简称
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: text_long
+field_type: string

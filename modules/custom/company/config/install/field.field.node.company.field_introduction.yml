@@ -8,7 +8,7 @@ id: node.company.field_introduction
 field_name: field_introduction
 entity_type: node
 bundle: company
-label: 公司简介（自编）
+label: 公司简介
 description: ''
 required: true
 translatable: true

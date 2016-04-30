@@ -12,16 +12,17 @@ dependencies:
     - field.field.node.company.field_human_resource
     - field.field.node.company.field_introduction
     - field.field.node.company.field_introduction_original
-    - field.field.node.company.field_investment_objective
     - field.field.node.company.field_investment_philosophy
     - field.field.node.company.field_investment_process
     - field.field.node.company.field_office_address
     - field.field.node.company.field_organization_architecture
     - field.field.node.company.field_phone_number
     - field.field.node.company.field_postcode
+    - field.field.node.company.field_product_count
     - field.field.node.company.field_registered_capital
     - field.field.node.company.field_researcher_staff
     - field.field.node.company.field_risk_control
+    - field.field.node.company.field_short_name
     - field.field.node.company.field_talent_management
     - field.field.node.company.field_total_staff
     - field.field.node.company.field_website
@@ -46,16 +47,17 @@ hidden:
   field_human_resource: true
   field_introduction: true
   field_introduction_original: true
-  field_investment_objective: true
   field_investment_philosophy: true
   field_investment_process: true
   field_office_address: true
   field_organization_architecture: true
   field_phone_number: true
   field_postcode: true
+  field_product_count: true
   field_registered_capital: true
   field_researcher_staff: true
   field_risk_control: true
+  field_short_name: true
   field_talent_management: true
   field_total_staff: true
   field_website: true
