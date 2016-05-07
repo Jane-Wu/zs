@@ -10,6 +10,17 @@ use Drupal\Core\Form\FormStateInterface;
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function capital_company_form_node_company_form_alter(&$form, FormStateInterface $form_state) {
-  $form['field_website']['widget'][0]['uri']['#value'] = !empty($form['field_website']['#default_value']) ? $form['field_website']['#default_value'] : 'http://';
+function capital_company_form_node_company_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#after_build'][] = 'capital_company_after_build';
+}
+
+/**
+ * Set the website field default value
+ */
+function capital_company_after_build($form) {
+  if (isset($form['field_website']['widget'][0]['uri'])) {
+    $value = $form['field_website']['widget'][0]['uri']['#value']; 
+    $form['field_website']['widget'][0]['uri']['#value'] = empty($value) ? 'http://' : $value;
+  }
+  return $form;
 }
