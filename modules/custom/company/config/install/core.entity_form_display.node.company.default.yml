@@ -8,13 +8,16 @@ dependencies:
     - field.field.node.company.field_decision_making_process
     - field.field.node.company.field_establishment_date
     - field.field.node.company.field_fax_number
+    - field.field.node.company.field_general_evaluation
     - field.field.node.company.field_human_resource
     - field.field.node.company.field_introduction
     - field.field.node.company.field_introduction_original
     - field.field.node.company.field_investment_philosophy
     - field.field.node.company.field_investment_process
+    - field.field.node.company.field_market_activity
     - field.field.node.company.field_office_address
     - field.field.node.company.field_organization_architecture
+    - field.field.node.company.field_performance_assessment
     - field.field.node.company.field_phone_number
     - field.field.node.company.field_postcode
     - field.field.node.company.field_product_count
@@ -74,6 +77,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: telephone_default
+  field_general_evaluation:
+    weight: 26
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
   field_human_resource:
     weight: 19
     settings:
@@ -109,6 +119,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+  field_market_activity:
+    weight: 28
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
   field_office_address:
     weight: 9
     settings:
@@ -123,6 +140,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+  field_performance_assessment:
+    weight: 27
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
   field_phone_number:
     weight: 11
     settings:

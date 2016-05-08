@@ -2,20 +2,20 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - views.view.company_staff
+    - views.view.own_report
   module:
     - node
     - views
   theme:
     - capital
-id: views_block__company_staff_key_person
+id: views_block__own_report_own_report
 theme: capital
 region: content
-weight: -11
+weight: -4
 provider: null
-plugin: 'views_block:company_staff-key_person'
+plugin: 'views_block:own_report-own_report'
 settings:
-  id: 'views_block:company_staff-key_person'
+  id: 'views_block:own_report-own_report'
   label: ''
   provider: views
   label_display: visible
@@ -26,6 +26,7 @@ visibility:
     id: node_type
     bundles:
       company: company
+      staff: staff
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'

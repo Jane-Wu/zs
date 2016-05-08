@@ -1,0 +1,21 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - node.type.own_report
+id: node.own_report.promote
+field_name: promote
+entity_type: node
+bundle: own_report
+label: 推荐到首页
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 开启
+  off_label: 关闭
+field_type: boolean

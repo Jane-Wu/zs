@@ -9,6 +9,7 @@ dependencies:
   - datetime
   - field
   - field_collection
+  - file
   - image
   - language
   - link

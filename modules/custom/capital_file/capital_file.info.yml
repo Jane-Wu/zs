@@ -1,0 +1,4 @@
+name: Capital File Customization
+description: 'Customization code for file download'
+type: module
+core: 8.x

@@ -1,0 +1,25 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_interviewee
+    - node.type.material
+    - node.type.staff
+id: node.material.field_interviewee
+field_name: field_interviewee
+entity_type: node
+bundle: material
+label: 被采访人
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      staff: staff
+    sort:
+      field: _none
+field_type: entity_reference

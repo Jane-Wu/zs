@@ -1,0 +1,52 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.node.company_report.body
+    - field.field.node.company_report.field_company
+    - field.field.node.company_report.field_release_date
+    - field.field.node.company_report.field_report_type
+    - node.type.company_report
+  module:
+    - datetime
+    - text
+    - user
+id: node.company_report.default
+targetEntityType: node
+bundle: company_report
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+  field_company:
+    weight: 2
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_release_date:
+    weight: 3
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: html_date
+    third_party_settings: {  }
+    type: datetime_default
+  field_report_type:
+    weight: 4
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  links:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

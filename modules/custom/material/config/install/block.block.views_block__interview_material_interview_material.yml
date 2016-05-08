@@ -2,20 +2,20 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - views.view.company_staff
+    - views.view.interview_material
   module:
     - node
     - views
   theme:
     - capital
-id: views_block__company_staff_key_person
+id: views_block__interview_material_interview_material
 theme: capital
 region: content
-weight: -11
+weight: -5
 provider: null
-plugin: 'views_block:company_staff-key_person'
+plugin: 'views_block:interview_material-interview_material'
 settings:
-  id: 'views_block:company_staff-key_person'
+  id: 'views_block:interview_material-interview_material'
   label: ''
   provider: views
   label_display: visible

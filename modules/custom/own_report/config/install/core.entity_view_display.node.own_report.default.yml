@@ -1,0 +1,44 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.node.own_report.body
+    - field.field.node.own_report.field_associated_content
+    - field.field.node.own_report.field_release_date
+    - node.type.own_report
+  module:
+    - datetime
+    - text
+    - user
+id: node.own_report.default
+targetEntityType: node
+bundle: own_report
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+  field_associated_content:
+    weight: 3
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_release_date:
+    weight: 2
+    label: inline
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  links:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

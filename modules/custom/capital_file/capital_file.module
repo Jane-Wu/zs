@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Allows users to download private files and control access.
+ */
+
+use Drupal\file\Entity\File;
+
+/**
+ * Implements hook_file_download().
+ */
+function capital_file_file_download($uri) {
+  // Get the current user
+  $user = \Drupal::currentUser();
+
+  // Check for permission
+  $has_permission = $user->hasPermission('access private files download');
+  if (!$has_permission) {
+    return -1;
+  }
+  return;
+}
+

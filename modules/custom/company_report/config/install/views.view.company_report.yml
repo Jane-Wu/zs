@@ -2,21 +2,20 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - field.storage.node.field_introduction
-    - field.storage.node.field_position
-    - node.type.staff
-    - taxonomy.vocabulary.staff_type
+    - node.type.company_report
+    - taxonomy.vocabulary.report_type
   content:
-    - 'taxonomy_term:staff_type:36976bd1-50a6-44e1-a008-8a426f794bd8'
-    - 'taxonomy_term:staff_type:8d532274-2dd6-47ee-aa1a-26c9edd72405'
-    - 'taxonomy_term:staff_type:cbbbf2b8-1265-4ded-9500-ba7ae2d1fbd9'
+    - 'taxonomy_term:report_type:23ad8fbd-3ec9-4684-8c45-69853add81aa'
+    - 'taxonomy_term:report_type:602bde22-b6ac-435f-8b00-be0174d02c56'
+    - 'taxonomy_term:report_type:a6d86222-e5aa-4fd7-8600-b9040fd79fbb'
   module:
     - capital_views
+    - datetime
     - node
     - taxonomy
     - user
-id: company_staff
-label: 公司人员
+id: company_report
+label: 公司报告
 module: views
 description: ''
 tag: ''
@@ -56,12 +55,18 @@ display:
           sort_asc_label: 升序
           sort_desc_label: 降序
       pager:
-        type: some
+        type: none
         options:
-          items_per_page: 3
           offset: 0
       style:
-        type: grid
+        type: html_list
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          type: ul
+          wrapper_class: item-list
+          class: ''
       row:
         type: fields
       fields:
@@ -128,131 +133,6 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_position:
-          id: field_position
-          table: node__field_position
-          field: field_position
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: false
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_introduction:
-          id: field_introduction
-          table: node__field_introduction
-          field: field_introduction
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: basic_string
-          settings: {  }
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
       filters:
         status:
           value: true
@@ -269,21 +149,51 @@ display:
           id: type
           table: node_field_data
           field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
           value:
-            staff: staff
+            company_report: company_report
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
           entity_type: node
           entity_field: type
           plugin_id: bundle
-        field_staff_type_target_id:
-          id: field_staff_type_target_id
-          table: node__field_staff_type
-          field: field_staff_type_target_id
+        field_report_type_target_id:
+          id: field_report_type_target_id
+          table: node__field_report_type
+          field: field_report_type_target_id
           relationship: none
           group_type: group
           admin_label: ''
           operator: or
-          value:
-            10: 10
+          value: {  }
           group: 1
           exposed: false
           expose:
@@ -314,16 +224,29 @@ display:
           reduce_duplicates: false
           type: select
           limit: true
-          vid: staff_type
+          vid: report_type
           hierarchy: false
           error_message: true
           plugin_id: taxonomy_index_tid
       sorts:
+        field_release_date_value:
+          id: field_release_date_value
+          table: node__field_release_date
+          field: field_release_date_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: false
+          expose:
+            label: ''
+          granularity: day
+          plugin_id: datetime
         created:
           id: created
           table: node_field_data
           field: created
-          order: ASC
+          order: DESC
           entity_type: node
           entity_field: created
           plugin_id: date
@@ -334,7 +257,7 @@ display:
           expose:
             label: ''
           granularity: second
-      title: 关键人物
+      title: 公司报告
       header:
         view_area_button_area:
           id: view_area_button_area
@@ -344,9 +267,9 @@ display:
           group_type: group
           admin_label: ''
           empty: true
-          viewareabuttonrequiredpermission: 'create staff content'
-          viewareabuttonlabel: 添加人员
-          viewareabuttonuri: /node/add/staff
+          viewareabuttonrequiredpermission: 'create company report content'
+          viewareabuttonlabel: 添加报告
+          viewareabuttonuri: '/node/add/company_report?edit[field_company]=[node:nid]'
           plugin_id: view_area_button_area
       footer: {  }
       empty:
@@ -409,131 +332,21 @@ display:
         - user
         - 'user.node_grants:view'
         - user.permissions
-      tags:
-        - 'config:field.storage.node.field_introduction'
-        - 'config:field.storage.node.field_position'
-  core_team:
+      tags: {  }
+  company_report_annual:
     display_plugin: block
-    id: core_team
-    display_title: 核心团队
-    position: 2
-    display_options:
-      display_extenders: {  }
-      display_description: ''
-      title: 核心团队
-      defaults:
-        title: false
-        filters: false
-        filter_groups: false
-        header: false
-      filters:
-        status:
-          value: true
-          table: node_field_data
-          field: status
-          plugin_id: boolean
-          entity_type: node
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-          group: 1
-        type:
-          id: type
-          table: node_field_data
-          field: type
-          value:
-            staff: staff
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
-        field_staff_type_target_id:
-          id: field_staff_type_target_id
-          table: node__field_staff_type
-          field: field_staff_type_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value:
-            11: 11
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: staff_type
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
-      header:
-        view_area_button_area:
-          id: view_area_button_area
-          table: views
-          field: view_area_button_area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          viewareabuttonrequiredpermission: 'create staff content'
-          viewareabuttonlabel: 添加人员
-          viewareabuttonuri: '/node/add/staff?edit[field_company]=[node:nid]&edit[field_staff_type]=11'
-          plugin_id: view_area_button_area
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - user
-        - 'user.node_grants:view'
-        - user.permissions
-      tags:
-        - 'config:field.storage.node.field_introduction'
-        - 'config:field.storage.node.field_position'
-  key_person:
-    display_plugin: block
-    id: key_person
-    display_title: 关键人物
+    id: company_report_annual
+    display_title: 年度报告
     position: 1
     display_options:
       display_extenders: {  }
+      block_description: ''
       display_description: ''
-      title: 关键人物
+      title: 年度报告
       defaults:
         title: false
         filters: false
         filter_groups: false
-        header: false
       filters:
         status:
           value: true
@@ -550,21 +363,52 @@ display:
           id: type
           table: node_field_data
           field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
           value:
-            staff: staff
+            company_report: company_report
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
           entity_type: node
           entity_field: type
           plugin_id: bundle
-        field_staff_type_target_id:
-          id: field_staff_type_target_id
-          table: node__field_staff_type
-          field: field_staff_type_target_id
+        field_report_type_target_id:
+          id: field_report_type_target_id
+          table: node__field_report_type
+          field: field_report_type_target_id
           relationship: none
           group_type: group
           admin_label: ''
           operator: or
           value:
-            10: 10
+            40: 40
           group: 1
           exposed: false
           expose:
@@ -595,7 +439,7 @@ display:
           reduce_duplicates: false
           type: select
           limit: true
-          vid: staff_type
+          vid: report_type
           hierarchy: false
           error_message: true
           plugin_id: taxonomy_index_tid
@@ -603,19 +447,6 @@ display:
         operator: AND
         groups:
           1: AND
-      header:
-        view_area_button_area:
-          id: view_area_button_area
-          table: views
-          field: view_area_button_area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          viewareabuttonrequiredpermission: 'create staff content'
-          viewareabuttonlabel: 添加人员
-          viewareabuttonuri: '/node/add/staff?edit[field_company]=[node:nid]&edit[field_staff_type]=10'
-          plugin_id: view_area_button_area
     cache_metadata:
       max-age: -1
       contexts:
@@ -625,23 +456,21 @@ display:
         - user
         - 'user.node_grants:view'
         - user.permissions
-      tags:
-        - 'config:field.storage.node.field_introduction'
-        - 'config:field.storage.node.field_position'
-  researcher_team:
+      tags: {  }
+  company_report_quarter:
     display_plugin: block
-    id: researcher_team
-    display_title: 投研团队
-    position: 3
+    id: company_report_quarter
+    display_title: 季度报告
+    position: 1
     display_options:
       display_extenders: {  }
+      block_description: ''
       display_description: ''
-      title: 投研团队
+      title: 季度报告
       defaults:
         title: false
         filters: false
         filter_groups: false
-        header: false
       filters:
         status:
           value: true
@@ -658,21 +487,52 @@ display:
           id: type
           table: node_field_data
           field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
           value:
-            staff: staff
+            company_report: company_report
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
           entity_type: node
           entity_field: type
           plugin_id: bundle
-        field_staff_type_target_id:
-          id: field_staff_type_target_id
-          table: node__field_staff_type
-          field: field_staff_type_target_id
+        field_report_type_target_id:
+          id: field_report_type_target_id
+          table: node__field_report_type
+          field: field_report_type_target_id
           relationship: none
           group_type: group
           admin_label: ''
           operator: or
           value:
-            12: 12
+            39: 39
           group: 1
           exposed: false
           expose:
@@ -703,7 +563,7 @@ display:
           reduce_duplicates: false
           type: select
           limit: true
-          vid: staff_type
+          vid: report_type
           hierarchy: false
           error_message: true
           plugin_id: taxonomy_index_tid
@@ -711,19 +571,6 @@ display:
         operator: AND
         groups:
           1: AND
-      header:
-        view_area_button_area:
-          id: view_area_button_area
-          table: views
-          field: view_area_button_area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          viewareabuttonrequiredpermission: 'create staff content'
-          viewareabuttonlabel: 添加人员
-          viewareabuttonuri: '/node/add/staff?edit[field_company]=[node:nid]&edit[field_staff_type]=12'
-          plugin_id: view_area_button_area
     cache_metadata:
       max-age: -1
       contexts:
@@ -733,6 +580,128 @@ display:
         - user
         - 'user.node_grants:view'
         - user.permissions
-      tags:
-        - 'config:field.storage.node.field_introduction'
-        - 'config:field.storage.node.field_position'
+      tags: {  }
+  company_report_temp:
+    display_plugin: block
+    id: company_report_temp
+    display_title: 临时公告
+    position: 1
+    display_options:
+      display_extenders: {  }
+      block_description: ''
+      display_description: ''
+      title: 临时公告
+      defaults:
+        title: false
+        filters: false
+        filter_groups: false
+      filters:
+        status:
+          value: true
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+          group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            company_report: company_report
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+        field_report_type_target_id:
+          id: field_report_type_target_id
+          table: node__field_report_type
+          field: field_report_type_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            38: 38
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: report_type
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - user
+        - 'user.node_grants:view'
+        - user.permissions
+      tags: {  }

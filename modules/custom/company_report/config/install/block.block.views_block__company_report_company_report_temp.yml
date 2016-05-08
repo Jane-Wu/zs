@@ -2,20 +2,20 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - views.view.company_staff
+    - views.view.company_report
   module:
     - node
     - views
   theme:
     - capital
-id: views_block__company_staff_key_person
+id: views_block__company_report_company_report_temp
 theme: capital
 region: content
-weight: -11
+weight: -8
 provider: null
-plugin: 'views_block:company_staff-key_person'
+plugin: 'views_block:company_report-company_report_temp'
 settings:
-  id: 'views_block:company_staff-key_person'
+  id: 'views_block:company_report-company_report_temp'
   label: ''
   provider: views
   label_display: visible

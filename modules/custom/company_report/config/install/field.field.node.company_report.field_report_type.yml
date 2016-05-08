@@ -1,0 +1,26 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_report_type
+    - node.type.company_report
+    - taxonomy.vocabulary.report_type
+id: node.company_report.field_report_type
+field_name: field_report_type
+entity_type: node
+bundle: company_report
+label: 报告类型
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      report_type: report_type
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference

@@ -1,0 +1,20 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_interview_date
+    - node.type.material
+  module:
+    - datetime
+id: node.material.field_interview_date
+field_name: field_interview_date
+entity_type: node
+bundle: material
+label: 采访时间
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

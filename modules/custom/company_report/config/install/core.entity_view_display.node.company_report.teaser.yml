@@ -1,0 +1,32 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.company_report.body
+    - field.field.node.company_report.field_company
+    - field.field.node.company_report.field_release_date
+    - field.field.node.company_report.field_report_type
+    - node.type.company_report
+  module:
+    - text
+    - user
+id: node.company_report.teaser
+targetEntityType: node
+bundle: company_report
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden:
+  field_company: true
+  field_release_date: true
+  field_report_type: true
+  langcode: true

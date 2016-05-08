@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - node.type.material
+id: node.material
+target_entity_type_id: node
+target_bundle: material
+default_langcode: site_default
+language_alterable: false

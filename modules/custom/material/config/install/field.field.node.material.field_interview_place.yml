@@ -1,0 +1,18 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_interview_place
+    - node.type.material
+id: node.material.field_interview_place
+field_name: field_interview_place
+entity_type: node
+bundle: material
+label: 地点
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string_long

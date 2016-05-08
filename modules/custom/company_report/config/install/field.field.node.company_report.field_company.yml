@@ -1,0 +1,25 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company
+    - node.type.company
+    - node.type.company_report
+id: node.company_report.field_company
+field_name: field_company
+entity_type: node
+bundle: company_report
+label: 所属公司
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      company: company
+    sort:
+      field: _none
+field_type: entity_reference

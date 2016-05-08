@@ -1,0 +1,21 @@
+name: 调研素材
+description: 'Provides 调研素材 内容类型 and related configuration. 调研底稿，采访素材'
+type: module
+core: 8.x
+dependencies:
+  - article
+  - block
+  - capital_views
+  - company
+  - core
+  - datetime
+  - field
+  - file
+  - language
+  - menu_ui
+  - node
+  - site
+  - staff
+  - text
+  - user
+  - views

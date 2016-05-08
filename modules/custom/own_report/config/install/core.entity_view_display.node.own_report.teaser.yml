@@ -1,0 +1,30 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.own_report.body
+    - field.field.node.own_report.field_associated_content
+    - field.field.node.own_report.field_release_date
+    - node.type.own_report
+  module:
+    - text
+    - user
+id: node.own_report.teaser
+targetEntityType: node
+bundle: own_report
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: text_summary_or_trimmed
+    weight: 101
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+  links:
+    weight: 100
+hidden:
+  field_associated_content: true
+  field_release_date: true
+  langcode: true

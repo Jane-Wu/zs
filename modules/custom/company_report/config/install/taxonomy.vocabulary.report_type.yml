@@ -1,0 +1,8 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+name: 报告类型
+vid: report_type
+description: ''
+hierarchy: 0
+weight: 0

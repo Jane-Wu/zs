@@ -1,0 +1,20 @@
+name: 公司报告
+description: 'Provides 公司报告 内容类型 and related configuration. 临时公告，季度报告，年度报告'
+type: module
+core: 8.x
+dependencies:
+  - block
+  - capital_views
+  - company
+  - core
+  - datetime
+  - field
+  - language
+  - menu_ui
+  - node
+  - own_report
+  - staff
+  - taxonomy
+  - text
+  - user
+  - views

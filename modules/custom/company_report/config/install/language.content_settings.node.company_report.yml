@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - node.type.company_report
+id: node.company_report
+target_entity_type_id: node
+target_bundle: company_report
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,83 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.node.material.body
+    - field.field.node.material.field_attachments
+    - field.field.node.material.field_company
+    - field.field.node.material.field_interview_date
+    - field.field.node.material.field_interview_place
+    - field.field.node.material.field_interviewee
+    - field.field.node.material.field_interviewer
+    - field.field.node.material.field_tags
+    - node.type.material
+  module:
+    - datetime
+    - file
+    - text
+    - user
+id: node.material.default
+targetEntityType: node
+bundle: material
+mode: default
+content:
+  body:
+    type: text_default
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_attachments:
+    weight: 9
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: file_default
+  field_company:
+    weight: 8
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_interview_date:
+    weight: 3
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: html_date
+    third_party_settings: {  }
+    type: datetime_default
+  field_interview_place:
+    weight: 4
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_interviewee:
+    weight: 7
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_interviewer:
+    weight: 6
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_tags:
+    weight: 5
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  links:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

@@ -1,0 +1,27 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_associated_content
+    - node.type.company
+    - node.type.own_report
+    - node.type.staff
+id: node.own_report.field_associated_content
+field_name: field_associated_content
+entity_type: node
+bundle: own_report
+label: 关联内容
+description: 与报道相关的公司或者人员
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      company: company
+      staff: staff
+    sort:
+      field: _none
+field_type: entity_reference
