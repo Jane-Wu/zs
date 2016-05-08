@@ -5,9 +5,9 @@ dependencies:
     - node.type.company_report
     - taxonomy.vocabulary.report_type
   content:
-    - 'taxonomy_term:report_type:23ad8fbd-3ec9-4684-8c45-69853add81aa'
-    - 'taxonomy_term:report_type:602bde22-b6ac-435f-8b00-be0174d02c56'
-    - 'taxonomy_term:report_type:a6d86222-e5aa-4fd7-8600-b9040fd79fbb'
+    - 'taxonomy_term:report_type:1ddfb464-5dbe-4af3-9d00-00478279f6bb'
+    - 'taxonomy_term:report_type:4c2a845f-ac4e-47e2-8f18-24251dbbeb73'
+    - 'taxonomy_term:report_type:f9df2066-6a31-453f-ad5f-952bf38ebf35'
   module:
     - capital_views
     - datetime
@@ -408,7 +408,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            40: 40
+            35: 35
           group: 1
           exposed: false
           expose:
@@ -532,7 +532,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            39: 39
+            34: 34
           group: 1
           exposed: false
           expose:
@@ -656,7 +656,7 @@ display:
           admin_label: ''
           operator: or
           value:
-            38: 38
+            33: 33
           group: 1
           exposed: false
           expose:

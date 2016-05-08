@@ -178,7 +178,20 @@ display:
           viewareabuttonuri: '/node/add/material?edit[field_company]=[node:nid]'
           plugin_id: view_area_button_area
       footer: {  }
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 暂无信息
+            format: full_html
+          plugin_id: text
       relationships: {  }
       arguments:
         field_company_target_id:
