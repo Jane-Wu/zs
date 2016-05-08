@@ -1,0 +1,3 @@
+capital_news.menu:
+  title: Config Entity Example
+  route_name: capital_news.content

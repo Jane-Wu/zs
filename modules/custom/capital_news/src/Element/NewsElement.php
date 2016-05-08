@@ -25,6 +25,7 @@ class NewsElement extends RenderElement {
       '#label' => 'Default Label',
       '#description' => 'Default Description',
       '#url' => 'http://www.drupal.org',
+      '#news_type' => 'google',
       '#pre_render' => [
         [$class, 'preRenderNewsElement'],
       ],
@@ -36,22 +37,45 @@ class NewsElement extends RenderElement {
    */
   public static function preRenderNewsElement($element) {
     // Create a link render array using our #label.
-//\Drupal::logger('my_module')->notice($element['#url']);
     $element['link'] = [
       '#type' => 'link',
       '#title' => $element['#label'],
+//      '#url' => Url::fromUri($element['#url']),
       '#url' => Url::fromUri($element['#url']),
+    ];
+    $element['type'] = [
+ '#type' => 'html_tag',
+  '#tag' => 'span',
+  '#value' => $element['#news_type'],
+'#attributes' => [
+ 'class' => "label label-default",
+]
+    ];
+    
+      $element['url'] = Url::fromUri($element['#url']);
+    $element['addtofavorite'] = [
+      '#type' => 'link',
+      '#title' => 'Favorite',
+//      '#url' => Url::fromUri($element['#url']),
+//      '#url' => 'add-favorite/nojs',
+      '#url' => Url::fromRoute('capital_news.favoriteajax'),
     ];
  
     // Create a description render array using #description.
     $element['description'] = [
-      '#markup' => $element['#description']
+      '#markup' => $element['#description'],
+//      '#allowed_tags' => ['strong'],
     ];
- 
-    $element['pre_render_addition'] = [
-      '#markup' => 'Additional text.'
+    
+    $element['news_type'] = [
+      '#markup' => $element['#news_type'],
+//      '#allowed_tags' => ['strong'],
     ];
- 
+    $element['title'] = [
+      '#markup' => $element['#label'],
+//      '#allowed_tags' => ['strong'],
+    ];
+    
     return $element;
   }
 }

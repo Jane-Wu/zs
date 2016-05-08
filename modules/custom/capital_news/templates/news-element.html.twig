@@ -14,8 +14,10 @@
  */
 #}
  
-<div class="myElement">
-  {{ element.link }}
+<div class="news">
+  {{ element.type }}
+  <a href={{ element.url }}>{{ element.title }}</a>
+  {{ element.addtofavorite }}
   <p>{{ element.description }}</p>
 </div>
  

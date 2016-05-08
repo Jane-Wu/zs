@@ -1,0 +1,4 @@
+capital_news.googlecse:
+  route_name: capital_news.googlecse
+  base_route: capital_news.content
+  title: 'Reset your password'

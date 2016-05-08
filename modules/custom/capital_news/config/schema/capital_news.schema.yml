@@ -1,0 +1,9 @@
+# Schema for the configuration files of the User module.
+
+capital_news.search:
+  type: config_object
+  label: 'User settings'
+  mapping:
+    search_keys:
+      type: string
+      label: 'Who can register accounts?'

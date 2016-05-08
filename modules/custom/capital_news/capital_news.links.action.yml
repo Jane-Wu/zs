@@ -1,0 +1,5 @@
+capital_news.googlecse:
+  route_name: capital_news.googlecse
+  title: 'google'
+  appears_on:
+    - capital_news.content

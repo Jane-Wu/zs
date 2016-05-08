@@ -5,3 +5,24 @@ capital_news.content:
     _title: '产业动向'
   requirements:
     _permission: 'access content'
+capital_news.googlecse:
+  path: '/news/googlecse'
+  defaults:
+    _controller: '\Drupal\capital_news\Controller\NewsGoogleCseController::content'
+    _title: 'test'
+  requirements:
+    _permission: 'access content'
+capital_news.favoriteajax:
+  path: 'news/add-favorite/nojs'
+  defaults:
+    _controller: '\Drupal\capital_news\Controller\AddFavoriteAjaxController::content'
+    _title: 'ajax'
+  requirements:
+    _permission: 'access content'
+capital_news.search_keys:
+  path: 'admin/config/news/settings'
+  defaults:
+    _form: '\Drupal\capital_news\Form\NewsSettingsConfigForm'
+    _title: 'News Settings'
+  requirements:
+    _permission: 'access content'
