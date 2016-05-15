@@ -52,8 +52,7 @@ class NewsElement extends RenderElement {
 ]
     ];
     
-      $element['url'] = Url::fromUri($element['#url']);
-    $element['addtofavorite'] = [
+$element['addtofavorite'] = [
       '#type' => 'link',
       '#title' => 'Favorite',
 //      '#url' => Url::fromUri($element['#url']),
@@ -73,6 +72,10 @@ class NewsElement extends RenderElement {
     ];
     $element['title'] = [
       '#markup' => $element['#label'],
+//      '#allowed_tags' => ['strong'],
+    ];
+    $element['url'] = [
+      '#markup' => "abc"//Url::fromUri($element['#url'])
 //      '#allowed_tags' => ['strong'],
     ];
     

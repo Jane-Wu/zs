@@ -7,3 +7,6 @@ capital_news.search:
     search_keys:
       type: string
       label: 'Who can register accounts?'
+    search_result:
+      type: string
+      lable: "haha"

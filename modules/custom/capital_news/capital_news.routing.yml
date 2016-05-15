@@ -6,10 +6,10 @@ capital_news.content:
   requirements:
     _permission: 'access content'
 capital_news.googlecse:
-  path: '/news/googlecse'
+  path: '/news/wechat'
   defaults:
     _controller: '\Drupal\capital_news\Controller\NewsGoogleCseController::content'
-    _title: 'test'
+    _title: 'wechat'
   requirements:
     _permission: 'access content'
 capital_news.favoriteajax:
@@ -19,8 +19,22 @@ capital_news.favoriteajax:
     _title: 'ajax'
   requirements:
     _permission: 'access content'
+capital_news.config:
+  path: 'admin/config/news'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'News'
+  requirements:
+    _permission: 'access content'
+capital_news.configg:
+  path: 'admin/capital'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Capital Admin'
+  requirements:
+    _permission: 'access content'
 capital_news.search_keys:
-  path: 'admin/config/news/settings'
+  path: 'admin/capital/search'
   defaults:
     _form: '\Drupal\capital_news\Form\NewsSettingsConfigForm'
     _title: 'News Settings'
