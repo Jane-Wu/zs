@@ -41,7 +41,7 @@ class NewsSettingsConfigForm extends ConfigFormBase {
  
     $form['search_keys'] = array(
  
-      '#type' => 'textfield',
+      '#type' => 'textarea',
  
       '#title' => $this->t('Search Keys'),
  

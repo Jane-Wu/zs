@@ -75,10 +75,13 @@ $element['addtofavorite'] = [
 //      '#allowed_tags' => ['strong'],
     ];
     $element['url'] = [
-      '#markup' => "abc"//Url::fromUri($element['#url'])
+      //'#markup' => "abc"
+//'#markup' => Url::fromUri($element['#url']),
+'#markup' => $element['#url'],
 //      '#allowed_tags' => ['strong'],
     ];
     
+\Drupal::logger('capital-test')->notice(print_r($element['#url'], true));
     return $element;
   }
 }
