@@ -57,4 +57,12 @@ body.navbar-is-fixed-top {
     margin-top: 51px;
 padding-top: 15px;
 }
+/* news */
+.news p{
+    padding-top: 5px;
+    padding-bottom: 10px;
+}
 
+.news a.add-favorate{
+padding-left:20px;
+}

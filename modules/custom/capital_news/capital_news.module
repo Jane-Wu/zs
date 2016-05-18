@@ -40,7 +40,7 @@ function getGoogleNews(&$news, $key){
         'label' => $result->htmlTitle,
         'description' => str_replace('<br>', '', $result->htmlSnippet),
         'url' => $result->link,
-        'news_type' =>  'Google'
+        'news_type' =>  $key
         ];
     }
   }

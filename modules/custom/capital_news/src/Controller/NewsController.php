@@ -12,8 +12,8 @@ class NewsController extends ControllerBase {
 
   public function content() {
     $config = \Drupal::config('capital_news.settings');
-      //$news = $config->get('search.result');
-      $results = _capital_news_getnews();
+      $results = $config->get('search.result');
+      //$results = _capital_news_getnews();
 $news=array();
       foreach ( $results as $new){
 $news[] =  [

@@ -58,6 +58,10 @@ $element['addtofavorite'] = [
 //      '#url' => Url::fromUri($element['#url']),
 //      '#url' => 'add-favorite/nojs',
       '#url' => Url::fromRoute('capital_news.favoriteajax'),
+'#attributes' => [
+ 'class' => "add-favorate",
+]
+
     ];
  
     // Create a description render array using #description.
@@ -81,7 +85,6 @@ $element['addtofavorite'] = [
 //      '#allowed_tags' => ['strong'],
     ];
     
-\Drupal::logger('capital-test')->notice(print_r($element['#url'], true));
     return $element;
   }
 }
