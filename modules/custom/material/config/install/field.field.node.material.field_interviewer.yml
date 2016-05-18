@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.storage.node.field_interviewer
     - node.type.material
+    - node.type.staff
 id: node.material.field_interviewer
 field_name: field_interviewer
 entity_type: node
@@ -15,12 +16,10 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:user'
+  handler: 'default:node'
   handler_settings:
-    include_anonymous: true
-    filter:
-      type: _none
-    target_bundles: null
+    target_bundles:
+      staff: staff
     sort:
       field: _none
 field_type: entity_reference

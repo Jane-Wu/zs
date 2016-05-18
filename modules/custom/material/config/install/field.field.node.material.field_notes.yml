@@ -2,13 +2,13 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - field.storage.node.field_introduction
-    - node.type.staff
-id: node.staff.field_introduction
-field_name: field_introduction
+    - field.storage.node.field_notes
+    - node.type.material
+id: node.material.field_notes
+field_name: field_notes
 entity_type: node
-bundle: staff
-label: 简历
+bundle: material
+label: 采访评价
 description: ''
 required: false
 translatable: false

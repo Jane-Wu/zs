@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.material.field_interview_place
     - field.field.node.material.field_interviewee
     - field.field.node.material.field_interviewer
+    - field.field.node.material.field_notes
     - field.field.node.material.field_tags
     - node.type.material
   module:
@@ -28,20 +29,20 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_attachments:
-    weight: 9
+    weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }
     type: file_default
   field_company:
-    weight: 8
+    weight: 7
     label: inline
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_interview_date:
-    weight: 3
+    weight: 2
     label: inline
     settings:
       timezone_override: ''
@@ -49,27 +50,33 @@ content:
     third_party_settings: {  }
     type: datetime_default
   field_interview_place:
-    weight: 4
+    weight: 3
     label: inline
     settings: {  }
     third_party_settings: {  }
     type: basic_string
   field_interviewee:
-    weight: 7
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
     type: entity_reference_label
-  field_interviewer:
     weight: 6
     label: inline
     settings:
       link: true
     third_party_settings: {  }
+  field_interviewer:
     type: entity_reference_label
-  field_tags:
     weight: 5
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_notes:
+    weight: 9
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+  field_tags:
+    weight: 4
     label: inline
     settings:
       link: true

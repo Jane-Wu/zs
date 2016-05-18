@@ -3,15 +3,15 @@ status: true
 dependencies:
   module:
     - node
-id: node.field_interviewer
-field_name: field_interviewer
+id: node.field_notes
+field_name: field_notes
 entity_type: node
-type: entity_reference
+type: string_long
 settings:
-  target_type: node
+  case_sensitive: false
 module: core
 locked: false
-cardinality: -1
+cardinality: 1
 translatable: true
 indexes: {  }
 persist_with_no_fields: false
