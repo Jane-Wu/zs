@@ -26,7 +26,7 @@ return (capital_common_get_rest_api($url));
 
 }
 function capital_common_get_rest_custom_search($key) {
-$url = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyBFd0XbsVD25OJRFoISXL9vcWsbKW7Wk4o&cx=018080705000233201596:0gmsj1aupvc&filter=1&sort=date&q=' . urlencode($key);
+$url = 'https://www.googleapis.com/customsearch/v1?key=AIzaSyBFd0XbsVD25OJRFoISXL9vcWsbKW7Wk4o&cx=018080705000233201596:0gmsj1aupvc&filter=1&sort=date&idateRestrict=d1&q=' . urlencode($key);
 
 return (capital_common_get_rest_api($url));
 
