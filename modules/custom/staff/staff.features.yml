@@ -3,6 +3,7 @@ excluded:
   - field.field.node.material.field_company
   - field.field.node.material.field_interviewee
   - field.field.node.own_report.field_associated_content
+  - field.field.node.material.field_interviewer
   - core.entity_form_display.node.company_report.default
   - core.entity_form_display.node.material.default
   - core.entity_form_display.node.own_report.default
