@@ -753,7 +753,20 @@ display:
           empty: false
           content: '显示条目 @start - @end 总共 @total条'
           plugin_id: result
-      empty: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 暂无信息
+            format: full_html
+          plugin_id: text
       relationships:
         field_asset_under_management_value:
           id: field_asset_under_management_value
