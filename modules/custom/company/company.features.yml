@@ -5,6 +5,7 @@ excluded:
   - field.field.node.company_report.field_company
   - field.field.node.material.field_company
   - field.field.node.own_report.field_associated_content
+  - field.field.node.staff.field_company_not_listed
   - core.entity_form_display.field_collection_item.field_served_companies.default
   - core.entity_form_display.node.staff.default
   - core.entity_form_display.node.company_report.default
@@ -20,7 +21,9 @@ excluded:
   - core.entity_view_display.node.own_report.default
   - core.entity_view_display.node.own_report.teaser
   - views.view.company_staff
+  - views.view.staff
   - block.block.views_block__company_staff_core_team
   - block.block.views_block__company_staff_key_person
   - block.block.views_block__company_staff_researcher_team
+  - field.storage.node.field_company_not_listed
 required: true

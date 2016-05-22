@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.staff.field_accession_date
     - field.field.node.staff.field_born
     - field.field.node.staff.field_company
+    - field.field.node.staff.field_company_not_listed
     - field.field.node.staff.field_dimission_date
     - field.field.node.staff.field_education_background
     - field.field.node.staff.field_gender
@@ -29,6 +30,7 @@ hidden:
   field_accession_date: true
   field_born: true
   field_company: true
+  field_company_not_listed: true
   field_dimission_date: true
   field_education_background: true
   field_gender: true

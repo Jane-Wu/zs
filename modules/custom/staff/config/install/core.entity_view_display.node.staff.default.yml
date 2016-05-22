@@ -5,6 +5,7 @@ dependencies:
     - field.field.node.staff.field_accession_date
     - field.field.node.staff.field_born
     - field.field.node.staff.field_company
+    - field.field.node.staff.field_company_not_listed
     - field.field.node.staff.field_dimission_date
     - field.field.node.staff.field_education_background
     - field.field.node.staff.field_gender
@@ -27,7 +28,7 @@ bundle: staff
 mode: default
 content:
   field_accession_date:
-    weight: 5
+    weight: 6
     label: inline
     settings:
       timezone_override: ''
@@ -35,7 +36,7 @@ content:
     third_party_settings: {  }
     type: datetime_default
   field_born:
-    weight: 7
+    weight: 8
     label: inline
     settings:
       timezone_override: ''
@@ -49,34 +50,41 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_company_not_listed:
+    weight: 3
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   field_education_background:
-    weight: 8
+    weight: 9
     label: inline
     settings:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
   field_gender:
-    weight: 6
+    weight: 7
     label: inline
     settings: {  }
     third_party_settings: {  }
     type: list_default
   field_introduction:
-    weight: 10
+    weight: 11
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
   field_position:
-    weight: 4
+    weight: 5
     label: inline
     settings:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
   field_practice_date:
-    weight: 9
+    weight: 10
     label: inline
     settings:
       timezone_override: ''
@@ -98,7 +106,7 @@ content:
     third_party_settings: {  }
     type: image
   field_staff_type:
-    weight: 3
+    weight: 4
     label: inline
     settings:
       link: false
