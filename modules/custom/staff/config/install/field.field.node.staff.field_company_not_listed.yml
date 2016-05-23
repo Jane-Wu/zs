@@ -1,0 +1,18 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_company_not_listed
+    - node.type.staff
+id: node.staff.field_company_not_listed
+field_name: field_company_not_listed
+entity_type: node
+bundle: staff
+label: 所属公司（未列入）
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

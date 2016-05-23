@@ -2,23 +2,16 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - field.storage.field_collection_item.field_asset_number
-    - field.storage.node.field_city
-    - field.storage.node.field_establishment_date
-    - field.storage.node.field_product_count
-    - field.storage.node.field_website
-    - node.type.company
-    - taxonomy.vocabulary.company_type
+    - field.storage.node.field_company
+    - field.storage.node.field_company_not_listed
+    - field.storage.node.field_staff_type
+    - node.type.staff
   module:
     - capital_views
-    - datetime
-    - field_collection
-    - link
     - node
-    - taxonomy
     - user
-id: company
-label: 基金公司
+id: staff
+label: 人员管理
 module: views
 description: ''
 tag: ''
@@ -35,7 +28,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'access content'
+          perm: 'edit any staff content'
       cache:
         type: tag
         options: {  }
@@ -91,13 +84,8 @@ display:
           description: ''
           columns:
             title: title
-            field_establishment_date: field_establishment_date
-            field_city: field_city
-            company_staff: company_staff
-            field_asset_number: field_asset_number
-            field_product_count: field_product_count
-            field_website: field_website
-            field_phone_number: field_phone_number
+            field_company: field_company
+            field_staff_type: field_staff_type
           info:
             title:
               sortable: true
@@ -106,48 +94,15 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            field_establishment_date:
-              sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_city:
+            field_company:
               sortable: true
               default_sort_order: asc
               align: ''
               separator: ''
               empty_column: false
               responsive: ''
-            company_staff:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_asset_number:
+            field_staff_type:
               sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_product_count:
-              sortable: true
-              default_sort_order: desc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_website:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            field_phone_number:
-              sortable: false
               default_sort_order: asc
               align: ''
               separator: ''
@@ -165,7 +120,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 公司名称
+          label: 姓名
           exclude: false
           alter:
             alter_text: false
@@ -223,15 +178,15 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: field
-        field_establishment_date:
-          id: field_establishment_date
-          table: node__field_establishment_date
-          field: field_establishment_date
+        field_company_not_listed:
+          id: field_company_not_listed
+          table: node__field_company_not_listed
+          field: field_company_not_listed
           relationship: none
           group_type: group
           admin_label: ''
-          label: 成立时间
-          exclude: false
+          label: 所属公司（未列入）
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -272,10 +227,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: datetime_default
+          type: string
           settings:
-            timezone_override: ''
-            format_type: html_date
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -287,14 +241,77 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        field_city:
-          id: field_city
-          table: node__field_city
-          field: field_city
+        field_company:
+          id: field_company
+          table: node__field_company
+          field: field_company
           relationship: none
           group_type: group
           admin_label: ''
-          label: 所在城市
+          label: 所属公司
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: '{{ field_company_not_listed }}'
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: true
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_staff_type:
+          id: field_staff_type
+          table: node__field_staff_type
+          field: field_staff_type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 人员类型
           exclude: false
           alter:
             alter_text: false
@@ -350,257 +367,6 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        company_staff:
-          id: company_staff
-          table: node
-          field: company_staff
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 关键人物
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          type: separator
-          separator: ', '
-          staff_type: '10'
-          staff_link: 1
-          entity_type: node
-          plugin_id: company_staff
-        field_asset_number:
-          id: field_asset_number
-          table: field_collection_item__field_asset_number
-          field: field_asset_number
-          relationship: field_asset_under_management_value
-          group_type: group
-          admin_label: ''
-          label: 管理规模（亿元）
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: number_decimal
-          settings:
-            thousand_separator: ''
-            prefix_suffix: false
-            decimal_separator: .
-            scale: 0
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_product_count:
-          id: field_product_count
-          table: node__field_product_count
-          field: field_product_count
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 产品数量
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: number_integer
-          settings:
-            thousand_separator: ''
-            prefix_suffix: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
-        field_website:
-          id: field_website
-          table: node__field_website
-          field: field_website
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 公司官网
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: uri
-          type: link
-          settings:
-            trim_length: 80
-            url_only: false
-            url_plain: false
-            rel: '0'
-            target: _blank
-          group_column: ''
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
       filters:
         status:
           value: true
@@ -617,12 +383,42 @@ display:
           id: type
           table: node_field_data
           field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
           value:
-            company: company
+            staff: staff
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
           entity_type: node
           entity_field: type
           plugin_id: bundle
-          group: 1
         title:
           id: title
           table: node_field_data
@@ -636,7 +432,7 @@ display:
           exposed: true
           expose:
             operator_id: title_op
-            label: 公司名称
+            label: 姓名
             description: ''
             use_operator: false
             operator: title_op
@@ -665,53 +461,6 @@ display:
           entity_type: node
           entity_field: title
           plugin_id: string
-        field_company_type_target_id:
-          id: field_company_type_target_id
-          table: node__field_company_type
-          field: field_company_type_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_company_type_target_id_op
-            label: 公司类别
-            description: ''
-            use_operator: false
-            operator: field_company_type_target_id_op
-            identifier: field_company_type_target_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              editor: '0'
-              viewer: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: company_type
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
       sorts:
         created:
           id: created
@@ -728,7 +477,7 @@ display:
           expose:
             label: ''
           granularity: second
-      title: 私募信息库
+      title: 人员管理
       header:
         view_area_button_area:
           id: view_area_button_area
@@ -738,9 +487,9 @@ display:
           group_type: group
           admin_label: ''
           empty: true
-          viewareabuttonrequiredpermission: 'create company content'
-          viewareabuttonlabel: 添加公司
-          viewareabuttonuri: /node/add/company
+          viewareabuttonrequiredpermission: 'create staff content'
+          viewareabuttonlabel: 添加人员
+          viewareabuttonuri: /node/add/staff
           plugin_id: view_area_button_area
       footer:
         result:
@@ -767,17 +516,7 @@ display:
             value: 暂无信息
             format: full_html
           plugin_id: text
-      relationships:
-        field_asset_under_management_value:
-          id: field_asset_under_management_value
-          table: node__field_asset_under_management
-          field: field_asset_under_management_value
-          relationship: none
-          group_type: group
-          admin_label: 'field collection item from field_asset_under_management'
-          required: false
-          delta: '0'
-          plugin_id: field_collection_handler_relationship
+      relationships: {  }
       arguments: {  }
       display_extenders: {  }
       filter_groups:
@@ -792,15 +531,12 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.field_collection_item.field_asset_number'
-        - 'config:field.storage.node.field_city'
-        - 'config:field.storage.node.field_establishment_date'
-        - 'config:field.storage.node.field_product_count'
-        - 'config:field.storage.node.field_website'
+        - 'config:field.storage.node.field_company'
+        - 'config:field.storage.node.field_company_not_listed'
+        - 'config:field.storage.node.field_staff_type'
   page_1:
     display_plugin: page
     id: page_1
@@ -808,7 +544,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: company
+      path: staff
     cache_metadata:
       max-age: 0
       contexts:
@@ -816,12 +552,9 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.field_collection_item.field_asset_number'
-        - 'config:field.storage.node.field_city'
-        - 'config:field.storage.node.field_establishment_date'
-        - 'config:field.storage.node.field_product_count'
-        - 'config:field.storage.node.field_website'
+        - 'config:field.storage.node.field_company'
+        - 'config:field.storage.node.field_company_not_listed'
+        - 'config:field.storage.node.field_staff_type'

@@ -5,3 +5,19 @@
  *
  * Place your custom PHP code in this file.
  */
+
+/**
+ * Allows sub-themes to alter the array used for colorizing text.
+ *
+ * @param array $texts
+ *   An associative array containing the text and classes to be matched, passed
+ *   by reference.
+ *
+ * @see \Drupal\bootstrap\Bootstrap::cssClassFromString()
+ */
+function capital_bootstrap_colorize_text_alter(&$texts) {
+  // Change the class that matches "Apply" (originally "default"):
+  $texts['matches']['查询'] = 'info';
+  $texts['matches']['清空条件'] = 'info';
+}
+
