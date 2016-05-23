@@ -1,46 +1,102 @@
 <?php
 
 /**
-* Implements hook_theme().
-*/
+ * Implements hook_theme().
+ */
+use Drupal\node\Entity\Node;
+//use Drupal\taxonomy\Entity\Vocabulary;
+use Drupal\taxonomy\TermStorage;
 function capital_news_theme() {
-  $items = [
-    'news_element' => [
-      'render element' => 'element',
-    ],
-  ];
-  return $items;
+    $items = [
+        'news_element' => [
+            'render element' => 'element',
+        ],
+    ];
+    return $items;
 }
 
 function capital_news_cron(){
-      \Drupal::logger('capital-test')->notice(print_r('live cron', true));
-_capital_news_getnews();
+    \Drupal::logger('capital-test')->notice(print_r('live cron', true));
+    _capital_news_get_news();
 }
-function _capital_news_getnews() {
+function _capital_news_get_news() {
+    $keywords_terms = _capital_news_getTermsByVocabulary( 'key_words');
+    $google_tid = 42;
+    foreach( $keywords_terms as $keyword_term){
+        getGoogleNews($keyword_term, $google_tid);
+    }
+}
+
+function _capital_news_getTermsByVocabulary( $vid){
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+    return $terms;
+}
+function _capital_news_getTidByNameAndVocabulary($name, $vid){
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+    foreach($terms as $term){
+        if($term->name == $name){
+            return $term->tid;
+        }
+    }
+}
+function _capital_news_getTidByDescriptionAndVocabulary($description, $vid){
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+    foreach($terms as $term){
+        if($term->description__value == '<p>' . $description . '</p>'){
+            return $term->tid;
+        }
+    }
+}
+function getGoogleNews($key_term, $search_type_tid){
     $config = \Drupal::config('capital_news.settings');
 
-      \Drupal::logger('capital-test')->notice(print_r('live search', true));
-
-      \Drupal::logger('capital-test')->notice(print_r($config->get('search.search_keys'), true));
-      $keys = explode('，', $config->get('search.search_keys'));
-      $news = array();
-      foreach ( $keys as $key){
-        getGoogleNews($news, trim($key));
-      }
-      \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search.result', $news)->save();
-      \Drupal::logger('capital-test')->notice(print_r($config->get('search.result'), true));
-    return $config->get('search.result');
-  }
-
-function getGoogleNews(&$news, $key){
-    $json = capital_common_get_rest_custom_search($key);
+    \Drupal::logger('capital-test')->notice(print_r('live sdfsdfsearch', true));
+    //if($config->get('search.resulttest') == null ){
+    $json = capital_common_get_rest_custom_search($key_term->name);
+    \Drupal::logger('capital-test')->notice(print_r($json, true));
+    //\Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search.resulttest', $json->items)->save();
+    //}
+    //$json = $config->get('search.resulttest');
+    $current_time = time();
     foreach($json->items as $result){
-      $news[] = [
-        'label' => $result->htmlTitle,
-        'description' => str_replace('<br>', '', $result->htmlSnippet),
-        'url' => $result->link,
-        'news_type' =>  $key,
-//        'timestamp' => time(),
-        ];
+        preg_match('/^(\d+) (hours|day) ago (.+)/s', $result->htmlSnippet, $matches);
+        if (count($matches) != 4){
+
+            \Drupal::logger('capital-test')->warning(print_r($matches, true));
+        }
+
+        $approximate_timestamp = $current_time - ($matches[2] == 'hours'? 3600 * $matches[1] : 86400);
+        $approximate_timestamp = str_replace('+00:00', '', date_format(date_timestamp_set(new DateTime("now", new DateTimeZone('Etc/GMT+0')), $approximate_timestamp), 'c'));
+        $node = Node::create([
+            'type' => 'news',
+            'created' => REQUEST_TIME,
+            'changed' => REQUEST_TIME,
+            'uid' => 1,
+            'title' => $result->title,
+            'field_title' =>[
+                'value' => $result->htmlTitle,
+                'format' => 'full_html'
+            ],
+            'field_description' =>[
+                'value' => $matches[3],
+                'format' => 'full_html'
+            ],
+            'field_news_link' =>[
+                'value' => $result->link,
+            ],
+            'field_content' =>[
+                'value' => '<!DOCTYPE html>',
+            ],
+            //'field_news_orgin' =>[_capital_news_getTidByDescriptionAndVocabulary($result->displayLink, 'news_orgins')],
+            'field_news_orgin' => [46],
+            //'field_search_type' =>[$search_type_tid],
+            'field_search_type' =>[42],
+            'field_key_word' =>[$key_term->tid],
+            'field_approximate_time' =>[
+                'value' => $approximate_timestamp,
+                ],
+            ]);
+        $node->save();
+        break;
     }
-  }
+}
