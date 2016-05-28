@@ -1,3 +1,7 @@
 capital_news.menu:
   title: Config Entity Example
   route_name: capital_news.content
+capital_news.googlecse:
+  title: aaa
+  route_name: capital_news.googlecse
+  parent: system.admin
