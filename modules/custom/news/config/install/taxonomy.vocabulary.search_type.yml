@@ -1,0 +1,8 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+name: 搜索方式
+vid: search_type
+description: ''
+hierarchy: 0
+weight: -2

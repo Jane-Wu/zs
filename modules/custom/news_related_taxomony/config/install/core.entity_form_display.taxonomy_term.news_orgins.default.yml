@@ -1,0 +1,46 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.news_orgins.field_domain_link
+    - taxonomy.vocabulary.news_orgins
+  module:
+    - path
+    - text
+id: taxonomy_term.news_orgins.default
+targetEntityType: taxonomy_term
+bundle: news_orgins
+mode: default
+content:
+  description:
+    type: text_textfield
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_domain_link:
+    weight: 32
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  langcode:
+    type: language_select
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: -5
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

@@ -1,0 +1,14 @@
+name: 'News related Taxomony'
+type: module
+core: 8.x
+dependencies:
+  - core
+  - datetime
+  - field
+  - language
+  - link
+  - path
+  - taxonomy
+  - text
+  - user
+  - views

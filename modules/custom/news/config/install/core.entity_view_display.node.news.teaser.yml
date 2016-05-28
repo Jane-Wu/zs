@@ -1,0 +1,19 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.news.field_approximate_time
+    - node.type.news
+  module:
+    - user
+id: node.news.teaser
+targetEntityType: node
+bundle: news
+mode: teaser
+content:
+  links:
+    weight: 100
+hidden:
+  field_approximate_time: true
+  langcode: true

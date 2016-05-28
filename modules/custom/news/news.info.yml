@@ -1,0 +1,17 @@
+name: 新闻
+description: 'Provides 新闻 内容类型 and related configuration. '
+type: module
+core: 8.x
+dependencies:
+  - core
+  - datetime
+  - field
+  - language
+  - link
+  - menu_ui
+  - node
+  - path
+  - taxonomy
+  - text
+  - user
+  - views

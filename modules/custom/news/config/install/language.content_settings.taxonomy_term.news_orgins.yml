@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.news_orgins
+id: taxonomy_term.news_orgins
+target_entity_type_id: taxonomy_term
+target_bundle: news_orgins
+default_langcode: site_default
+language_alterable: false
