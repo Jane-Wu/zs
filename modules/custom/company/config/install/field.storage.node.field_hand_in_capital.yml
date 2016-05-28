@@ -3,13 +3,14 @@ status: true
 dependencies:
   module:
     - node
-    - text
-id: node.field_market_activity
-field_name: field_market_activity
+id: node.field_hand_in_capital
+field_name: field_hand_in_capital
 entity_type: node
-type: text_long
-settings: {  }
-module: text
+type: integer
+settings:
+  unsigned: false
+  size: normal
+module: core
 locked: false
 cardinality: 1
 translatable: true

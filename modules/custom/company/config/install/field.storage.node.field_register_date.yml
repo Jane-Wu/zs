@@ -2,14 +2,15 @@ langcode: zh-hans
 status: true
 dependencies:
   module:
+    - datetime
     - node
-    - text
-id: node.field_market_activity
-field_name: field_market_activity
+id: node.field_register_date
+field_name: field_register_date
 entity_type: node
-type: text_long
-settings: {  }
-module: text
+type: datetime
+settings:
+  datetime_type: date
+module: datetime
 locked: false
 cardinality: 1
 translatable: true

@@ -4,6 +4,8 @@ dependencies:
   config:
     - field.storage.node.field_general_evaluation
     - node.type.company
+  module:
+    - text
 id: node.company.field_general_evaluation
 field_name: field_general_evaluation
 entity_type: node
@@ -15,4 +17,4 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: string_long
+field_type: text_long

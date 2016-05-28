@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.staff.field_dimission_date
     - field.field.node.staff.field_education_background
     - field.field.node.staff.field_gender
+    - field.field.node.staff.field_historical_performance
     - field.field.node.staff.field_introduction
     - field.field.node.staff.field_position
     - field.field.node.staff.field_practice_date
@@ -21,6 +22,7 @@ dependencies:
     - field_collection
     - image
     - options
+    - text
     - user
 id: node.staff.default
 targetEntityType: node
@@ -70,6 +72,12 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: list_default
+  field_historical_performance:
+    weight: 14
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
   field_introduction:
     weight: 11
     label: above
@@ -92,7 +100,7 @@ content:
     third_party_settings: {  }
     type: datetime_default
   field_served_companies:
-    weight: 12
+    weight: 13
     label: above
     settings: {  }
     third_party_settings: {  }
