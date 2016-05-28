@@ -15,12 +15,15 @@ function capital_company_form_node_company_form_alter(&$form, FormStateInterface
 }
 
 /**
- * Set the website field default value
+ * Update the website field value if no protocol is provided
  */
-function capital_company_after_build($form) {
+function capital_company_after_build(array $form, FormStateInterface $form_state) {
   if (isset($form['field_website']['widget'][0]['uri'])) {
-    $value = $form['field_website']['widget'][0]['uri']['#value']; 
-    $form['field_website']['widget'][0]['uri']['#value'] = empty($value) ? 'http://' : $value;
+    $uri = $form['field_website']['widget'][0]['uri']['#value'];
+    if (!empty($uri) && parse_url($uri, PHP_URL_SCHEME) === NULL) {
+      $uri_with_http = 'http://' . $uri;
+      $form['field_website']['widget'][0]['uri']['#value'] = $uri_with_http;
+    }
   }
   return $form;
 }

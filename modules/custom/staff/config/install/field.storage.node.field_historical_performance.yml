@@ -4,8 +4,8 @@ dependencies:
   module:
     - node
     - text
-id: node.field_market_activity
-field_name: field_market_activity
+id: node.field_historical_performance
+field_name: field_historical_performance
 entity_type: node
 type: text_long
 settings: {  }

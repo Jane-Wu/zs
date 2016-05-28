@@ -2,20 +2,20 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - field.storage.node.field_registered_capital
+    - field.storage.node.field_hand_in_capital
     - node.type.company
-id: node.company.field_registered_capital
-field_name: field_registered_capital
+id: node.company.field_hand_in_capital
+field_name: field_hand_in_capital
 entity_type: node
 bundle: company
-label: 注册资本
+label: 实缴资本
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  min: null
+  min: 0
   max: null
   prefix: ''
   suffix: 万元

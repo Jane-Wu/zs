@@ -3,13 +3,15 @@ status: true
 dependencies:
   module:
     - node
-    - text
-id: node.field_market_activity
-field_name: field_market_activity
+id: node.field_organization_no
+field_name: field_organization_no
 entity_type: node
-type: text_long
-settings: {  }
-module: text
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
 locked: false
 cardinality: 1
 translatable: true

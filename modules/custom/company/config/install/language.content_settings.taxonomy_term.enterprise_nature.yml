@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.enterprise_nature
+id: taxonomy_term.enterprise_nature
+target_entity_type_id: taxonomy_term
+target_bundle: enterprise_nature
+default_langcode: site_default
+language_alterable: false

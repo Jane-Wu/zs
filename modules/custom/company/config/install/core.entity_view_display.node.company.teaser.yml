@@ -5,20 +5,30 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.company.field_asset_under_management
     - field.field.node.company.field_city
+    - field.field.node.company.field_company_image
     - field.field.node.company.field_company_type
     - field.field.node.company.field_decision_making_process
+    - field.field.node.company.field_english_name
+    - field.field.node.company.field_enterprise_nature
     - field.field.node.company.field_establishment_date
     - field.field.node.company.field_fax_number
+    - field.field.node.company.field_general_evaluation
+    - field.field.node.company.field_hand_in_capital
     - field.field.node.company.field_human_resource
     - field.field.node.company.field_introduction
     - field.field.node.company.field_introduction_original
     - field.field.node.company.field_investment_philosophy
     - field.field.node.company.field_investment_process
+    - field.field.node.company.field_market_activity
     - field.field.node.company.field_office_address
     - field.field.node.company.field_organization_architecture
+    - field.field.node.company.field_organization_no
+    - field.field.node.company.field_performance_assessment
     - field.field.node.company.field_phone_number
     - field.field.node.company.field_postcode
     - field.field.node.company.field_product_count
+    - field.field.node.company.field_register_date
+    - field.field.node.company.field_register_no
     - field.field.node.company.field_registered_capital
     - field.field.node.company.field_researcher_staff
     - field.field.node.company.field_risk_control
@@ -40,20 +50,30 @@ content:
 hidden:
   field_asset_under_management: true
   field_city: true
+  field_company_image: true
   field_company_type: true
   field_decision_making_process: true
+  field_english_name: true
+  field_enterprise_nature: true
   field_establishment_date: true
   field_fax_number: true
+  field_general_evaluation: true
+  field_hand_in_capital: true
   field_human_resource: true
   field_introduction: true
   field_introduction_original: true
   field_investment_philosophy: true
   field_investment_process: true
+  field_market_activity: true
   field_office_address: true
   field_organization_architecture: true
+  field_organization_no: true
+  field_performance_assessment: true
   field_phone_number: true
   field_postcode: true
   field_product_count: true
+  field_register_date: true
+  field_register_no: true
   field_registered_capital: true
   field_researcher_staff: true
   field_risk_control: true

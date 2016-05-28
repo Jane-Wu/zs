@@ -2,15 +2,15 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - field.storage.node.field_performance_assessment
-    - node.type.company
+    - field.storage.node.field_historical_performance
+    - node.type.staff
   module:
     - text
-id: node.company.field_performance_assessment
-field_name: field_performance_assessment
+id: node.staff.field_historical_performance
+field_name: field_historical_performance
 entity_type: node
-bundle: company
-label: 业绩测评
+bundle: staff
+label: 历史投资业绩
 description: ''
 required: false
 translatable: false

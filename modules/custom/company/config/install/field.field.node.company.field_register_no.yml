@@ -2,19 +2,17 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - field.storage.node.field_performance_assessment
+    - field.storage.node.field_register_no
     - node.type.company
-  module:
-    - text
-id: node.company.field_performance_assessment
-field_name: field_performance_assessment
+id: node.company.field_register_no
+field_name: field_register_no
 entity_type: node
 bundle: company
-label: 业绩测评
+label: 登记编号
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: text_long
+field_type: string

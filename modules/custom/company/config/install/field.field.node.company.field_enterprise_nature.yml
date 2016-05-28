@@ -1,0 +1,26 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_enterprise_nature
+    - node.type.company
+    - taxonomy.vocabulary.enterprise_nature
+id: node.company.field_enterprise_nature
+field_name: field_enterprise_nature
+entity_type: node
+bundle: company
+label: 企业性质
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      enterprise_nature: enterprise_nature
+    sort:
+      field: _none
+    auto_create: false
+field_type: entity_reference
