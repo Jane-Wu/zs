@@ -1,0 +1,5 @@
+capital_news.content:
+  title: People
+  route_name: capital_news.content
+  description: 'Manage user accounts, roles, and permissions.'
+  weight: 4

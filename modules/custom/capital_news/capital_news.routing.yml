@@ -1,5 +1,5 @@
 capital_news.content:
-  path: '/news'
+  path: '/test'
   defaults:
     _controller: '\Drupal\capital_news\Controller\NewsController::content'
     _title: '产业动向'
