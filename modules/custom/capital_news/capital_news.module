@@ -6,23 +6,24 @@
 use Drupal\node\Entity\Node;
 //use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\TermStorage;
-function capital_news_theme() {
-    $items = [
-        'news_element' => [
-            'render element' => 'element',
-        ],
-    ];
-    return $items;
-}
-
+use Drupal\Core\Entity;
 function capital_news_cron(){
     _capital_news_get_news();
 }
 function _capital_news_get_news() {
-    $keywords_terms = _capital_news_getTermsByVocabulary( 'key_words');
-    $google_tid = 42;
-    foreach( $keywords_terms as $keyword_term){
-        getGoogleNews($keyword_term, $google_tid);
+    // Google 
+    $google_tid = 42; //@TODO
+    // Company News
+    $nodes = getNodesByType('company');
+    foreach( $nodes as $node){
+        //getGoogleNews($node->getTitle(), 0, $google_tid, $node->get('field_short_name')->value); //@TODO
+    }
+
+    // Other Key words
+    $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs','hot_spots','oversee_spots','general_key_words']);
+    foreach( $keywords_terms as $term){
+        getGoogleNews($term->name, $term->tid, $google_tid);
+        break;
     }
     return;
     $account_terms = _capital_news_getTermsByVocabulary( 'wechat_accounts');
@@ -32,42 +33,48 @@ function _capital_news_get_news() {
         getWechatOfficalNews($account_term, $wechat_offical_tid);
     }
 }
-
-function getGoogleNews($key_term, $search_type_tid){
+function getNodesByType($type){
+    $query = \Drupal::entityQuery('node')
+        ->condition('status', 1)
+        ->condition('type', $type);
+    $nids = $query->execute();
+    return \Drupal::entityManager()->getStorage('node')->loadMultiple(array_values($nids));
+}
+function getGoogleNews($key, $key_tid, $search_type_tid, $or_key = null){
     $config = \Drupal::config('capital_news.settings');
 
-    \Drupal::logger('capital-test')->notice(print_r('live sdfsdfsearch', true));
-    $json = capital_common_get_rest_custom_search($key_term->name);
-    \Drupal::logger('capital-test')->notice(print_r($json, true));
-    $current_time = time();
-    foreach($json->items as $result){
-        preg_match('/^(\d+) (hours|day) ago (.+)/s', $result->htmlSnippet, $matches);
-        if (count($matches) != 4){
+    \Drupal::logger('capital-test')->notice(print_r('live google', true));
+    $json = capital_common_get_rest_custom_search($key);
+    if(isset($json->items)){
+        $current_time = time();
+        foreach($json->items as $result){
+            preg_match('/^(\d+) (hours|day) ago (.+)/s', $result->htmlSnippet, $matches);
+            if (count($matches) != 4){
+                \Drupal::logger('capital-test')->warning(print_r($matches, true));
+            }
 
-            \Drupal::logger('capital-test')->warning(print_r($matches, true));
+            $approximate_timestamp = $current_time - ($matches[2] == 'hours'? 3600 * $matches[1] : 86400);
+            $approximate_timestamp = str_replace('+00:00', '', date_format(date_timestamp_set(new DateTime("now", new DateTimeZone('Etc/GMT+0')), $approximate_timestamp), 'c'));
+            $origin_tid = _capital_news_getTidByLinkAndVocabulary($result->displayLink);
+            _capital_news_createNews($result->htmlTitle, str_replace('<br>', '', $matches[3]), $result->link, $approximate_timestamp, $origin_tid, $search_type_tid, $key_tid);
         }
-
-        $approximate_timestamp = $current_time - ($matches[2] == 'hours'? 3600 * $matches[1] : 86400);
-        $approximate_timestamp = str_replace('+00:00', '', date_format(date_timestamp_set(new DateTime("now", new DateTimeZone('Etc/GMT+0')), $approximate_timestamp), 'c'));
-        $origin_tid = _capital_news_getTidByLinkAndVocabulary($result->displayLink);
-        _capital_news_createNews($result->htmlTitle, str_replace('<br>', '', $matches[3]), $result->link, $approximate_timestamp, $origin_tid, $search_type_tid, $key_term->tid);
     }
 }
 
 function getWechatOfficalNews($account_term, $search_type_tid){
-    \Drupal::logger('capital-test')->notice(print_r("wechatsfsdf", true));
-    \Drupal::logger('capital-test')->notice(print_r($account_term->description__value, true));
-    $account_name = trim(_capital_news_getTermDescriptionByTerm($account_term));
-    \Drupal::logger('capital-test')->notice(print_r($account_name, true));
+    \Drupal::logger('capital-test')->notice(print_r("wechat", true));
+    //$account_name = trim(_capital_news_getTermDescriptionByTerm($account_term));
     $json = capital_common_get_wechat_offical_test_search($account_name);
-    \Drupal::logger('capital-test')->notice(print_r($json, true));
     foreach($json->content as $result){
         _capital_news_createNews($result->title, $result->summary, $result->url, str_replace(' ', 'T', $result->date), $account_term->tid, $search_type_tid, 0,  $result->content);
     }
 }
 
-function _capital_news_getTermsByVocabulary( $vid){
-    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+function _capital_news_getTermsByVocabularies($vids){
+    $terms = array();
+    foreach ( $vids as $vid){
+       $terms =$terms +  \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+    }
     return $terms;
 }
 function _capital_news_getTidByNameAndVocabulary($name, $vid){
@@ -81,12 +88,7 @@ function _capital_news_getTidByNameAndVocabulary($name, $vid){
 function _capital_news_getTidByLinkAndVocabulary($link){
     $db = \Drupal::database();
     $result = $db->select('taxonomy_term__field_domain_link','l')->fields('l', ['entity_id'])->condition('bundle', 'news_orgins')->condition('field_domain_link_value', $link)->execute()->fetchAll();
-    \Drupal::logger('capital-test')->notice(print_r("tax", true));
-    \Drupal::logger('capital-test')->notice(print_r($result, true));
-    return count($result) == 1? $result[0]->entity_id: 47; 
-}
-function _capital_news_getTermDescriptionByTerm($term){
-    return str_replace(['<p>', '</p>'], ['', ''], $term->description__value);
+    return count($result) == 1? $result[0]->entity_id: 47;  //@TODO
 }
 function _capital_news_createNews($title, $description, $link, $timestamp, $origin_tid,  $type_tid, $key_tid, $content = null){
     $db = \Drupal::database();
@@ -126,3 +128,12 @@ function _capital_news_createNews($title, $description, $link, $timestamp, $orig
         $node->save();
     }
 }
+function capital_news_theme() {
+    $items = [
+        'news_element' => [
+            'render element' => 'element',
+        ],
+    ];
+    return $items;
+}
+

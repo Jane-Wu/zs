@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.hot_spots
+id: taxonomy_term.hot_spots
+target_entity_type_id: taxonomy_term
+target_bundle: hot_spots
+default_langcode: site_default
+language_alterable: false

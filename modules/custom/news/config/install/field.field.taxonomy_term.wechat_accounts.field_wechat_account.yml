@@ -1,0 +1,18 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_wechat_account
+    - taxonomy.vocabulary.wechat_accounts
+id: taxonomy_term.wechat_accounts.field_wechat_account
+field_name: field_wechat_account
+entity_type: taxonomy_term
+bundle: wechat_accounts
+label: 'Wechat Account'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -6,8 +6,10 @@ dependencies:
     - field.field.node.news.field_content
     - field.field.node.news.field_description
     - field.field.node.news.field_key_word
+    - field.field.node.news.field_key_words
     - field.field.node.news.field_news_link
     - field.field.node.news.field_news_orgin
+    - field.field.node.news.field_news_origin
     - field.field.node.news.field_search_type
     - field.field.node.news.field_title
     - node.type.news
@@ -120,4 +122,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  field_key_words: true
+  field_news_origin: true

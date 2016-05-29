@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.reliable_news_origins
+id: taxonomy_term.reliable_news_origins
+target_entity_type_id: taxonomy_term
+target_bundle: reliable_news_origins
+default_langcode: site_default
+language_alterable: false

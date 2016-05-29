@@ -1,8 +1,8 @@
 langcode: zh-hans
 status: true
 dependencies: {  }
-name: 搜索方式
-vid: search_type
+name: 线索来源
+vid: other_news_origins
 description: ''
 hierarchy: 0
-weight: -2
+weight: -9

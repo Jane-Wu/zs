@@ -1,0 +1,8 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+name: 宽泛关键词
+vid: general_key_words
+description: ''
+hierarchy: 0
+weight: -4

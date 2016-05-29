@@ -11,8 +11,6 @@ dependencies:
     - taxonomy.vocabulary.key_words
     - taxonomy.vocabulary.news_orgins
     - taxonomy.vocabulary.search_type
-  content:
-    - 'taxonomy_term:search_type:dc79052e-86d4-4fff-ba00-af1985aa1e29'
   module:
     - datetime
     - link
@@ -507,13 +505,12 @@ display:
           group_type: group
           admin_label: ''
           operator: or
-          value:
-            42: 42
+          value: {  }
           group: 1
-          exposed: false
+          exposed: true
           expose:
             operator_id: field_search_type_target_id_op
-            label: 搜索类型
+            label: 'Search Type (field_search_type)'
             description: ''
             use_operator: false
             operator: field_search_type_target_id_op
@@ -658,7 +655,7 @@ display:
             label: ''
           granularity: second
           plugin_id: datetime
-      title: 产业动向
+      title: ''
       header: {  }
       footer: {  }
       empty:
