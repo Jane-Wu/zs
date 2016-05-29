@@ -1,8 +1,0 @@
-langcode: zh-hans
-status: true
-dependencies: {  }
-name: 新闻来源
-vid: news_orgins
-description: ''
-hierarchy: 0
-weight: -9
