@@ -4,18 +4,15 @@ dependencies:
   config:
     - field.storage.node.field_approximate_time
     - field.storage.node.field_description
-    - field.storage.node.field_key_word
+    - field.storage.node.field_key_words
     - field.storage.node.field_news_link
     - field.storage.node.field_title
     - node.type.news
-    - taxonomy.vocabulary.key_words
-    - taxonomy.vocabulary.news_orgins
-    - taxonomy.vocabulary.search_type
   module:
     - datetime
+    - flag
     - link
     - node
-    - taxonomy
     - text
     - user
 id: news_links
@@ -157,10 +154,10 @@ display:
           entity_type: node
           entity_field: nid
           plugin_id: field
-        field_key_word:
-          id: field_key_word
-          table: node__field_key_word
-          field: field_key_word
+        field_key_words:
+          id: field_key_words
+          table: node__field_key_words
+          field: field_key_words
           relationship: none
           group_type: group
           admin_label: ''
@@ -287,6 +284,56 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        link_flag:
+          id: link_flag
+          table: flagging
+          field: link_flag
+          relationship: flag_relationship
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: pull-right
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          entity_type: flagging
+          plugin_id: flag_link
         field_title:
           id: field_title
           table: node__field_title
@@ -309,7 +356,7 @@ display:
             alt: ''
             rel: ''
             link_class: ''
-            prefix: '<span class="label label-default">{{ field_key_word }}</span>     '
+            prefix: '<span class="label label-default">{{ field_key_words }}</span>     '
             suffix: '<a href="" class="pull-right glyphicon glyphicon-star-empty"></a>'
             target: _blank
             nl2br: false
@@ -497,150 +544,6 @@ display:
           entity_field: type
           plugin_id: bundle
           group: 1
-        field_search_type_target_id:
-          id: field_search_type_target_id
-          table: node__field_search_type
-          field: field_search_type_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_search_type_target_id_op
-            label: 'Search Type (field_search_type)'
-            description: ''
-            use_operator: false
-            operator: field_search_type_target_id_op
-            identifier: field_search_type_target_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              editor: '0'
-              viewer: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: 'Search Type (field_search_type)'
-            description: null
-            identifier: field_search_type_target_id
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items:
-              1: {  }
-              2: {  }
-              3: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: search_type
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
-        field_news_orgin_target_id:
-          id: field_news_orgin_target_id
-          table: node__field_news_orgin
-          field: field_news_orgin_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_news_orgin_target_id_op
-            label: 新闻来源
-            description: ''
-            use_operator: false
-            operator: field_news_orgin_target_id_op
-            identifier: field_news_orgin_target_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              editor: '0'
-              viewer: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: news_orgins
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
-        field_key_word_target_id:
-          id: field_key_word_target_id
-          table: node__field_key_word
-          field: field_key_word_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_key_word_target_id_op
-            label: 关键词
-            description: ''
-            use_operator: false
-            operator: field_key_word_target_id_op
-            identifier: field_key_word_target_id
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              editor: '0'
-              viewer: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: key_words
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
       sorts:
         field_approximate_time_value:
           id: field_approximate_time_value
@@ -655,7 +558,7 @@ display:
             label: ''
           granularity: second
           plugin_id: datetime
-      title: ''
+      title: 产业动向
       header: {  }
       footer: {  }
       empty:
@@ -670,7 +573,19 @@ display:
           tokenize: false
           content: 没有相关新闻
           plugin_id: text_custom
-      relationships: {  }
+      relationships:
+        flag_relationship:
+          id: flag_relationship
+          table: node_field_data
+          field: flag_relationship
+          relationship: none
+          group_type: group
+          admin_label: Flags
+          required: false
+          flag: user_favorite
+          user_scope: any
+          entity_type: node
+          plugin_id: flag_relationship
       arguments: {  }
       display_extenders: {  }
       filter_groups:
@@ -684,15 +599,13 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
         - 'config:field.storage.node.field_approximate_time'
         - 'config:field.storage.node.field_description'
-        - 'config:field.storage.node.field_key_word'
+        - 'config:field.storage.node.field_key_words'
         - 'config:field.storage.node.field_news_link'
         - 'config:field.storage.node.field_title'
   block_1:
@@ -707,15 +620,13 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
         - 'config:field.storage.node.field_approximate_time'
         - 'config:field.storage.node.field_description'
-        - 'config:field.storage.node.field_key_word'
+        - 'config:field.storage.node.field_key_words'
         - 'config:field.storage.node.field_news_link'
         - 'config:field.storage.node.field_title'
   page_1:
@@ -731,14 +642,12 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
         - 'config:field.storage.node.field_approximate_time'
         - 'config:field.storage.node.field_description'
-        - 'config:field.storage.node.field_key_word'
+        - 'config:field.storage.node.field_key_words'
         - 'config:field.storage.node.field_news_link'
         - 'config:field.storage.node.field_title'

@@ -6,6 +6,7 @@ dependencies:
   - core
   - datetime
   - field
+  - flag
   - language
   - link
   - menu_ui

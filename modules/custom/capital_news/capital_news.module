@@ -21,6 +21,7 @@ function _capital_news_get_news() {
 
     // Other Key words
     $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs','hot_spots','oversee_spots','general_key_words']);
+    $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs']);
     foreach( $keywords_terms as $term){
         getGoogleNews($term->name, $term->tid, $google_tid);
         break;
@@ -45,6 +46,7 @@ function getGoogleNews($key, $key_tid, $search_type_tid, $or_key = null){
 
     \Drupal::logger('capital-test')->notice(print_r('live google', true));
     $json = capital_common_get_rest_custom_search($key);
+    \Drupal::logger('capital-test')->notice(print_r($json, true));
     if(isset($json->items)){
         $current_time = time();
         foreach($json->items as $result){
@@ -73,7 +75,7 @@ function getWechatOfficalNews($account_term, $search_type_tid){
 function _capital_news_getTermsByVocabularies($vids){
     $terms = array();
     foreach ( $vids as $vid){
-       $terms =$terms +  \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+        $terms =$terms +  \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
     }
     return $terms;
 }
@@ -91,11 +93,19 @@ function _capital_news_getTidByLinkAndVocabulary($link){
     return count($result) == 1? $result[0]->entity_id: 47;  //@TODO
 }
 function _capital_news_createNews($title, $description, $link, $timestamp, $origin_tid,  $type_tid, $key_tid, $content = null){
+    \Drupal::logger('capital-test')->notice(print_r($key_tid, true));
+    \Drupal::logger('capital-test')->notice(print_r('sdf', true));
     $db = \Drupal::database();
-    $result = $db->select('node__field_news_link','l')->fields('l', ['field_news_link_uri'])->condition('field_news_link_uri', $link)->execute()->fetchAllAssoc('field_news_link_uri');
-    //\Drupal::logger('capital-test')->notice(print_r($result, true));
-    $db = \Drupal::database();
-    if (count($result)  == 0){
+    $result = $db->select('node__field_news_link','l')->fields('l', ['entity_id'])->condition('field_news_link_uri', $link)->execute()->fetchAll();
+    if (count($result)  > 0 ){
+        $db = \Drupal::database();
+        $links = $db->select('node__field_key_words','k')->fields('k', ['entity_id'])->condition('entity_id', $result[0]->entity_id)->condition('field_key_words_target_id', $key_tid)->execute()->fetchAll();
+        if (count($links)  == 0 ){
+            $node = Node::load($result[0]->entity_id);
+            $node->field_key_words[] = $key_tid;
+            $node->save();
+        }
+    } elseif (count($result) == 0){
 
         $node = Node::create([
             'type' => 'news',
@@ -118,9 +128,9 @@ function _capital_news_createNews($title, $description, $link, $timestamp, $orig
                 'value' => $content,
                 'format' => 'full_html'
             ],
-            'field_news_orgin' => [$origin_tid],
+            'field_news_origin' => [$origin_tid],
             'field_search_type' =>[ $type_tid],
-            'field_key_word' =>[$key_tid],
+            'field_key_words' =>[$key_tid],
             'field_approximate_time' =>[
                 'value' => $timestamp,
             ],

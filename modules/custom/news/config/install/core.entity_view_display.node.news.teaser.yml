@@ -6,10 +6,8 @@ dependencies:
     - field.field.node.news.field_approximate_time
     - field.field.node.news.field_content
     - field.field.node.news.field_description
-    - field.field.node.news.field_key_word
     - field.field.node.news.field_key_words
     - field.field.node.news.field_news_link
-    - field.field.node.news.field_news_orgin
     - field.field.node.news.field_news_origin
     - field.field.node.news.field_search_type
     - field.field.node.news.field_title
@@ -29,10 +27,8 @@ hidden:
   field_approximate_time: true
   field_content: true
   field_description: true
-  field_key_word: true
   field_key_words: true
   field_news_link: true
-  field_news_orgin: true
   field_news_origin: true
   field_search_type: true
   field_title: true
