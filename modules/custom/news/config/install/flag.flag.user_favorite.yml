@@ -11,11 +11,11 @@ entity_type: node
 enabled: true
 global: false
 weight: 0
-flag_short: 'Add to favorite'
-flag_long: ''
+flag_short: 'null'
+flag_long: 'Add to my favorites'
 flag_message: ''
-unflag_short: 'Remove from favorite'
-unflag_long: ''
+unflag_short: 'null'
+unflag_long: 'Remove from my favorites'
 unflag_message: ''
 unflag_denied_text: ''
 flag_type: 'entity:node'

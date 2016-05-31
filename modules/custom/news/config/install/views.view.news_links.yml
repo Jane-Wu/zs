@@ -296,7 +296,7 @@ display:
           alter:
             alter_text: false
             text: ''
-            make_link: false
+            make_link: true
             path: ''
             absolute: false
             external: false
@@ -320,10 +320,10 @@ display:
             trim: false
             preserve_tags: ''
             html: false
-          element_type: ''
-          element_class: ''
+          element_type: span
+          element_class: pull-right
           element_label_type: ''
-          element_label_class: pull-right
+          element_label_class: ''
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
@@ -357,7 +357,7 @@ display:
             rel: ''
             link_class: ''
             prefix: '<span class="label label-default">{{ field_key_words }}</span>     '
-            suffix: '<a href="" class="pull-right glyphicon glyphicon-star-empty"></a>'
+            suffix: ''
             target: _blank
             nl2br: false
             max_length: 0
