@@ -7,6 +7,8 @@ use Drupal\node\Entity\Node;
 //use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\taxonomy\TermStorage;
 use Drupal\Core\Entity;
+use Drupal\Core\StreamWrapper\PublicStream;
+
 function capital_news_cron(){
     _capital_news_get_news();
 }
@@ -145,3 +147,72 @@ function capital_news_theme() {
     return $items;
 }
 
+// Process the html content
+function save_news_content($nid) {
+  $node = Node::load($nid);
+  $news_link = $node->get('field_news_link')->getValue();
+  $request_url = reset($news_link)['uri'];
+  if (empty($request_url)) {
+    \Drupal::logger('capital_news')->error(
+      'Node @nid: The field news link is empty.',
+      array('@nid' => $nid)
+    );
+    return;
+  }
+  // Get the html content of the url
+  $html_content = file_get_contents($request_url);
+
+  $dom = new \DOMDocument();
+  $dom->loadHTML($html_content);
+
+  _remove_script_elements($dom);
+
+  // @todo: save the images to s3
+  //_replace_image_src($dom);
+
+  $html_content = $dom->saveHTML();
+
+  $node->set('field_content',
+    array('value'=>$html_content, 'format'=>'full_html'));
+  return $node->save();
+}
+
+// Remove all the JavaScripts elements
+function _remove_script_elements($dom) {
+  $scripts = $dom->getElementsByTagName('script');
+  $remove = array();
+  foreach($scripts as $item) {
+    $remove[] = $item;
+  }
+  foreach ($remove as $item) {
+    $item->parentNode->removeChild($item);
+  }
+}
+
+// Save all the images locally and replace the image links
+function _replace_image_src($dom) {
+  // Get all the img tags in the document
+  $elements = $dom->getElementsByTagName('img');
+
+  if($elements->length > 0) {
+    foreach($elements as $element) {
+      // Get the link of the image
+      $src = $element->getAttribute('src');
+      if (strlen($src) > 0) {
+        $local_image = _save_image_to_local($src);
+        $element->setAttribute('src', $local_image);
+      }
+    }
+  }
+}
+
+// Process the image path and save the image file
+// Return the image local path
+function _save_image_to_local($image_url) {
+  $content = file_get_contents($image_url);
+  $basename = basename(parse_url($image_url, PHP_URL_PATH));
+
+  $file = file_save_data($content, "public://news_images/$basename", FILE_EXISTS_REPLACE);
+  $local_url = PublicStream::baseUrl() ."/news_images/$basename";
+  return $local_url;
+}
