@@ -12,19 +12,17 @@ function capital_news_cron(){
 }
 function _capital_news_get_news() {
     // Google 
-    $google_tid = 42; //@TODO
+    $google_tid = 0;
     // Company News
     $nodes = getNodesByType('company');
     foreach( $nodes as $node){
-        //getGoogleNews($node->getTitle(), 0, $google_tid, $node->get('field_short_name')->value); //@TODO
+        getGoogleNews($node->getTitle(), 0, $google_tid, $node->get('field_short_name')->value); //@TODO
     }
 
     // Other Key words
     $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs','hot_spots','oversee_spots','general_key_words']);
-    $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs']);
     foreach( $keywords_terms as $term){
         getGoogleNews($term->name, $term->tid, $google_tid);
-        break;
     }
     return;
     $account_terms = _capital_news_getTermsByVocabulary( 'wechat_accounts');
@@ -90,7 +88,7 @@ function _capital_news_getTidByNameAndVocabulary($name, $vid){
 function _capital_news_getTidByLinkAndVocabulary($link){
     $db = \Drupal::database();
     $result = $db->select('taxonomy_term__field_domain_link','l')->fields('l', ['entity_id'])->condition('bundle', 'news_orgins')->condition('field_domain_link_value', $link)->execute()->fetchAll();
-    return count($result) == 1? $result[0]->entity_id: 47;  //@TODO
+    return count($result) == 1? $result[0]->entity_id: 0;  //@TODO
 }
 function _capital_news_createNews($title, $description, $link, $timestamp, $origin_tid,  $type_tid, $key_tid, $content = null){
     \Drupal::logger('capital-test')->notice(print_r($key_tid, true));
