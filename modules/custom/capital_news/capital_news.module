@@ -12,7 +12,7 @@ function capital_news_cron(){
 }
 function _capital_news_get_news() {
     // Google 
-    $google_tid = 0;
+    $google_tid = 178;
     // Company News
     $nodes = getNodesByType('company');
     foreach( $nodes as $node){
@@ -27,7 +27,7 @@ function _capital_news_get_news() {
     return;
     $account_terms = _capital_news_getTermsByVocabulary( 'wechat_accounts');
     \Drupal::logger('capital-test')->notice(print_r($account_terms, true));
-    $wechat_offical_tid = 44;
+    $wechat_offical_tid = 0;
     foreach( $account_terms as $account_term){
         getWechatOfficalNews($account_term, $wechat_offical_tid);
     }
@@ -87,7 +87,7 @@ function _capital_news_getTidByNameAndVocabulary($name, $vid){
 }
 function _capital_news_getTidByLinkAndVocabulary($link){
     $db = \Drupal::database();
-    $result = $db->select('taxonomy_term__field_domain_link','l')->fields('l', ['entity_id'])->condition('bundle', 'news_orgins')->condition('field_domain_link_value', $link)->execute()->fetchAll();
+    $result = $db->select('taxonomy_term__field_domain_link','l')->fields('l', ['entity_id'])->condition('bundle', 'news_orgins')->condition('field_domain_link_value', '%' .  $db->escapeLike($link) . '%', 'LIKE')->execute()->fetchAll();
     return count($result) == 1? $result[0]->entity_id: 0;  //@TODO
 }
 function _capital_news_createNews($title, $description, $link, $timestamp, $origin_tid,  $type_tid, $key_tid, $content = null){

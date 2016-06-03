@@ -83,6 +83,8 @@ content:
     weight: 10
     settings: {  }
     third_party_settings: {  }
+  flag_user_favorite:
+    weight: 10
   links:
     weight: 100
     settings: {  }

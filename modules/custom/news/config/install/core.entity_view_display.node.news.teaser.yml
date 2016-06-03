@@ -21,6 +21,8 @@ mode: teaser
 content:
   flag_test:
     weight: 10
+  flag_user_favorite:
+    weight: 10
   links:
     weight: 100
 hidden:
