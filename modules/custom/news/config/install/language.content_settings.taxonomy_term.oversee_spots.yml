@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.oversee_spots
+id: taxonomy_term.oversee_spots
+target_entity_type_id: taxonomy_term
+target_bundle: oversee_spots
+default_langcode: site_default
+language_alterable: false

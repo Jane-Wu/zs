@@ -1,0 +1,28 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.wechat_accounts.field_wechat_account
+    - taxonomy.vocabulary.wechat_accounts
+  module:
+    - text
+id: taxonomy_term.wechat_accounts.default
+targetEntityType: taxonomy_term
+bundle: wechat_accounts
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+  field_wechat_account:
+    weight: 1
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+hidden:
+  langcode: true

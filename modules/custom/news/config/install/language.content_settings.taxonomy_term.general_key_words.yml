@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.general_key_words
+id: taxonomy_term.general_key_words
+target_entity_type_id: taxonomy_term
+target_bundle: general_key_words
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,8 @@
+capital_news.content:
+  title: tttttttt
+  route_name: capital_news.content
+  base_route: capital_news.content
+capital_news.googlecse:
+  title: tttttttt
+  route_name: capital_news.googlecse
+  base_route: capital_news.content

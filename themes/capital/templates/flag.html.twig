@@ -1,0 +1,22 @@
+{#
+/**
+ * @file
+ * Default theme implementation for flag links.
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the containing element.
+ * - title: The flag link title.
+ * - action: 'flag' or 'unflag'
+ */
+#}
+
+{% if action == 'unflag' %}
+  {% set attributes = attributes.addClass('action-unflag').addClass(['glyphicon', 'glyphicon-star']) %}
+{% else %}
+  {% set attributes = attributes.addClass('action-flag').addClass(['glyphicon', 'glyphicon-star-empty']) %}
+{% endif %}
+{% if title == 'null' %}
+  {% set title = '' %}
+{% endif %}
+
+<a{{ attributes.addClass('flag') }}>{{ title }}</a>

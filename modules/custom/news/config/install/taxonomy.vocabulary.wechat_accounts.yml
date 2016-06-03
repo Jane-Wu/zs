@@ -1,0 +1,8 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+name: 其他微信公众号
+vid: wechat_accounts
+description: ''
+hierarchy: 0
+weight: -7

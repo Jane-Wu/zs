@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.additional_orgs
+id: taxonomy_term.additional_orgs
+target_entity_type_id: taxonomy_term
+target_bundle: additional_orgs
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,8 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+name: 权威来源
+vid: reliable_news_origins
+description: ''
+hierarchy: 0
+weight: -10

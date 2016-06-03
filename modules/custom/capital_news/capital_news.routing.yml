@@ -1,5 +1,5 @@
 capital_news.content:
-  path: '/news'
+  path: '/test'
   defaults:
     _controller: '\Drupal\capital_news\Controller\NewsController::content'
     _title: '产业动向'
@@ -34,9 +34,16 @@ capital_news.configg:
   requirements:
     _permission: 'access content'
 capital_news.search_keys:
-  path: 'admin/capital/search'
+  path: 'config/news'
   defaults:
     _form: '\Drupal\capital_news\Form\NewsSettingsConfigForm'
     _title: 'News Settings'
+  requirements:
+    _permission: 'access content'
+capital_news.config.news:
+  path: 'config/keys'
+  defaults:
+    _entity_list: 'taxonomy_vocabulary'
+    _title: 'Taxonomy'
   requirements:
     _permission: 'access content'

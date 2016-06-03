@@ -1,0 +1,18 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_domain_link
+    - taxonomy.vocabulary.reliable_news_origins
+id: taxonomy_term.reliable_news_origins.field_domain_link
+field_name: field_domain_link
+entity_type: taxonomy_term
+bundle: reliable_news_origins
+label: domain_link
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

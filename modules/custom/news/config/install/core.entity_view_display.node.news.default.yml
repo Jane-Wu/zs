@@ -1,0 +1,91 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.node.news.field_approximate_time
+    - field.field.node.news.field_content
+    - field.field.node.news.field_description
+    - field.field.node.news.field_key_words
+    - field.field.node.news.field_news_link
+    - field.field.node.news.field_news_origin
+    - field.field.node.news.field_search_type
+    - field.field.node.news.field_title
+    - node.type.news
+  module:
+    - datetime
+    - link
+    - text
+    - user
+id: node.news.default
+targetEntityType: node
+bundle: news
+mode: default
+content:
+  field_approximate_time:
+    weight: 102
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+  field_content:
+    weight: 105
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_description:
+    weight: 104
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_key_words:
+    type: entity_reference_label
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_news_link:
+    weight: 103
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+  field_news_origin:
+    type: entity_reference_label
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_search_type:
+    weight: 109
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_title:
+    weight: 106
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  flag_test:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true

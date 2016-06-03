@@ -1,0 +1,29 @@
+langcode: zh-hans
+status: true
+dependencies:
+  module:
+    - node
+id: user_favorite
+label: 'User favorite'
+bundles:
+  - news
+entity_type: node
+enabled: true
+global: false
+weight: 0
+flag_short: 'null'
+flag_long: 'Add to my favorites'
+flag_message: ''
+unflag_short: 'null'
+unflag_long: 'Remove from my favorites'
+unflag_message: ''
+unflag_denied_text: ''
+flag_type: 'entity:node'
+link_type: ajax_link
+flagTypeConfig:
+  show_in_links: {  }
+  show_as_field: 1
+  show_on_form: 0
+  show_contextual_link: 0
+  access_author: ''
+linkTypeConfig: {  }

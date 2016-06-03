@@ -1,0 +1,4 @@
+excluded:
+  - field.storage.node.field_key_words
+  - field.storage.node.field_news_origin
+required: true

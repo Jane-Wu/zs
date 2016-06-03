@@ -1,0 +1,35 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.news.field_approximate_time
+    - field.field.node.news.field_content
+    - field.field.node.news.field_description
+    - field.field.node.news.field_key_words
+    - field.field.node.news.field_news_link
+    - field.field.node.news.field_news_origin
+    - field.field.node.news.field_search_type
+    - field.field.node.news.field_title
+    - node.type.news
+  module:
+    - user
+id: node.news.teaser
+targetEntityType: node
+bundle: news
+mode: teaser
+content:
+  flag_test:
+    weight: 10
+  links:
+    weight: 100
+hidden:
+  field_approximate_time: true
+  field_content: true
+  field_description: true
+  field_key_words: true
+  field_news_link: true
+  field_news_origin: true
+  field_search_type: true
+  field_title: true
+  langcode: true
