@@ -9,8 +9,8 @@ dependencies:
   - user
 package: Flags
 
-# Information added by Drupal.org packaging script on 2016-05-03
+# Information added by Drupal.org packaging script on 2016-06-02
 version: '8.x-4.x-dev'
 core: '8.x'
 project: 'flag'
-datestamp: 1462292651
+datestamp: 1464902948

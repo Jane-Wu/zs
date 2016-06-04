@@ -76,25 +76,6 @@ class UserFlagType extends EntityFlagType {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function typeAccessMultiple(array $entity_ids, AccountInterface $account) {
-    $access = [];
-
-    // Exclude anonymous.
-    if (array_key_exists(0, $entity_ids)) {
-      $access[0] = FALSE;
-    }
-
-    // Prevent users from flagging themselves.
-    if ($this->access_uid == 'others' && array_key_exists($account->uid, $entity_ids)) {
-      $access[$account->uid] = FALSE;
-    }
-
-    return $access;
-  }
-
-  /**
    * Specifies if users are able to flag themselves.
    *
    * @return bool|mixed

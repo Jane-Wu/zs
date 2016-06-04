@@ -69,34 +69,6 @@ class CommentFlagType extends EntityFlagType {
   /**
    * {@inheritdoc}
    */
-  public function typeAccessMultiple(array $entity_ids, AccountInterface $account) {
-    $access = [];
-
-    // If all bundles are allowed, we have nothing to say here.
-    $types = $this->getBundles();
-    if (empty($types)) {
-      return $access;
-    }
-
-    // Ensure node types are granted access. This avoids a
-    // node_load() on every type, usually done by applies_to_entity_id().
-    $query = db_select('comment', 'c');
-    $query->innerJoin('node', 'n', 'c.nid = n.nid');
-    $result = $query
-      ->fields('c', ['cid'])
-      ->condition('c.cid', $entity_ids, 'IN')
-      ->condition('n.type', $types, 'NOT IN')
-      ->execute();
-    foreach ($result as $row) {
-      $access[$row->nid] = FALSE;
-    }
-
-    return $access;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getAccessAuthorSetting() {
     return $this->configuration['access_author'];
   }

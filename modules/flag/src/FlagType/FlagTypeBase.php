@@ -106,11 +106,4 @@ abstract class FlagTypeBase extends PluginBase implements FlagTypePluginInterfac
   public function validateConfigurationForm(array &$form, FormStateInterface $form_state) {
     // Override this.
   }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function typeAccessMultiple(array $entity_ids, AccountInterface $account) {
-    return [];
-  }
 }

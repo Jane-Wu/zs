@@ -72,32 +72,6 @@ function hook_flag_validate($action, FlagInterface $flag, $entity_id,
 }
 
 /**
- * Allow modules to allow or deny access to flagging for multiple entities.
- *
- * Called when preparing a View or list of multiple flaggable entities.
- * For flag access checks for individual entities, see hook_flag_access().
- *
- * @param \Drupal\flag\FlagInterface $flag
- *   The flag object.
- * @param array $entity_ids
- *   An array of object ids to check access.
- * @param \Drupal\Core\Session\AccountInterface $account
- *   The user on whose behalf to test the flagging action.
- *
- * @return array
- *   An array whose keys are the object IDs and values are booleans indicating
- *   access.
- *
- * @see hook_flag_access()
- * @see flag_flag:access_multiple()
- */
-function hook_flag_access_multiple(FlagInterface $flag,
-                                   array $entity_ids,
-                                   AccountInterface $account) {
-
-}
-
-/**
  * Alter the javascript structure that describes the flag operation.
  *
  * @param \Drupal\flag\FlagInterface $flag
