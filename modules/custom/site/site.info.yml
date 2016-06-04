@@ -9,10 +9,14 @@ dependencies:
   - comment
   - contact
   - core
+  - datetime
   - editor
   - field
+  - file
   - filter
   - image
+  - language
+  - link
   - path
   - rdf
   - taxonomy

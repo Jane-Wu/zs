@@ -688,7 +688,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: news
+      path: google-news
       display_description: ''
       filters:
         status:
@@ -740,7 +740,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: news/wechat
+      path: offical-news
       display_description: ''
       filters:
         status:
@@ -837,7 +837,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: news/wechat
+      path: wechat-news
       display_description: ''
       filters:
         status:

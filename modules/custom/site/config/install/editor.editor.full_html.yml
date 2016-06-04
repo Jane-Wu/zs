@@ -12,25 +12,43 @@ settings:
     rows:
       -
         -
+          name: edit
+          items:
+            - Undo
+            - Redo
+            - Cut
+            - Copy
+            - Paste
+            - PasteText
+            - PasteFromWord
+        -
+          name: Lists
+          items:
+            - JustifyLeft
+            - JustifyCenter
+            - JustifyRight
+            - Outdent
+            - Indent
+            - BulletedList
+            - NumberedList
+            - JustifyBlock
+        -
           name: Formatting
           items:
             - Bold
             - Italic
+            - Underline
             - Strike
             - Superscript
             - Subscript
             - '-'
             - RemoveFormat
+            - SpecialChar
         -
           name: Linking
           items:
             - DrupalLink
             - DrupalUnlink
-        -
-          name: Lists
-          items:
-            - BulletedList
-            - NumberedList
         -
           name: Media
           items:
@@ -42,11 +60,18 @@ settings:
           name: 'Block Formatting'
           items:
             - Format
+            - Styles
         -
           name: Tools
           items:
             - ShowBlocks
             - Source
+            - Maximize
+        -
+          name: Font
+          items:
+            - Font
+            - FontSize
   plugins:
     stylescombo:
       styles: ''

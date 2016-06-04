@@ -9,7 +9,7 @@ capital_news.config:
   path: 'news/config'
   defaults:
     _controller: '\Drupal\capital_news\Controller\NewsConfigController::content'
-    _title: 'Config'
+    _title: ''
   requirements:
     _permission: 'access content'
 capital_news.favoriteajax:

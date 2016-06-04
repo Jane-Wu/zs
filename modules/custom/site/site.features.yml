@@ -1,7 +1,20 @@
 excluded:
   - field.field.node.article.field_tags
+  - field.field.node.material.field_tags
+  - field.field.node.news.field_key_words
+  - field.field.taxonomy_term.wechat_accounts.field_wechat_account
   - core.entity_form_display.node.article.default
+  - core.entity_form_display.node.material.default
+  - core.entity_form_display.node.news.default
+  - core.entity_form_display.taxonomy_term.wechat_accounts.default
   - core.entity_view_display.node.article.default
   - core.entity_view_display.node.article.rss
   - core.entity_view_display.node.article.teaser
+  - core.entity_view_display.node.material.default
+  - core.entity_view_display.node.material.teaser
+  - core.entity_view_display.node.news.default
+  - core.entity_view_display.node.news.teaser
+  - core.entity_view_display.taxonomy_term.wechat_accounts.default
+  - language.content_settings.taxonomy_term.wechat_accounts
+  - taxonomy.vocabulary.wechat_accounts
 required: true

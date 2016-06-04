@@ -1,12 +1,8 @@
-name: Core
+name: 内核
 description: 'Provides core components required by other features.'
 type: module
 core: 8.x
 dependencies:
   - block
-  - datetime
-  - field
-  - node
   - system
-  - text
   - user
