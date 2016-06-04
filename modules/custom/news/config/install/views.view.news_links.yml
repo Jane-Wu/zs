@@ -10,7 +10,6 @@ dependencies:
     - node.type.news
     - taxonomy.vocabulary.search_type
   content:
-    - 'taxonomy_term:search_type:79fba7d2-3b1e-4031-9353-8394fbc63b5c'
     - 'taxonomy_term:search_type:bcdca6bb-6947-4086-8b03-3bb4b652f8b0'
   module:
     - datetime
@@ -659,28 +658,6 @@ display:
         - 'config:field.storage.node.field_key_words'
         - 'config:field.storage.node.field_news_link'
         - 'config:field.storage.node.field_title'
-  block_1:
-    display_plugin: block
-    id: block_1
-    display_title: Block
-    position: 1
-    display_options:
-      display_extenders: {  }
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url.query_args
-        - user
-        - 'user.node_grants:view'
-        - user.permissions
-      tags:
-        - 'config:field.storage.node.field_approximate_time'
-        - 'config:field.storage.node.field_description'
-        - 'config:field.storage.node.field_key_words'
-        - 'config:field.storage.node.field_news_link'
-        - 'config:field.storage.node.field_title'
   page_1:
     display_plugin: page
     id: page_1
@@ -764,50 +741,6 @@ display:
           entity_field: type
           plugin_id: bundle
           group: 1
-        field_search_type_target_id:
-          id: field_search_type_target_id
-          table: node__field_search_type
-          field: field_search_type_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value:
-            - 179
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: textfield
-          limit: true
-          vid: search_type
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
       defaults:
         filters: false
         filter_groups: false
@@ -821,7 +754,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -861,50 +793,6 @@ display:
           entity_field: type
           plugin_id: bundle
           group: 1
-        field_search_type_target_id:
-          id: field_search_type_target_id
-          table: node__field_search_type
-          field: field_search_type_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value:
-            - 180
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: textfield
-          limit: true
-          vid: search_type
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
       defaults:
         filters: false
         filter_groups: false
@@ -918,7 +806,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:

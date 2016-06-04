@@ -15,19 +15,22 @@ function _capital_news_get_news() {
   // Google 
   $google_tid = 178;
   // Company News
+  /*
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
     getGoogleNews($node->getTitle(), 0, $google_tid, $node->get('field_short_name')->value); //@TODO
   }
-
+  return;
+   */
   // Other Key words
   $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs','hot_spots','oversee_spots','general_key_words']);
+  $keywords_terms = _capital_news_getTermsByVocabularies(['oversee_spots']);
   foreach( $keywords_terms as $term){
     getGoogleNews($term->name, $term->tid, $google_tid);
+    break;
   }
   return;
   $account_terms = _capital_news_getTermsByVocabulary( 'wechat_accounts');
-  \Drupal::logger('capital-test')->notice(print_r($account_terms, true));
   $wechat_offical_tid = 0;
   foreach( $account_terms as $account_term){
     getWechatOfficalNews($account_term, $wechat_offical_tid);
@@ -41,29 +44,29 @@ function getNodesByType($type){
   return \Drupal::entityManager()->getStorage('node')->loadMultiple(array_values($nids));
 }
 function getGoogleNews($key, $key_tid, $search_type_tid, $or_key = null){
-  $config = \Drupal::config('capital_news.settings');
-
-  \Drupal::logger('capital-test')->notice(print_r('live google', true));
-  $json = capital_common_get_rest_custom_search($key);
-  \Drupal::logger('capital-test')->notice(print_r($json, true));
+        \Drupal::logger('capital-rest')->error('Date format unexpecasdfadfted, ' . print_r($or_key, true));
+  $json = capital_common_get_rest_custom_search($key, $or_key);
   if(isset($json->items)){
     $current_time = time();
     foreach($json->items as $result){
-      preg_match('/^(\d+) (hours|day) ago (.+)/s', $result->htmlSnippet, $matches);
+      $approximate_timestamp = $current_time; 
+      preg_match('/^(\d+) (hours|day|minutes) ago (.+)/s', $result->htmlSnippet, $matches);
       if (count($matches) != 4){
-        \Drupal::logger('capital-test')->warning(print_r($matches, true));
+        \Drupal::logger('capital-rest')->warning('Date format unexpected, ' . print_r($result->htmlSnippet, true));
+      } else{
+        $approximate_timestamp = $current_time - ($matches[2] == 'hours'? 3600 * $matches[1] : ($matches[2] == 'minutes'? 60 * $matches[1]: 86400));
       }
-
-      $approximate_timestamp = $current_time - ($matches[2] == 'hours'? 3600 * $matches[1] : 86400);
       $approximate_timestamp = str_replace('+00:00', '', date_format(date_timestamp_set(new DateTime("now", new DateTimeZone('Etc/GMT+0')), $approximate_timestamp), 'c'));
       $origin_tid = _capital_news_getTidByLinkAndVocabulary($result->displayLink);
-      _capital_news_createNews($result->htmlTitle, str_replace('<br>', '', $matches[3]), $result->link, $approximate_timestamp, $origin_tid, $search_type_tid, $key_tid);
+      $description = isset($matches[3])? str_replace('<br>', '', $matches[3]) : $result->htmlSnippet;
+      _capital_news_createNews($result->htmlTitle, $description, $result->link, $approximate_timestamp, $origin_tid, $search_type_tid, $key_tid);
     }
+  } elseif(isset($json->queries->request->totalResults) && $json->queries->request->totalResults != 0){
+    \Drupal::logger('capital-rest')->error('Unexpected returned structure, ' . print_r($json, true));
   }
 }
 
 function getWechatOfficalNews($account_term, $search_type_tid){
-  \Drupal::logger('capital-test')->notice(print_r("wechat", true));
   //$account_name = trim(_capital_news_getTermDescriptionByTerm($account_term));
   $json = capital_common_get_wechat_offical_test_search($account_name);
   foreach($json->content as $result){
@@ -92,8 +95,6 @@ function _capital_news_getTidByLinkAndVocabulary($link){
   return count($result) == 1? $result[0]->entity_id: 0;  //@TODO
 }
 function _capital_news_createNews($title, $description, $link, $timestamp, $origin_tid,  $type_tid, $key_tid, $content = null){
-  \Drupal::logger('capital-test')->notice(print_r($key_tid, true));
-  \Drupal::logger('capital-test')->notice(print_r('sdf', true));
   $db = \Drupal::database();
   $result = $db->select('node__field_news_link','l')->fields('l', ['entity_id'])->condition('field_news_link_uri', $link)->execute()->fetchAll();
   if (count($result)  > 0 ){
