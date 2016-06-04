@@ -1,15 +1,15 @@
-capital_news.content:
+capital_news.test:
   path: '/test'
   defaults:
-    _controller: '\Drupal\capital_news\Controller\NewsController::content'
-    _title: '产业动向'
+    _controller: '\Drupal\capital_news\Controller\NewsTestController::content'
+    _title: 'test'
   requirements:
     _permission: 'access content'
-capital_news.googlecse:
-  path: '/news/wechat'
+capital_news.config:
+  path: 'news/config'
   defaults:
-    _controller: '\Drupal\capital_news\Controller\NewsGoogleCseController::content'
-    _title: 'wechat'
+    _controller: '\Drupal\capital_news\Controller\NewsConfigController::content'
+    _title: 'Config'
   requirements:
     _permission: 'access content'
 capital_news.favoriteajax:

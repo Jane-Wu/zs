@@ -9,10 +9,10 @@ use Drupal\taxonomy\Entity\Term;
 
 use Drupal\Core\Controller\ControllerBase;
 
-class NewsController extends ControllerBase {
+class NewsTestController extends ControllerBase {
 
     public function content() {
-         _capital_news_get_news();
+         //_capital_news_get_news();
         //   self::createTerms();
         $news=array();
         return $news;

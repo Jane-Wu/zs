@@ -1,8 +1,12 @@
-capital_news.content:
-  title: tttttttt
-  route_name: capital_news.content
-  base_route: capital_news.content
-capital_news.googlecse:
-  title: tttttttt
-  route_name: capital_news.googlecse
-  base_route: capital_news.content
+view.news_links.page_1:
+  title: 谷歌搜索
+  route_name: view.news_links.page_1
+  base_route: view.news_links.page_1
+view.news_links.page_2:
+  title: 微信公众号
+  route_name: view.news_links.page_2
+  base_route: view.news_links.page_1
+view.news_links.page_3:
+  title: 微信搜索
+  route_name: view.news_links.page_3
+  base_route: view.news_links.page_1
