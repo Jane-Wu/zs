@@ -66,31 +66,6 @@ class NodeFlagType extends EntityFlagType {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function typeAccessMultiple(array $entity_ids, AccountInterface $account) {
-    $access = [];
-
-    // If all bundles are allowed, we have nothing to say here.
-    $types = $this->getBundles();
-    if (empty($types)) {
-      return $access;
-    }
-
-    // Ensure that only flaggable node types are granted access. This avoids a
-    // node_load() on every type, usually done by applies_to_entity_id().
-    $result = db_select('node', 'n')->fields('n', ['nid'])
-      ->condition('nid', array_keys($entity_ids), 'IN')
-      ->condition('type', $types, 'NOT IN')
-      ->execute();
-    foreach ($result as $row) {
-      $access[$row->nid] = FALSE;
-    }
-
-    return $access;
-  }
-
-  /**
    * Returns the flag type access author setting.
    *
    * @return string
