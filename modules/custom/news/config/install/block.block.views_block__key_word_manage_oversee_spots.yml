@@ -1,0 +1,23 @@
+langcode: zh-hans
+status: false
+dependencies:
+  config:
+    - views.view.key_word_manage
+  module:
+    - views
+  theme:
+    - capital
+id: views_block__key_word_manage_oversee_spots
+theme: capital
+region: '-1'
+weight: -16
+provider: null
+plugin: 'views_block:key_word_manage-oversee_spots'
+settings:
+  id: 'views_block:key_word_manage-oversee_spots'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility: {  }
