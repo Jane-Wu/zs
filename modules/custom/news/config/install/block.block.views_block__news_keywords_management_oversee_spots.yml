@@ -2,19 +2,19 @@ langcode: zh-hans
 status: false
 dependencies:
   config:
-    - views.view.key_word_manage
+    - views.view.news_keywords_management
   module:
     - views
   theme:
     - capital
-id: views_block__key_word_manage_wechat_accounts
+id: views_block__news_keywords_management_oversee_spots
 theme: capital
 region: '-1'
-weight: -16
+weight: -17
 provider: null
-plugin: 'views_block:key_word_manage-wechat_accounts'
+plugin: 'views_block:news_keywords_management-oversee_spots'
 settings:
-  id: 'views_block:key_word_manage-wechat_accounts'
+  id: 'views_block:news_keywords_management-oversee_spots'
   label: ''
   provider: views
   label_display: visible
