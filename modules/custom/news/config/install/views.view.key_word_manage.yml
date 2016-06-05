@@ -261,7 +261,7 @@ display:
           group_type: group
           admin_label: ''
           empty: true
-          viewareabuttonrequiredpermission: 'edit terms in additional orgs'
+          viewareabuttonrequiredpermission: 'edit terms in additional_orgs'
           viewareabuttonlabel: 管理其他机构
           viewareabuttonuri: /admin/structure/taxonomy/manage/additional_orgs/overview
           plugin_id: view_area_button_area
@@ -340,7 +340,7 @@ display:
           group_type: group
           admin_label: ''
           empty: true
-          viewareabuttonrequiredpermission: 'edit terms in general key words'
+          viewareabuttonrequiredpermission: 'edit terms in general_key_words'
           viewareabuttonlabel: 管理宽泛关键词
           viewareabuttonuri: /admin/structure/taxonomy/manage/general_key_words/overview
           plugin_id: view_area_button_area
@@ -419,7 +419,7 @@ display:
           group_type: group
           admin_label: ''
           empty: true
-          viewareabuttonrequiredpermission: 'edit terms in hot spots'
+          viewareabuttonrequiredpermission: 'edit terms in hot_spots'
           viewareabuttonlabel: 管理热门人物
           viewareabuttonuri: /admin/structure/taxonomy/manage/hot_spots/overview
           plugin_id: view_area_button_area
@@ -542,7 +542,7 @@ display:
           group_type: group
           admin_label: ''
           empty: true
-          viewareabuttonrequiredpermission: 'edit terms in other news origins'
+          viewareabuttonrequiredpermission: 'edit terms in other_news_origins'
           viewareabuttonlabel: 管理线索来源
           viewareabuttonuri: /admin/structure/taxonomy/manage/other_news_origins/overview
           plugin_id: view_area_button_area
@@ -577,7 +577,7 @@ display:
           group_type: group
           admin_label: ''
           empty: true
-          viewareabuttonrequiredpermission: 'edit terms in oversee spots'
+          viewareabuttonrequiredpermission: 'edit terms in oversee_spots'
           viewareabuttonlabel: 管理海外来风
           viewareabuttonuri: /admin/structure/taxonomy/manage/oversee_spots/overview
           plugin_id: view_area_button_area
@@ -656,7 +656,7 @@ display:
           group_type: group
           admin_label: ''
           empty: true
-          viewareabuttonrequiredpermission: 'edit terms in reliable news origins'
+          viewareabuttonrequiredpermission: 'edit terms in reliable_news_origins'
           viewareabuttonlabel: 管理权威来源
           viewareabuttonuri: /admin/structure/taxonomy/manage/reliable_news_origins/overview
           plugin_id: view_area_button_area
@@ -735,7 +735,7 @@ display:
           group_type: group
           admin_label: ''
           empty: true
-          viewareabuttonrequiredpermission: 'edit terms in wechat accounts'
+          viewareabuttonrequiredpermission: 'edit terms in wechat_accounts'
           viewareabuttonlabel: 管理其他微信公众号
           viewareabuttonuri: /admin/structure/taxonomy/manage/wechat_accounts/overview
           plugin_id: view_area_button_area
