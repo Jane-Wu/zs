@@ -1,0 +1,10 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.wechat_keywords
+id: taxonomy_term.wechat_keywords
+target_entity_type_id: taxonomy_term
+target_bundle: wechat_keywords
+default_langcode: site_default
+language_alterable: false
