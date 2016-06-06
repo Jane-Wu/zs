@@ -58,6 +58,9 @@ body.navbar-is-fixed-top {
     padding-top: 15px;
 }
 
+.view-header {
+  position: relative;
+}
 .view-header .view-btn-right {
   position: absolute;
   top: -43px;

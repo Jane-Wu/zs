@@ -5,13 +5,27 @@ capital_news.test:
     _title: 'test'
   requirements:
     _permission: 'access content'
-capital_news.config:
-  path: 'news/config'
+capital_news.config.google:
+  path: 'news/config/google'
   defaults:
-    _controller: '\Drupal\capital_news\Controller\NewsConfigController::content'
+    _controller: '\Drupal\capital_news\Controller\NewsConfigController::googleConfig'
     _title: ''
   requirements:
-    _permission: 'access content'
+    _permission: 'administer taxonomy'
+capital_news.config.official:
+  path: 'news/config/official'
+  defaults:
+    _controller: '\Drupal\capital_news\Controller\NewsConfigController::officialConfig'
+    _title: ''
+  requirements:
+    _permission: 'administer taxonomy'
+capital_news.config.wechat:
+  path: 'news/config/wechat'
+  defaults:
+    _controller: '\Drupal\capital_news\Controller\NewsConfigController::wechatConfig'
+    _title: ''
+  requirements:
+    _permission: 'administer taxonomy'
 capital_news.favoriteajax:
   path: 'news/add-favorite/nojs'
   defaults:

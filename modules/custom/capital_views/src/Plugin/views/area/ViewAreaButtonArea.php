@@ -138,7 +138,7 @@ class ViewAreaButtonArea extends AreaPluginBase {
         '#type' => 'link',
         '#url' => Url::fromUri($buttonuri) ,
         '#attributes' => [
-          'class' => ['button', 'secondary', 'btn', 'btn-info', 'pull-right'],
+          'class' => ['button', 'secondary', 'btn', 'btn-info', 'view-btn-right'],
         ],
       ];
 
