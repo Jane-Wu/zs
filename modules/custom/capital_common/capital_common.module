@@ -36,6 +36,10 @@ function capital_common_get_rest_custom_search($key, $orterms = null, $sort = 'd
 function _capital_common_wrap_search_key($key){
   return '"' . urlencode($key) . '"';
 }
+function capital_common_get_wechat_offical_search($account_name) {
+  $url = "http://52.78.11.123/" . $account_name;
+  return (capital_common_get_rest_api($url));
+}
 function capital_common_get_wechat_offical_test_search($account_name) {
   $url = "http://api.aerchi.com/weixin/api.php?wxID=" . $account_name . "&key=FR2sIR7jULp2dVhw2CURrSVfhjvgGVlLNK2C6Vshy3IQhDJL+G2uqw";
   return (capital_common_get_rest_api($url));

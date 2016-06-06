@@ -7,12 +7,15 @@ use Drupal\node\Entity\Node;
 use Drupal\taxonomy\TermStorage;
 use Drupal\Core\Entity;
 use Drupal\Core\StreamWrapper\PublicStream;
+use Drupal\relation\Entity\Relation;
+use Drupal\taxonomy\Entity\Term;
 
 function capital_news_cron(){
   _capital_news_get_news();
 }
 function _capital_news_get_news() {
   // Google 
+  /*
   $google_tid = 178;
   // Company News
   $nodes = getNodesByType('company');
@@ -25,8 +28,9 @@ function _capital_news_get_news() {
     getGoogleNews($term->name, $term->tid, $google_tid);
   }
   return;
-  $account_terms = _capital_news_getTermsByVocabulary( 'wechat_accounts');
-  $wechat_offical_tid = 0;
+   */
+  $account_terms = _capital_news_getTermsByVocabularies(['wechat_accounts']);
+  $wechat_offical_tid = 179;
   foreach( $account_terms as $account_term){
     getWechatOfficalNews($account_term, $wechat_offical_tid);
   }
@@ -61,10 +65,11 @@ function getGoogleNews($key, $key_tid, $search_type_tid, $or_key = null){
 }
 
 function getWechatOfficalNews($account_term, $search_type_tid){
-  //$account_name = trim(_capital_news_getTermDescriptionByTerm($account_term));
-  $json = capital_common_get_wechat_offical_test_search($account_name);
-  foreach($json->content as $result){
-    _capital_news_createNews($result->title, $result->summary, $result->url, str_replace(' ', 'T', $result->date), $account_term->tid, $search_type_tid, 0,  $result->content);
+  $term = Term::load($account_term->tid);
+  $json = capital_common_get_wechat_offical_search($term->get('field_wechat_account')->value);
+  foreach($json as $result){
+    $time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
+    _capital_news_createNews($result->title, $result->digest, $result->url, $time, $account_term->tid, $search_type_tid, 0, $result->content);
   }
 }
 
@@ -209,4 +214,23 @@ function _save_image_to_local($image_url) {
   $file = file_save_data($content, "public://news_images/$basename", FILE_EXISTS_REPLACE);
   $local_url = PublicStream::baseUrl() ."/news_images/$basename";
   return $local_url;
+}
+function createRelation($relation_type, $src_type, $src_id, $target_type, $target_id){
+  $endpoints = [
+    [
+      'entity_type' => $src_type,
+      'entity_id'   => $src_id,
+      'r_index'     => 0,
+    ],
+    [
+      'entity_type' => $target_type,
+      'entity_id'   => $target_id,
+      'r_index'     => 1,
+    ],
+  ];
+
+  $relation = Relation::create(array('relation_type' => $relation_type));
+  $relation->endpoints = $endpoints;
+  $relation->save();
+  \Drupal::logger('capital-relation')->notice('Create relation ' . print_r($relation_type, true));
 }
