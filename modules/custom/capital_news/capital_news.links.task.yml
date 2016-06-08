@@ -10,3 +10,15 @@ view.news_links.page_3:
   title: 微信搜索
   route_name: view.news_links.page_3
   base_route: view.news_links.page_1
+capital_news.config.google:
+  title: 谷歌搜索关键词管理
+  route_name: capital_news.config.google
+  base_route: capital_news.config.google
+capital_news.config.official:
+  title: 微信公众号管理
+  route_name: capital_news.config.official
+  base_route: capital_news.config.google
+capital_news.config.wechat:
+  title: 微信搜索关键词管理
+  route_name: capital_news.config.wechat
+  base_route: capital_news.config.google

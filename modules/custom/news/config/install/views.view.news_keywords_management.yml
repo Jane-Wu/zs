@@ -1,0 +1,1047 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_wechat_account
+    - taxonomy.vocabulary.additional_orgs
+    - taxonomy.vocabulary.general_key_words
+    - taxonomy.vocabulary.hot_spots
+    - taxonomy.vocabulary.other_news_origins
+    - taxonomy.vocabulary.oversee_spots
+    - taxonomy.vocabulary.reliable_news_origins
+    - taxonomy.vocabulary.wechat_accounts
+    - taxonomy.vocabulary.wechat_keywords
+  module:
+    - capital_views
+    - taxonomy
+    - user
+id: news_keywords_management
+label: 新闻关键词管理
+module: views
+description: ''
+tag: ''
+base_table: taxonomy_term_field_data
+base_field: tid
+core: 8.x
+display:
+  default:
+    display_plugin: default
+    id: default
+    display_title: Master
+    position: 0
+    display_options:
+      access:
+        type: perm
+        options:
+          perm: 'administer taxonomy'
+      cache:
+        type: tag
+        options: {  }
+      query:
+        type: views_query
+        options:
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_comment: ''
+          query_tags: {  }
+      exposed_form:
+        type: basic
+        options:
+          submit_button: 应用
+          reset_button: false
+          reset_button_label: 重置
+          exposed_sorts_label: 排序依据
+          expose_sort_order: true
+          sort_asc_label: 升序
+          sort_desc_label: 降序
+      pager:
+        type: none
+        options:
+          offset: 0
+      style:
+        type: grid
+        options:
+          grouping: {  }
+          columns: 5
+          automatic_width: true
+          alignment: horizontal
+          col_class_default: true
+          col_class_custom: ''
+          row_class_default: true
+          row_class_custom: ''
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+          inline:
+            name: name
+          separator: ''
+          hide_empty: false
+      fields:
+        name:
+          id: name
+          table: taxonomy_term_field_data
+          field: name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: false
+            ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          convert_spaces: false
+          entity_type: taxonomy_term
+          entity_field: name
+          plugin_id: term_name
+      filters:
+        vid:
+          id: vid
+          table: taxonomy_term_field_data
+          field: vid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            reliable_news_origins: reliable_news_origins
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: taxonomy_term
+          entity_field: vid
+          plugin_id: bundle
+      sorts:
+        weight:
+          id: weight
+          table: taxonomy_term_field_data
+          field: weight
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          entity_type: taxonomy_term
+          entity_field: weight
+          plugin_id: standard
+      title: 线索来源
+      header:
+        view_area_button_area:
+          id: view_area_button_area
+          table: views
+          field: view_area_button_area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          viewareabuttonrequiredpermission: 'edit terms in other news origins'
+          viewareabuttonlabel: 管理线索来源
+          viewareabuttonuri: /admin/structure/taxonomy/manage/other_news_origins/overview
+          plugin_id: view_area_button_area
+      footer: {  }
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 暂无内容
+            format: full_html
+          plugin_id: text
+      relationships: {  }
+      arguments: {  }
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user.permissions
+      tags: {  }
+  additional_orgs:
+    display_plugin: block
+    id: additional_orgs
+    display_title: 其他机构
+    position: 4
+    display_options:
+      display_extenders: {  }
+      display_description: ''
+      title: 其他机构
+      defaults:
+        title: false
+        header: false
+        filters: false
+        filter_groups: false
+      header:
+        view_area_button_area:
+          id: view_area_button_area
+          table: views
+          field: view_area_button_area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          viewareabuttonrequiredpermission: 'edit terms in additional_orgs'
+          viewareabuttonlabel: 管理其他机构
+          viewareabuttonuri: /admin/structure/taxonomy/manage/additional_orgs/overview
+          plugin_id: view_area_button_area
+      filters:
+        vid:
+          id: vid
+          table: taxonomy_term_field_data
+          field: vid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            additional_orgs: additional_orgs
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: taxonomy_term
+          entity_field: vid
+          plugin_id: bundle
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user.permissions
+      tags: {  }
+  general_key_words:
+    display_plugin: block
+    id: general_key_words
+    display_title: 宽泛关键词
+    position: 7
+    display_options:
+      display_extenders: {  }
+      display_description: ''
+      title: 宽泛关键词
+      defaults:
+        title: false
+        header: false
+        filters: false
+        filter_groups: false
+      header:
+        view_area_button_area:
+          id: view_area_button_area
+          table: views
+          field: view_area_button_area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          viewareabuttonrequiredpermission: 'edit terms in general_key_words'
+          viewareabuttonlabel: 管理宽泛关键词
+          viewareabuttonuri: /admin/structure/taxonomy/manage/general_key_words/overview
+          plugin_id: view_area_button_area
+      filters:
+        vid:
+          id: vid
+          table: taxonomy_term_field_data
+          field: vid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            general_key_words: general_key_words
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: taxonomy_term
+          entity_field: vid
+          plugin_id: bundle
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user.permissions
+      tags: {  }
+  hot_spots:
+    display_plugin: block
+    id: hot_spots
+    display_title: 热门人物
+    position: 5
+    display_options:
+      display_extenders: {  }
+      display_description: ''
+      title: 热门人物
+      defaults:
+        title: false
+        header: false
+        filters: false
+        filter_groups: false
+      header:
+        view_area_button_area:
+          id: view_area_button_area
+          table: views
+          field: view_area_button_area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          viewareabuttonrequiredpermission: 'edit terms in hot_spots'
+          viewareabuttonlabel: 管理热门人物
+          viewareabuttonuri: /admin/structure/taxonomy/manage/hot_spots/overview
+          plugin_id: view_area_button_area
+      filters:
+        vid:
+          id: vid
+          table: taxonomy_term_field_data
+          field: vid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            hot_spots: hot_spots
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: taxonomy_term
+          entity_field: vid
+          plugin_id: bundle
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user.permissions
+      tags: {  }
+  other_news_origins:
+    display_plugin: block
+    id: other_news_origins
+    display_title: 线索来源
+    position: 2
+    display_options:
+      display_extenders: {  }
+      display_description: ''
+      filters:
+        vid:
+          id: vid
+          table: taxonomy_term_field_data
+          field: vid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            other_news_origins: other_news_origins
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: taxonomy_term
+          entity_field: vid
+          plugin_id: bundle
+      defaults:
+        filters: false
+        filter_groups: false
+        header: false
+        title: false
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      header:
+        view_area_button_area:
+          id: view_area_button_area
+          table: views
+          field: view_area_button_area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          viewareabuttonrequiredpermission: 'edit terms in other_news_origins'
+          viewareabuttonlabel: 管理线索来源
+          viewareabuttonuri: /admin/structure/taxonomy/manage/other_news_origins/overview
+          plugin_id: view_area_button_area
+      title: 线索来源
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user.permissions
+      tags: {  }
+  oversee_spots:
+    display_plugin: block
+    id: oversee_spots
+    display_title: 海外来风
+    position: 6
+    display_options:
+      display_extenders: {  }
+      display_description: ''
+      title: 海外来风
+      defaults:
+        title: false
+        header: false
+        filters: false
+        filter_groups: false
+      header:
+        view_area_button_area:
+          id: view_area_button_area
+          table: views
+          field: view_area_button_area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          viewareabuttonrequiredpermission: 'edit terms in oversee_spots'
+          viewareabuttonlabel: 管理海外来风
+          viewareabuttonuri: /admin/structure/taxonomy/manage/oversee_spots/overview
+          plugin_id: view_area_button_area
+      filters:
+        vid:
+          id: vid
+          table: taxonomy_term_field_data
+          field: vid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            oversee_spots: oversee_spots
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: taxonomy_term
+          entity_field: vid
+          plugin_id: bundle
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user.permissions
+      tags: {  }
+  reliable_news_origins:
+    display_plugin: block
+    id: reliable_news_origins
+    display_title: 权威来源
+    position: 1
+    display_options:
+      display_extenders: {  }
+      display_description: ''
+      title: 权威来源
+      defaults:
+        title: false
+        header: false
+        filters: false
+        filter_groups: false
+      header:
+        view_area_button_area:
+          id: view_area_button_area
+          table: views
+          field: view_area_button_area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          viewareabuttonrequiredpermission: 'edit terms in reliable_news_origins'
+          viewareabuttonlabel: 管理权威来源
+          viewareabuttonuri: /admin/structure/taxonomy/manage/reliable_news_origins/overview
+          plugin_id: view_area_button_area
+      filters:
+        vid:
+          id: vid
+          table: taxonomy_term_field_data
+          field: vid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            reliable_news_origins: reliable_news_origins
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: taxonomy_term
+          entity_field: vid
+          plugin_id: bundle
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user.permissions
+      tags: {  }
+  wechat_accounts:
+    display_plugin: block
+    id: wechat_accounts
+    display_title: 其他微信公众号
+    position: 3
+    display_options:
+      display_extenders: {  }
+      display_description: ''
+      title: 其他微信公众号
+      defaults:
+        title: false
+        header: false
+        filters: false
+        filter_groups: false
+        style: false
+        row: false
+        fields: false
+      header:
+        view_area_button_area:
+          id: view_area_button_area
+          table: views
+          field: view_area_button_area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          viewareabuttonrequiredpermission: 'edit terms in wechat_accounts'
+          viewareabuttonlabel: 管理其他微信公众号
+          viewareabuttonuri: /admin/structure/taxonomy/manage/wechat_accounts/overview
+          plugin_id: view_area_button_area
+      filters:
+        vid:
+          id: vid
+          table: taxonomy_term_field_data
+          field: vid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            wechat_accounts: wechat_accounts
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: taxonomy_term
+          entity_field: vid
+          plugin_id: bundle
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      style:
+        type: table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          override: true
+          sticky: false
+          caption: ''
+          summary: ''
+          description: ''
+          columns:
+            name: name
+            field_wechat_account: field_wechat_account
+          info:
+            name:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            field_wechat_account:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          default: '-1'
+          empty_table: false
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+          inline:
+            name: name
+          separator: ''
+          hide_empty: false
+      fields:
+        name:
+          id: name
+          table: taxonomy_term_field_data
+          field: name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 名称
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: false
+            ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          convert_spaces: false
+          entity_type: taxonomy_term
+          entity_field: name
+          plugin_id: term_name
+        field_wechat_account:
+          id: field_wechat_account
+          table: taxonomy_term__field_wechat_account
+          field: field_wechat_account
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 微信号
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+    cache_metadata:
+      max-age: 0
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user.permissions
+      tags:
+        - 'config:field.storage.taxonomy_term.field_wechat_account'
+  wechat_keywords:
+    display_plugin: block
+    id: wechat_keywords
+    display_title: 其他微信关键词
+    position: 7
+    display_options:
+      display_extenders: {  }
+      display_description: ''
+      title: 其他微信关键词
+      defaults:
+        title: false
+        header: false
+        filters: false
+        filter_groups: false
+      header:
+        view_area_button_area:
+          id: view_area_button_area
+          table: views
+          field: view_area_button_area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          viewareabuttonrequiredpermission: 'edit terms in wechat_keywords'
+          viewareabuttonlabel: 管理其他微信关键词
+          viewareabuttonuri: /admin/structure/taxonomy/manage/wechat_keywords/overview
+          plugin_id: view_area_button_area
+      filters:
+        vid:
+          id: vid
+          table: taxonomy_term_field_data
+          field: vid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            wechat_keywords: wechat_keywords
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: taxonomy_term
+          entity_field: vid
+          plugin_id: bundle
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user.permissions
+      tags: {  }

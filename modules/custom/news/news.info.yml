@@ -1,9 +1,12 @@
 name: 新闻
-description: 'Provides 新闻 内容类型 and related configuration. '
+description: 'Provides 新闻 类型 and related configuration. '
 type: module
 core: 8.x
 dependencies:
   - capital_news
+  - block
+  - capital_views
+  - company
   - core
   - datetime
   - field

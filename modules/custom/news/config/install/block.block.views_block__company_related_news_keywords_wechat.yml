@@ -1,0 +1,23 @@
+langcode: zh-hans
+status: false
+dependencies:
+  config:
+    - views.view.company_related_news_keywords
+  module:
+    - views
+  theme:
+    - capital
+id: views_block__company_related_news_keywords_wechat
+theme: capital
+region: '-1'
+weight: -17
+provider: null
+plugin: 'views_block:company_related_news_keywords-wechat'
+settings:
+  id: 'views_block:company_related_news_keywords-wechat'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility: {  }

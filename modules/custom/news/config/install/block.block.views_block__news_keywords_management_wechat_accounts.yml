@@ -1,0 +1,23 @@
+langcode: zh-hans
+status: false
+dependencies:
+  config:
+    - views.view.news_keywords_management
+  module:
+    - views
+  theme:
+    - capital
+id: views_block__news_keywords_management_wechat_accounts
+theme: capital
+region: '-1'
+weight: -17
+provider: null
+plugin: 'views_block:news_keywords_management-wechat_accounts'
+settings:
+  id: 'views_block:news_keywords_management-wechat_accounts'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+visibility: {  }
