@@ -12,6 +12,27 @@ capital_news.config:
     _title: ''
   requirements:
     _permission: 'access content'
+capital_news.addfavoritenews:
+  path: 'news/{nid}/add-favorite'
+  defaults:
+    _controller: '\Drupal\capital_news\Controller\NewsLinkController::link'
+    _title: ''
+  requirements:
+    _permission: 'access content'
+capital_news.removefavoritenews:
+  path: 'news/{rid}/remove-favorite'
+  defaults:
+    _controller: '\Drupal\capital_news\Controller\NewsLinkController::unlink'
+    _title: ''
+  requirements:
+    _permission: 'access content'
+capital_news.favoritenews:
+  path: 'news/{nid}/favorite'
+  defaults:
+    _controller: '\Drupal\capital_news\Controller\NewsLinkController::favorite'
+    _title: ''
+  requirements:
+    _permission: 'access content'
 capital_news.favoriteajax:
   path: 'news/add-favorite/nojs'
   defaults:

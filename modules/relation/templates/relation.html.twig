@@ -1,0 +1,15 @@
+{#
+/**
+ * @file
+ * Default theme implementation to present all relation data.
+ *
+ * @see template_preprocess_relation()
+ *
+ * @ingroup themeable
+ */
+#}
+<article{{ attributes }}>
+    {% if content %}
+        {{- content -}}
+    {% endif %}
+</article>

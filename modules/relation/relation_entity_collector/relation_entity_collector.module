@@ -1,0 +1,173 @@
+<?php
+
+/**
+ * @file
+ * Relation Entity Collector Block.
+ */
+
+use Drupal\Core\Language\Language;
+use Drupal\Core\Render\Element;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_theme().
+ */
+function relation_entity_collector_theme() {
+  return array(
+    'relation_entity_collector_table' => array(
+      'render element' => 'form',
+    ),
+  );
+}
+
+/**
+ * Access check helper.
+ */
+function _relation_entity_collector_user_has_access() {
+  $account = \Drupal::currentUser();
+  return $account->hasPermission('administer relations') || $account->hasPermission('create relations');
+}
+
+/**
+ * Implements hook_entity_view_alter().
+ */
+function relation_entity_collector_entity_view_alter(&$build, $entity_type) {
+  if ($entity_type == 'relation' && _relation_entity_collector_user_has_access()) {
+    $relation = $build['#entity'];
+    $text = t('Edit @relation_type endpoints', array('@relation_type' => $relation->relation_type));
+    $relation_id = $relation->id();
+    $build['link']['#markup'] = l($text, "relation_entity_collector/$relation_id", \Drupal::destination()->getAsArray());
+  }
+}
+
+/**
+ * Implements hook_entity_load().
+ */
+function relation_entity_collector_entity_load($entities, $type) {
+  $entities_store = &drupal_static('relation_entities', array());
+  $entities_store += array($type => array());
+  $entities_store[$type] += $entities;
+}
+
+/**
+ * Helper to get a item_list render structure out of the entities in session.
+ */
+function _relation_stored_entity_keys_list() {
+  $list = array();
+  foreach ($_SESSION['relation_entity_keys'] as $entity_key) {
+    $list[] = $entity_key['entity_label'];
+  }
+  return array(
+    '#theme' => 'item_list',
+    '#items' => $list,
+  );
+}
+
+/**
+ * Retrieves the relation being edited or picked.
+ */
+function _relation_entity_collector_get_entity($relation_type = NULL, $endpoints = NULL) {
+  if (!isset($relation_type) && isset($_SESSION['relation_type'])) {
+    $relation_type = $_SESSION['relation_type'];
+  }
+  if (!isset($endpoints) && isset($_SESSION['relation_entity_keys'])) {
+    $endpoints = $_SESSION['relation_entity_keys'];
+  }
+  if (isset($_SESSION['relation_edit'])) {
+    $relation = $_SESSION['relation_edit'];
+    if (isset($endpoints)) {
+      $relation->endpoints[Language::LANGCODE_NOT_SPECIFIED] = $endpoints;
+    }
+    return $relation;
+  }
+  if (isset($relation_type)) {
+    return relation_create($relation_type, $endpoints);
+  }
+}
+
+/**
+ * Implements hook_views_post_execute().
+ *
+ * Make sure entities are loaded even if only fields are used.
+ */
+function relation_entity_collector_views_post_execute($view) {
+  if (_relation_entity_collector_user_has_access()) {
+    $properties = get_object_vars($view->query);
+    if (!empty($properties['fields']) && !empty($view->result)) {
+      foreach (entity_get_info() as $entity_type => $entity_info) {
+        $map[$entity_info['base table']] = array(
+          'id' => $entity_info['entity keys']['id'],
+          'entity_type' => $entity_type,
+        );
+      }
+      $collect = array();
+      foreach ($view->query->fields as $alias => $field) {
+        if (isset($field['table'])) {
+          $table_name = $view->query->table_queue[$field['table']]['table'];
+          if (isset($map[$table_name]) && $map[$table_name]['id'] == $field['field']) {
+            $collect[$map[$table_name]['entity_type']] = $alias;
+          }
+        }
+      }
+      $ids = array();
+      foreach ($view->result as $row) {
+        foreach ($collect as $entity_type => $alias) {
+          // Skip empty values, which may happen for entities that are obtained
+          // via a non-required relationship in the view.
+          if (!empty($row->$alias)) {
+            $ids[$entity_type][] = $row->$alias;
+          }
+        }
+      }
+      foreach ($ids as $entity_type => $entity_ids) {
+        $storage_handler = \Drupal::entityTypeManager()->getStorage($entity_type);
+        $storage_handler->loadMultiple($entity_ids);
+      }
+    }
+  }
+}
+
+/**
+ * Creates a draggable table out of the entities already picked.
+ */
+function theme_relation_entity_collector_table($variables) {
+  $form = $variables['form'];
+  $table['header'] = array();
+  $table['attributes']['id'] = 'relation-entity-collector-table';
+  $table['rows'] = array();
+  drupal_add_tabledrag($table['attributes']['id'], 'order', 'sibling', 'relation-entity-collector-weight');
+  foreach (Element::children($form['weight']) as $key) {
+    $form['weight'][$key]['#attributes']['class'] = array('relation-entity-collector-weight');
+    $data = array($form['remove'][$key]['#entity_key']['entity_label']);
+    foreach ($form['#entity_collector_columns'] as $column) {
+      $data[] = \Drupal::service('renderer')->render($form[$column][$key]);
+    }
+    $table['rows'][] = array(
+      'data' => $data,
+      'class' => array('draggable'),
+    );
+  }
+  $output = '';
+  if ($table['rows']) {
+    $output .= theme('table', $table);
+  }
+  foreach ($form as $form_element) {
+    $output .= \Drupal::service('renderer')->render($form_element);
+  }
+  return $output;
+}
+
+/**
+ * Implements hook_preprocess_username().
+ *
+ * We capture every user printed this way.
+ */
+function relation_entity_collector_preprocess_username($variables) {
+  if (_relation_entity_collector_user_has_access() && isset($variables['account']->nid)) {
+    // This looks like a node passed to theme('username') in
+    // template_preprocess_node() and user_node_load() doesn't load the user
+    // so we do instead. It does not work with modules using render arrays
+    // because it is called too late but Views renders early.
+    User::load($variables['account']->uid);
+  }
+}

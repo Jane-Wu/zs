@@ -1,0 +1,5 @@
+drupal.relation:
+  version: VERSION
+  css:
+    component:
+      relation.css: {}

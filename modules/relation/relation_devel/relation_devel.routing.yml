@@ -1,0 +1,7 @@
+relation_devel.generate:
+  path: '/admin/config/development/relation/generate'
+  defaults:
+    _form: '\Drupal\relation_devel\Form\RelationGenerate'
+    _title: 'Generate Relations'
+  requirements:
+    _permission: 'administer relation'

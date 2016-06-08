@@ -1,0 +1,15 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+id: user_favorite_news
+label: 'User Favorite News'
+reverse_label: 'Favorited News'
+directional: true
+transitive: false
+r_unique: true
+min_arity: 2
+max_arity: 2
+source_bundles:
+  'user:user': 'user:user'
+target_bundles:
+  'node:news': 'node:news'

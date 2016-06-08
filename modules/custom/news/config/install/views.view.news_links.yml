@@ -15,10 +15,11 @@ dependencies:
     - 'taxonomy_term:search_type:b84da1b9-cf3e-4922-a000-d60a5e6a712f'
     - 'taxonomy_term:search_type:f7424859-95f7-437a-9153-83e290a96a37'
   module:
+    - capital_news
     - datetime
-    - flag
     - link
     - node
+    - relation
     - taxonomy
     - text
     - user
@@ -42,7 +43,7 @@ display:
         options:
           perm: 'access content'
       cache:
-        type: tag
+        type: none
         options: {  }
       query:
         type: views_query
@@ -291,11 +292,11 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        link_flag:
-          id: link_flag
-          table: flagging
-          field: link_flag
-          relationship: flag_relationship
+        favorite_link:
+          id: favorite_link
+          table: node
+          field: favorite_link
+          relationship: none
           group_type: group
           admin_label: ''
           label: ''
@@ -303,7 +304,7 @@ display:
           alter:
             alter_text: false
             text: ''
-            make_link: true
+            make_link: false
             path: ''
             absolute: false
             external: false
@@ -339,8 +340,8 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          entity_type: flagging
-          plugin_id: flag_link
+          entity_type: node
+          plugin_id: favorite_link
         field_title:
           id: field_title
           table: node__field_title
@@ -582,18 +583,19 @@ display:
           content: 没有相关新闻
           plugin_id: text_custom
       relationships:
-        flag_relationship:
-          id: flag_relationship
-          table: node_field_data
-          field: flag_relationship
+        relation_user_favorite_news_user:
+          id: relation_user_favorite_news_user
+          table: node
+          field: relation_user_favorite_news_user
           relationship: none
           group_type: group
-          admin_label: Flags
+          admin_label: 'Favorited News'
           required: false
-          flag: user_favorite
-          user_scope: any
+          r_index: '1'
+          entity_deduplication_left: 1
+          entity_deduplication_right: 1
           entity_type: node
-          plugin_id: flag_relationship
+          plugin_id: relation_relationship
       arguments: {  }
       display_extenders: {  }
       filter_groups:
@@ -1056,56 +1058,6 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        link_flag:
-          id: link_flag
-          table: flagging
-          field: link_flag
-          relationship: flag_relationship
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: true
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: span
-          element_class: pull-right
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          entity_type: flagging
-          plugin_id: flag_link
         field_title:
           id: field_title
           table: node__field_title

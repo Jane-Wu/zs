@@ -1,0 +1,18 @@
+langcode: zh-hans
+status: true
+dependencies:
+  module:
+    - relation
+    - relation_endpoint
+id: relation.endpoints
+field_name: endpoints
+entity_type: relation
+type: relation_endpoint
+settings: {  }
+module: relation_endpoint
+locked: true
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

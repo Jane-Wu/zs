@@ -1,0 +1,20 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.relation.user_favorite_news.endpoints
+    - relation.type.user_favorite_news
+  module:
+    - relation_endpoint
+id: relation.user_favorite_news.default
+targetEntityType: relation
+bundle: user_favorite_news
+mode: default
+content:
+  endpoints:
+    label: hidden
+    type: relation_endpoint
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

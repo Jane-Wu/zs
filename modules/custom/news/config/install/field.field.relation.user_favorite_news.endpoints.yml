@@ -1,0 +1,20 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.relation.endpoints
+    - relation.type.user_favorite_news
+  module:
+    - relation_endpoint
+id: relation.user_favorite_news.endpoints
+field_name: endpoints
+entity_type: relation
+bundle: user_favorite_news
+label: Endpoints
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: relation_endpoint

@@ -1,0 +1,5 @@
+relation_devel.generate:
+  title: 'Relation Generate'
+  parent: system.admin_config_development
+  description: 'Generate dummy relations.'
+  route_name: relation_devel.generate

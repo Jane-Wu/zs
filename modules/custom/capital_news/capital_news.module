@@ -234,3 +234,9 @@ function createRelation($relation_type, $src_type, $src_id, $target_type, $targe
   $relation->save();
   \Drupal::logger('capital-relation')->notice('Create relation ' . print_r($relation_type, true));
 }
+function removeRelation($relation_ids){
+  $storage_handler = \Drupal::entityTypeManager()->getStorage('relation');
+  $relations = $storage_handler->loadMultiple($relation_ids);
+  $storage_handler->delete($relations);
+  \Drupal::logger('capital-relation')->notice('Delete relation ' . print_r($relation_ids, true));
+}

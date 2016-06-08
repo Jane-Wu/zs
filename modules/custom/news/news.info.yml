@@ -3,6 +3,7 @@ description: 'Provides 新闻 内容类型 and related configuration. '
 type: module
 core: 8.x
 dependencies:
+  - capital_news
   - core
   - datetime
   - field
@@ -12,6 +13,8 @@ dependencies:
   - menu_ui
   - node
   - path
+  - relation
+  - relation_endpoint
   - taxonomy
   - text
   - user

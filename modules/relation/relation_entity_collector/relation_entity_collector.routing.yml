@@ -1,0 +1,6 @@
+relation_entity_collector.edit:
+  path: '/relation_entity_collector/{relation}'
+  defaults:
+    _controller: '\Drupal\relation_entity_collector\Controller\EntityCollectorController::load'
+  requirements:
+    _permission: 'edit relations'

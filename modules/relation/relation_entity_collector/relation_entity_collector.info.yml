@@ -1,0 +1,16 @@
+name: 'Relation Entity Collector block'
+type: module
+description: 'A block to collect entities loaded on any page(s), and create relations from them.'
+package: Relation
+# core: 8.x
+dependencies:
+  - relation
+  - block
+stylesheets:
+  - relation_entity_collector.css
+
+# Information added by Drupal.org packaging script on 2016-04-19
+version: '8.x-1.x-dev'
+core: '8.x'
+project: 'relation'
+datestamp: 1461094144

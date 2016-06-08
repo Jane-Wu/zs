@@ -1,0 +1,59 @@
+entity.relation.canonical:
+  path: '/relation/{relation}'
+  defaults:
+    _controller: '\Drupal\relation\Controller\RelationController::page'
+    _title_callback: '\Drupal\relation\Controller\RelationController::pageTitle'
+  requirements:
+    _entity_access: 'relation.view'
+
+entity.relation.edit_form:
+  path: '/relation/{relation}/edit'
+  defaults:
+    _entity_form: 'relation.edit'
+  requirements:
+    _entity_access: 'relation.update'
+
+entity.relation.delete_form:
+  path: '/relation/{relation}/delete'
+  defaults:
+    _entity_form: 'relation.delete'
+  requirements:
+    _entity_access: 'relation.delete'
+
+entity.relation.collection:
+  path: '/admin/content/relation'
+  defaults:
+    _title: 'Relations'
+    _entity_list: 'relation'
+  requirements:
+    _permission: 'administer relations'
+
+entity.relation_type.add_form:
+  path: '/admin/structure/relation/add'
+  defaults:
+    _entity_form: 'relation_type.add'
+    _title: 'Add relation type'
+  requirements:
+    _permission: 'administer relation types'
+
+entity.relation_type.edit_form:
+  path: '/admin/structure/relation/manage/{relation_type}'
+  defaults:
+    _entity_form: 'relation_type.edit'
+  requirements:
+    _permission: 'administer relation types'
+
+entity.relation_type.delete_form:
+  path: '/admin/structure/relation/manage/{relation_type}/delete'
+  defaults:
+    _entity_form: 'relation_type.delete'
+  requirements:
+    _permission: 'administer relation types'
+
+entity.relation_type.collection:
+  path: '/admin/structure/relation'
+  defaults:
+    _entity_list: 'relation_type'
+    _title: 'Relation types'
+  requirements:
+    _permission: 'administer relation types'

@@ -1,0 +1,106 @@
+<?php
+
+/**
+ * @file
+ * Relation endpoints field.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\relation\Entity\RelationType;
+
+/**
+ * Implements hook_field_validate().
+ */
+function relation_endpoint_field_validate(EntityInterface $entity, $field, $instance, $langcode, $items, &$errors) {
+  if (empty($entity_type) && empty($entity)) {
+    return;
+  }
+
+  $relation_type = RelationType::load($entity->relation_type);
+  // Check that relation_type exists.
+  if (!$relation_type) {
+    $errors[$field['field_name']][$langcode][$delta][] = array(
+      'error' => 'relation_nonexistent_type',
+      'message' => t("The !relation_type relation type does not exist.", array('!relation_type' => $entity->relation_type)),
+    );
+  }
+  // Check if the relation type is unique and if so, check if a relation between
+  // those items exist already.
+  if ($relation_type->r_unique) {
+    $relation_ids = \Drupal::service('entity.repository.relation')->relationExists($items, $entity->relation_type);
+    if ($relation_ids && (!isset($entity->relation_id) || !isset($relation_ids[$entity->relation_id]))) {
+      $errors[$field['field_name']][$langcode][0][] = array(
+        'error' => 'relation_already_exists',
+        'message' => t("The !relation_type is unique but the relation already exists.", array('!relation_type' => $entity->relation_type)),
+      );
+    }
+  }
+  // Check that arity is within acceptable bounds.
+  if (count($items) < $relation_type->min_arity && empty($entity->in_progress)) {
+    $errors[$field['field_name']][$langcode][0][] = array(
+      'error' => 'relation_too_few_endpoints',
+      'message' => t("Relation has too few end points (:relation_type min arity :min_arity)", array(':relation_type' => $entity->relation_type, ':min_arity' => $relation_type->min_arity)),
+    );
+  }
+  if ($relation_type->max_arity && count($items) > $relation_type->max_arity) {
+    $errors[$field['field_name']][$langcode][0][] = array(
+      'error' => 'relation_too_many_endpoints',
+      'message' => t("Relation has too many end points (:relation_type max arity :max_arity)", array(':relation_type' => $entity->relation_type, ':max_arity' => $relation_type->max_arity)),
+    );
+  }
+
+  // Load all entities referenced in $items via multiple load.
+  $items_to_load = array();
+  $loaded_items = array();
+  foreach ($items as $delta => $item) {
+    if (!isset($item['entity_bundle'])) {
+      $items_to_load[$item['entity_type']][] = $item['entity_id'];
+    }
+  }
+  foreach ($items_to_load as $entity_type => $ids) {
+    $storage_handler = \Drupal::entityTypeManager()->getStorage($entity_type);
+    $loaded_items[$entity_type] = $storage_handler->loadMultiple($ids);
+  }
+
+  // Check that each entity is has acceptable bundle type and index.
+  foreach ($items as $delta => $item) {
+    $acceptable = FALSE;
+    $directional = $relation_type->directional;
+    $endpoint = ($directional && ($delta > 0)) ? 'target' : 'source';
+    $end_bundles = $endpoint . '_bundles';
+    foreach ($relation_type->$end_bundles as $relation_bundle) {
+      if (!isset($item['entity_bundle'])) {
+        $endpoint_entity = $loaded_items[$item['entity_type']][$item['entity_id']];
+        list(, , $item['entity_bundle']) = $endpoint_entity->bundle();
+      }
+      $relation_bundle_array = explode(':', $relation_bundle, 2);
+      if (($relation_bundle == $item['entity_type'] . ':' . $item['entity_bundle']) || (($item['entity_type'] == $relation_bundle_array[0]) && ($relation_bundle_array[1] == '*'))) {
+        $acceptable = TRUE;
+        break;
+      }
+    }
+    if (!$acceptable) {
+      $t_arguments = array('%relation_type' => $entity->relation_type, '@bundle' => $item['entity_bundle']);
+      if ($relation_type->directional) {
+        if ($endpoint == 'target') {
+          $errors[$field['field_name']][$langcode][$delta][] = array(
+            'error' => 'relation_unsupported_target',
+            'message' => t("The %relation_type relation type does not allow @bundle entities as target.", $t_arguments),
+          );
+        }
+        else {
+          $errors[$field['field_name']][$langcode][$delta][] = array(
+            'error' => 'relation_unsupported_source',
+            'message' => t("The %relation_type relation type does not allow @bundle entities as source.", $t_arguments),
+          );
+        }
+      }
+      else {
+        $errors[$field['field_name']][$langcode][$delta][] = array(
+          'error' => 'relation_unsupported_endpoint',
+          'message' => t("The %relation_type relation type does not allow @bundle entities as an endpoint.", $t_arguments),
+        );
+      }
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "drupal/relation",
+  "description": "Describes relationships between entities.",
+  "type": "drupal-module",
+  "homepage": "https://www.drupal.org/project/relation",
+  "authors": [
+    {
+      "name": "See contributors",
+      "homepage":"https://www.drupal.org/node/976150/committers"
+    }
+  ],
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/relation",
+    "source": "http://git.drupal.org/project/relation.git"
+  },
+  "license": "GPL-2.0+",
+  "require": {}
+}

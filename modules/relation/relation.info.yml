@@ -1,0 +1,14 @@
+name: 'Relation'
+type: module
+description: 'Describes relationships between entities.'
+package: Relation
+# core: 8.x
+configure: entity.relation_type.collection
+dependencies:
+  - relation_endpoint
+
+# Information added by Drupal.org packaging script on 2016-04-19
+version: '8.x-1.x-dev'
+core: '8.x'
+project: 'relation'
+datestamp: 1461094144

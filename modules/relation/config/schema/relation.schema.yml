@@ -1,0 +1,42 @@
+# Schema for the configuration files of the Relation module.
+
+relation.type.*:
+  type: config_entity
+  label: 'Relation type'
+  mapping:
+    id:
+      type: string
+      label: 'Machine-readable name'
+    label:
+      type: label
+      label: 'Name'
+    reverse_label:
+      type: label
+      label: 'Reverse label'
+    directional:
+      type: boolean
+      label: 'Whether this type is directional.'
+    transitive:
+      type: boolean
+      label: 'Whether this type is transitive.'
+    r_unique:
+      type: boolean
+      label: 'Whether relations are unique.'
+    min_arity:
+      type: integer
+      label: 'Minimum number of entities'
+    max_arity:
+      type: integer
+      label: 'Maximum number of entities'
+    source_bundles:
+      type: sequence
+      label: 'Allowed bundles of related entities'
+      sequence:
+        type: string
+        label: 'Source bundle'
+    target_bundles:
+      type: sequence
+      label: 'Target bundles of related entities'
+      sequence:
+        type: string
+        label: 'Target bundle'

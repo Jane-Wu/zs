@@ -1,0 +1,7 @@
+name: 'Relation Migrate Tests'
+type: module
+description: 'Support module for the Relation - Migrate integration tests.'
+package: Relation
+core: 8.x
+dependencies:
+  - entity_reference

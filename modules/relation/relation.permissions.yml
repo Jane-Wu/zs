@@ -1,0 +1,19 @@
+administer relation types:
+  title: 'Administer Relation types'
+  description: 'Create, edit, delete, and perform administration tasks for relation types.'
+  restrict access: TRUE
+administer relations:
+  title: 'Administer all Relations'
+  restrict access: TRUE
+access relations:
+  title: 'View All Relations'
+  description: 'View Relations of any Relation Type'
+create relations:
+  title: 'Create All Relations'
+  description: 'Create Relations of any Relation Type'
+edit relations:
+  title: 'Edit All Relations'
+  description: 'Edit Relations of any Relation Type'
+delete relations:
+  title: 'Delete All Relations'
+  description: 'Delete Relations of any Relation Type'
