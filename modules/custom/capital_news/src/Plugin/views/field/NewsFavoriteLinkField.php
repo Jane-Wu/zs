@@ -25,12 +25,15 @@ class NewsFavoriteLinkField extends FieldPluginBase {
   public function render(ResultRow $values) {
     $nid = $values->_entity->id();
     $relation = new FavoriteNewsLink($nid);
-    if(isset($values->_relationship_entities['relation_user_favorite_news_user']) && 
-      $values->_relationship_entities['relation_user_favorite_news_user']->id() == \Drupal::currentUser()->id()){
+    if(isset($values->_relationship_entities['relation_user_favorite_news_user'])){
+      if( $values->_relationship_entities['relation_user_favorite_news_user']->id() == \Drupal::currentUser()->id()){
         $link = $relation->getRemoveLink();
-        return $this->getRenderer()->render($link);
+      } else{
+        $link = $relation->getAddLink();
       }
-    $link = $relation->getAddLink();
+    } else{
+      $link = $relation->getLink();
+    }
     return $this->getRenderer()->render($link);
   }
 }
