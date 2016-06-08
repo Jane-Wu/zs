@@ -1,21 +1,21 @@
-capital_news.addfavoritenews:
-  path: 'news/{nid}/add-favorite'
+capital_news.favoritenews:
+  path: 'news/{nid}/favorite'
+  defaults:
+    _controller: '\Drupal\capital_news\Controller\NewsLinkController::favorite'
+    _title: ''
+  requirements:
+    _permission: 'access content'
+capital_news.linknews:
+  path: 'news/{news_id}/link/{nid}'
   defaults:
     _controller: '\Drupal\capital_news\Controller\NewsLinkController::link'
     _title: ''
   requirements:
     _permission: 'access content'
-capital_news.removefavoritenews:
-  path: 'news/{rid}/remove-favorite'
+capital_news.getlist:
+  path: 'news/{news_id}/list'
   defaults:
-    _controller: '\Drupal\capital_news\Controller\NewsLinkController::unlink'
-    _title: ''
-  requirements:
-    _permission: 'access content'
-capital_news.favoritenews:
-  path: 'news/{nid}/favorite'
-  defaults:
-    _controller: '\Drupal\capital_news\Controller\NewsLinkController::favorite'
+    _controller: '\Drupal\capital_news\Controller\NewsLinkController::listNodes'
     _title: ''
   requirements:
     _permission: 'access content'

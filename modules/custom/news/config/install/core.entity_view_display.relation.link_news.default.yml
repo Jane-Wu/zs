@@ -2,13 +2,13 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - field.field.relation.user_favorite_news.endpoints
-    - relation.type.user_favorite_news
+    - field.field.relation.link_news.endpoints
+    - relation.type.link_news
   module:
     - relation_endpoint
-id: relation.user_favorite_news.default
+id: relation.link_news.default
 targetEntityType: relation
-bundle: user_favorite_news
+bundle: link_news
 mode: default
 content:
   endpoints:

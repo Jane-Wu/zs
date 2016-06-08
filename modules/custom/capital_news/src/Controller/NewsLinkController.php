@@ -9,6 +9,8 @@ namespace Drupal\capital_news\Controller;
 
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Ajax\AfterCommand;
+use Drupal\Core\Ajax\AppendCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -20,6 +22,7 @@ use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
 use Drupal\relation\Entity\Relation;
 use Drupal\capital_news\FavoriteNewsLink;
+use Drupal\Core\Render\Element;
 
 use Drupal\relation\Entity\RelationType;
 
@@ -53,13 +56,18 @@ class NewsLinkController extends ControllerBase implements ContainerInjectionInt
       $relation->remove();
       return $this->generateResponse($request, false, $relation);
     }
-
-
   }
-  public function link($nid, Request $request) {
-    $link = new FavoriteNewsLink($nid);
-    $link->exists();
-    return $this->generateResponse($request);
+  public function link($nid, $news_id, Request $request) {
+    $relation =  new LinkNewsNodeLink($nid, $news_id);
+    $rids = $relation->exists();
+
+    if(empty($rids)){
+      $relation->create();
+      //return $this->generateResponse($request, true, $relation);
+    } else{
+      $relation->remove();
+      //return $this->generateResponse($request, false, $relation);
+    }
   }
 
   /**
@@ -77,10 +85,8 @@ class NewsLinkController extends ControllerBase implements ContainerInjectionInt
    *
    * @see \Drupal\flag\Plugin\Reload
    */
-  public function unlink($rid, Request $request) {
-    $link = new FavoriteNewsLink(null, null, $rid);
-    $link->remove();
-    return $this->generateResponse($request);
+  public function listNodes($news_id, Request $request) {
+    return $this->getList($request, $news_id);
 
   }
 
@@ -100,6 +106,54 @@ class NewsLinkController extends ControllerBase implements ContainerInjectionInt
    * @return \Drupal\Core\Ajax\AjaxResponse|\Symfony\Component\HttpFoundation\RedirectResponse
    *   The response object.
    */
+  protected function getList(Request $request, $news_id){
+    if ($request->get(MainContentViewSubscriber::WRAPPER_FORMAT) == 'drupal_ajax') {
+      // Create a new AJAX response.
+      $response = new AjaxResponse();
+      $link_id = '#capital-link-news-' . $news_id;// . $relation->news_id;
+      \Drupal::logger('capital-test')->debug(print_r($link_id, true));
+
+      $list = [
+        '#type' => 'container',
+          '#attributes' => [
+            'class' => 'dropdown-toggle',
+          ],
+        'button' => [
+          '#type' => 'dropbutton',
+          '#links' => [
+            /*
+            't' => [
+              'title' => '1',
+              'url' => Url::fromRoute('capital_news.favoritenews', ['nid' => 121]),
+            ],
+             */
+          ],
+        ],
+      ];
+      
+          
+
+      $list = '<div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li><a href="#">test</a></li>
+        <li><a href="#">test1</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#">test3</a></li>
+        </ul>
+        </div>';
+      $replace = new AfterCommand($link_id, $list);//$isNew? $relation->getRemoveLink(): $relation->getAddLink());
+      //      $replace = new ReplaceCommand($link_id, 'asdf');//$isNew? $relation->getRemoveLink(): $relation->getAddLink());
+      $response->addCommand($replace);
+
+      return $response;
+    }
+    else {
+      //\Drupal::logger('capital-test')->notice(print_r('else', true));
+    }
+  }
   protected function generateResponse(Request $request, $isNew, $relation) {
     if ($request->get(MainContentViewSubscriber::WRAPPER_FORMAT) == 'drupal_ajax') {
       // Create a new AJAX response.

@@ -3,13 +3,13 @@ status: true
 dependencies:
   config:
     - field.storage.relation.endpoints
-    - relation.type.user_favorite_news
+    - relation.type.link_news
   module:
     - relation_endpoint
-id: relation.user_favorite_news.endpoints
+id: relation.link_news.endpoints
 field_name: endpoints
 entity_type: relation
-bundle: user_favorite_news
+bundle: link_news
 label: Endpoints
 description: ''
 required: false

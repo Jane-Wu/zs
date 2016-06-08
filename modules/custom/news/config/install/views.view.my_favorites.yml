@@ -362,7 +362,7 @@ display:
             rel: ''
             link_class: ''
             prefix: '<span class="label label-default">{{ field_key_words }}</span>     '
-            suffix: '<a id="ajax-test" href="/capital-lang/news/{{ nid }}/add-favorite" class="use-ajax glyphicon glyphicon-star-empty"></a>'
+            suffix: ''
             target: _blank
             nl2br: false
             max_length: 0
