@@ -20,6 +20,9 @@ function capital_common_get_rest_api($url, $headers = array()) {
   return json_decode($body);
 }
 function capital_common_get_rest_custom_search($key, $orterms = null, $sort = 'date') {
+  if( empty($key)){
+    return;
+  }
   $encoded_key = strpos($key, ' ') !== false? implode('+', array_map('_capital_common_wrap_search_key', explode(' ', $key))): '"' . urlencode($key) . '"';
   //$config = \Drupal::config('capital_news.settings');
   //$url = 'https://www.googleapis.com/customsearch/v1?key=' . $config->get('search.apikey') . '&cx=' . $config->get('search.csekey') . '&filter=1&dateRestrict=d1&q=' . $encoded_key; 

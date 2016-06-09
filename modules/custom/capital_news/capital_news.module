@@ -9,6 +9,7 @@ use Drupal\Core\Entity;
 use Drupal\Core\StreamWrapper\PublicStream;
 use Drupal\relation\Entity\Relation;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\capital_news\LinkNewsNodeLink;
 
 define('GOOGLE_SEARCH_TID', 178);
 define('WECHAT_SEARCH_TID', 180);
@@ -158,7 +159,7 @@ function _capital_news_createNews($key, $title, $description, $link, $timestamp,
 
     if($cache_flag){
       $content['field_content'] = [
-        'value' => 'abc',
+        'value' => get_url_content($link),
         'format' => 'full_html'
       ];
     }
@@ -187,8 +188,15 @@ function save_news_content($nid) {
     );
     return;
   }
+
+  $node->set('field_content',
+    array('value'=>get_url_content($request_url), 'format'=>'full_html'));
+  return $node->save();
+}
+
+function get_url_content($url) {
   // Get the html content of the url
-  $html_content = file_get_contents($request_url);
+  $html_content = file_get_contents($url);
 
   $dom = new \DOMDocument();
   $dom->loadHTML($html_content);
@@ -198,11 +206,7 @@ function save_news_content($nid) {
   // @todo: save the images to s3
   //_replace_image_src($dom);
 
-  $html_content = $dom->saveHTML();
-
-  $node->set('field_content',
-    array('value'=>$html_content, 'format'=>'full_html'));
-  return $node->save();
+  return $dom->saveHTML();
 }
 
 // Remove all the JavaScripts elements
