@@ -17,6 +17,7 @@ dependencies:
   - path
   - relation
   - relation_endpoint
+  - staff
   - taxonomy
   - text
   - user

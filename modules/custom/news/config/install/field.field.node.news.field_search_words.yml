@@ -1,0 +1,18 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_search_words
+    - node.type.news
+id: node.news.field_search_words
+field_name: field_search_words
+entity_type: node
+bundle: news
+label: 'Search Words'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -5,10 +5,11 @@ dependencies:
     - field.field.node.news.field_approximate_time
     - field.field.node.news.field_content
     - field.field.node.news.field_description
-    - field.field.node.news.field_key_words
     - field.field.node.news.field_news_link
     - field.field.node.news.field_news_origin
+    - field.field.node.news.field_related_nodes
     - field.field.node.news.field_search_type
+    - field.field.node.news.field_search_words
     - field.field.node.news.field_title
     - node.type.news
   module:
@@ -41,13 +42,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
-  field_key_words:
-    type: entity_reference_label
-    weight: 0
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
   field_news_link:
     weight: 103
     label: above
@@ -66,6 +60,13 @@ content:
     settings:
       link: true
     third_party_settings: {  }
+  field_related_nodes:
+    weight: 111
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_search_type:
     weight: 109
     label: above
@@ -73,6 +74,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+  field_search_words:
+    weight: 110
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   field_title:
     weight: 106
     label: above

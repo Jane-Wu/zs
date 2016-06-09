@@ -5,10 +5,11 @@ dependencies:
     - field.field.node.news.field_approximate_time
     - field.field.node.news.field_content
     - field.field.node.news.field_description
-    - field.field.node.news.field_key_words
     - field.field.node.news.field_news_link
     - field.field.node.news.field_news_origin
+    - field.field.node.news.field_related_nodes
     - field.field.node.news.field_search_type
+    - field.field.node.news.field_search_words
     - field.field.node.news.field_title
     - node.type.news
   module:
@@ -45,14 +46,6 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textfield
-  field_key_words:
-    type: entity_reference_autocomplete_tags
-    weight: 0
-    settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_news_link:
     weight: 33
     settings:
@@ -68,6 +61,14 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_related_nodes:
+    weight: 41
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
   field_search_type:
     weight: 39
     settings:
@@ -76,6 +77,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+  field_search_words:
+    weight: 40
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
   field_title:
     weight: 36
     settings:

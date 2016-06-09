@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.storage.node.field_approximate_time
     - field.storage.node.field_description
-    - field.storage.node.field_key_words
     - field.storage.node.field_news_link
     - field.storage.node.field_title
     - node.type.news
@@ -694,7 +693,6 @@ display:
       tags:
         - 'config:field.storage.node.field_approximate_time'
         - 'config:field.storage.node.field_description'
-        - 'config:field.storage.node.field_key_words'
         - 'config:field.storage.node.field_news_link'
         - 'config:field.storage.node.field_title'
   page_1:
@@ -748,6 +746,5 @@ display:
       tags:
         - 'config:field.storage.node.field_approximate_time'
         - 'config:field.storage.node.field_description'
-        - 'config:field.storage.node.field_key_words'
         - 'config:field.storage.node.field_news_link'
         - 'config:field.storage.node.field_title'

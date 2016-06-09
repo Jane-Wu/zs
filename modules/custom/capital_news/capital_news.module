@@ -10,19 +10,23 @@ use Drupal\Core\StreamWrapper\PublicStream;
 use Drupal\relation\Entity\Relation;
 use Drupal\taxonomy\Entity\Term;
 
+define('GOOGLE_SEARCH_TID', 178);
+define('WECHAT_SEARCH_TID', 180);
+define('WECHAT_OFFICIAL_TID', 179);
+define('WECHAT_ORIGIN_TID', 182);
+
 function capital_news_cron(){
   _capital_news_get_news();
 }
 function _capital_news_get_news() {
   // Google 
-  $google_tid = 178;
-  $wechat_tid = 180;
   // Company News
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
-    //getGoogleNews($node->getTitle(), 0, $google_tid, $node->get('field_short_name')->value); //@TODO
-    getWechatSearchNews($node->getTitle(), 0, $wechat_tid, $node->get('field_short_name')->value);
-    break;
+    getGoogleNews($node->getTitle(), $node->id(), $node->get('field_short_name')->value);
+    getWechatOfficalNews($node->get('field_wechat')->value, $node->id());
+    getWechatSearchNews($node->getTitle(), $node->id());
+    getWechatSearchNews($node->get('field_short_name')->value, $node->id());
   }
   return;
   // Other Key words
@@ -43,7 +47,7 @@ function getNodesByType($type){
   $nids = $query->execute();
   return \Drupal::entityManager()->getStorage('node')->loadMultiple(array_values($nids));
 }
-function getGoogleNews($key, $key_tid, $search_type_tid, $or_key = null){
+function getGoogleNews($key, $nid, $or_key = null){
   $json = capital_common_get_rest_custom_search($key, $or_key);
   if(isset($json->items)){
     $current_time = time();
@@ -58,27 +62,28 @@ function getGoogleNews($key, $key_tid, $search_type_tid, $or_key = null){
       $approximate_timestamp = str_replace('+00:00', '', date_format(date_timestamp_set(new DateTime("now", new DateTimeZone('Etc/GMT+0')), $approximate_timestamp), 'c'));
       $origin_tid = _capital_news_getTidByLinkAndVocabulary($result->displayLink);
       $description = isset($matches[3])? str_replace('<br>', '', $matches[3]) : $result->htmlSnippet;
-      _capital_news_createNews($result->htmlTitle, $description, $result->link, $approximate_timestamp, $origin_tid, $search_type_tid, $key_tid);
+      _capital_news_createNews($key, $result->htmlTitle, $description, $result->link, $approximate_timestamp, $origin_tid, GOOGLE_SEARCH_TID, $nid);
     }
   } elseif(isset($json->queries->request->totalResults) && $json->queries->request->totalResults != 0){
     \Drupal::logger('capital-rest')->error('Unexpected returned structure, ' . print_r($json, true));
   }
 }
-function getWechatSearchNews($key, $key_tid, $search_type_tid, $or_key = null){
+function getWechatSearchNews($key, $nid){
   $json = capital_common_get_wechat_search($key);
-  //\Drupal::logger('capital-rest')->warning('Date format d, ' . print_r($json, true));
-    foreach($json as $result){
-    $time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
-    _capital_news_createNews($result->title, $result->digest, $result->url, $time, 0, $search_type_tid, $key_tid, $result->content);
-    }
-}
-
-function getWechatOfficalNews($account_term, $search_type_tid){
-  $term = Term::load($account_term->tid);
-  $json = capital_common_get_wechat_offical_search($term->get('field_wechat_account')->value);
   foreach($json as $result){
     $time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
-    _capital_news_createNews($result->title, $result->digest, $result->url, $time, $account_term->tid, $search_type_tid, 0, $result->content);
+    _capital_news_createNews($key, $result->title, $result->digest, $result->url, $time, WECHAT_ORIGIN_TID, WECHAT_SEARCH_TID, $nid);
+  }
+}
+
+function getWechatOfficalNews($key, $nid, $tid = null){
+  //$term = Term::load($account_term->tid);
+  //$json = capital_common_get_wechat_offical_search($term->get('field_wechat_account')->value);
+  $json = capital_common_get_wechat_offical_search($key);
+  \Drupal::logger('capital-test')->debug(print_r($json, true));
+  foreach($json as $result){
+    $time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
+    _capital_news_createNews($key, $result->title, $result->digest, $result->url, $time, $tid == null? WECHAT_ORIGIN_TID: $tid, WECHAT_OFFICIAL_TID, $nid, true);
   }
 }
 
@@ -102,20 +107,20 @@ function _capital_news_getTidByLinkAndVocabulary($link){
   $result = $db->select('taxonomy_term__field_domain_link','l')->fields('l', ['entity_id'])->condition('bundle', 'news_orgins')->condition('field_domain_link_value', '%' .  $db->escapeLike($link) . '%', 'LIKE')->execute()->fetchAll();
   return count($result) == 1? $result[0]->entity_id: 0;  //@TODO
 }
-function _capital_news_createNews($title, $description, $link, $timestamp, $origin_tid,  $type_tid, $key_tid, $content = null){
+function _capital_news_createNews($key, $title, $description, $link, $timestamp, $origin_tid, $type_tid, $nid = null, $cache_flag = false){
   $db = \Drupal::database();
   $result = $db->select('node__field_news_link','l')->fields('l', ['entity_id'])->condition('field_news_link_uri', $link)->execute()->fetchAll();
   if (count($result)  > 0 ){
     $db = \Drupal::database();
-    $links = $db->select('node__field_key_words','k')->fields('k', ['entity_id'])->condition('entity_id', $result[0]->entity_id)->condition('field_key_words_target_id', $key_tid)->execute()->fetchAll();
+    $links = $db->select('node__field_search_words','w')->fields('w', ['entity_id'])->condition('entity_id', $result[0]->entity_id)->condition('node__field_search_words_value', $key)->execute()->fetchAll();
     if (count($links)  == 0 ){
       $node = Node::load($result[0]->entity_id);
-      $node->field_key_words[] = $key_tid;
+      $node->field_search_words[]['value'] = $key;
       $node->save();
     }
   } elseif (count($result) == 0){
 
-    $node = Node::create([
+    $content = [
       'type' => 'news',
       'created' => REQUEST_TIME,
       'changed' => REQUEST_TIME,
@@ -132,17 +137,24 @@ function _capital_news_createNews($title, $description, $link, $timestamp, $orig
       'field_news_link' =>[
         'uri' => $link,
       ],
-      'field_content' =>[
-        'value' => $content,
-        'format' => 'full_html'
-      ],
       'field_news_origin' => [$origin_tid],
       'field_search_type' =>[ $type_tid],
-      'field_key_words' =>[$key_tid],
+      'field_related_nodes' =>[$nid],
+      'field_search_words' =>[
+        'value' => $key,
+      ],
       'field_approximate_time' =>[
         'value' => $timestamp,
       ],
-    ]);
+    ];
+
+    if($cache_flag){
+      $content['field_content'] = [
+        'value' => 'abc',
+        'format' => 'full_html'
+      ];
+    }
+    $node = Node::create($content);
     $node->save();
   }
 }
