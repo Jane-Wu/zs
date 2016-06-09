@@ -13,31 +13,42 @@ use Drupal\taxonomy\Entity\Term;
 define('GOOGLE_SEARCH_TID', 178);
 define('WECHAT_SEARCH_TID', 180);
 define('WECHAT_OFFICIAL_TID', 179);
-define('WECHAT_ORIGIN_TID', 182);
 
 function capital_news_cron(){
   _capital_news_get_news();
 }
 function _capital_news_get_news() {
-  // Google 
   // Company News
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
     getGoogleNews($node->getTitle(), $node->id(), $node->get('field_short_name')->value);
-    getWechatOfficalNews($node->get('field_wechat')->value, $node->id());
+    getWechatOfficalNews($node->get('field_wechat')->value, $node->id(), $node->getTitle());
     getWechatSearchNews($node->getTitle(), $node->id());
     getWechatSearchNews($node->get('field_short_name')->value, $node->id());
   }
-  return;
-  // Other Key words
+
+  // Core staff news
+  $nodes = getNodesByType('staff');
+  foreach( $nodes as $node){
+    getGoogleNews($node->getTitle(), $node->id());
+    getWechatSearchNews($node->getTitle(), $node->id());
+  }
+  // Other Google Key words
   $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs','hot_spots','oversee_spots','general_key_words']);
   foreach( $keywords_terms as $term){
-   // getGoogleNews($term->name, $term->tid, $google_tid);
+    getGoogleNews($term->name);
   }
+
+  // Other wechat accounts
   $account_terms = _capital_news_getTermsByVocabularies(['wechat_accounts']);
-  $wechat_offical_tid = 179;
   foreach( $account_terms as $account_term){
-    getWechatOfficalNews($account_term, $wechat_offical_tid);
+    $term = Term::load($account_term->tid);
+    getWechatOfficalNews($term->get('field_wechat_account')->value, null, $account_term->name);
+  }
+  // Other Wechat Key words
+  $keywords_terms = _capital_news_getTermsByVocabularies(['wechat_keywords']);
+  foreach( $keywords_terms as $term){
+    getWechatSearchNews($term->name);
   }
 }
 function getNodesByType($type){
@@ -47,7 +58,7 @@ function getNodesByType($type){
   $nids = $query->execute();
   return \Drupal::entityManager()->getStorage('node')->loadMultiple(array_values($nids));
 }
-function getGoogleNews($key, $nid, $or_key = null){
+function getGoogleNews($key, $nid = null, $or_key = null){
   $json = capital_common_get_rest_custom_search($key, $or_key);
   if(isset($json->items)){
     $current_time = time();
@@ -68,22 +79,19 @@ function getGoogleNews($key, $nid, $or_key = null){
     \Drupal::logger('capital-rest')->error('Unexpected returned structure, ' . print_r($json, true));
   }
 }
-function getWechatSearchNews($key, $nid){
+function getWechatSearchNews($key, $nid = null){
   $json = capital_common_get_wechat_search($key);
   foreach($json as $result){
     $time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
-    _capital_news_createNews($key, $result->title, $result->digest, $result->url, $time, WECHAT_ORIGIN_TID, WECHAT_SEARCH_TID, $nid);
+    _capital_news_createNews($key, $result->title, $result->digest, $result->url, $time, null, WECHAT_SEARCH_TID, $nid);
   }
 }
 
-function getWechatOfficalNews($key, $nid, $tid = null){
-  //$term = Term::load($account_term->tid);
-  //$json = capital_common_get_wechat_offical_search($term->get('field_wechat_account')->value);
+function getWechatOfficalNews($key, $nid = null, $display_name, $tid = null){
   $json = capital_common_get_wechat_offical_search($key);
-  \Drupal::logger('capital-test')->debug(print_r($json, true));
   foreach($json as $result){
     $time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
-    _capital_news_createNews($key, $result->title, $result->digest, $result->url, $time, $tid == null? WECHAT_ORIGIN_TID: $tid, WECHAT_OFFICIAL_TID, $nid, true);
+    _capital_news_createNews($display_name, $result->title, $result->digest, $result->url, $time, $tid, WECHAT_OFFICIAL_TID, $nid, true);
   }
 }
 
@@ -112,7 +120,7 @@ function _capital_news_createNews($key, $title, $description, $link, $timestamp,
   $result = $db->select('node__field_news_link','l')->fields('l', ['entity_id'])->condition('field_news_link_uri', $link)->execute()->fetchAll();
   if (count($result)  > 0 ){
     $db = \Drupal::database();
-    $links = $db->select('node__field_search_words','w')->fields('w', ['entity_id'])->condition('entity_id', $result[0]->entity_id)->condition('node__field_search_words_value', $key)->execute()->fetchAll();
+    $links = $db->select('node__field_search_words','w')->fields('w', ['entity_id'])->condition('entity_id', $result[0]->entity_id)->condition('field_search_words_value', $key)->execute()->fetchAll();
     if (count($links)  == 0 ){
       $node = Node::load($result[0]->entity_id);
       $node->field_search_words[]['value'] = $key;
