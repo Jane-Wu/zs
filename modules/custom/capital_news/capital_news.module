@@ -15,20 +15,21 @@ function capital_news_cron(){
 }
 function _capital_news_get_news() {
   // Google 
-  /*
   $google_tid = 178;
+  $wechat_tid = 180;
   // Company News
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
-    getGoogleNews($node->getTitle(), 0, $google_tid, $node->get('field_short_name')->value); //@TODO
+    //getGoogleNews($node->getTitle(), 0, $google_tid, $node->get('field_short_name')->value); //@TODO
+    getWechatSearchNews($node->getTitle(), 0, $wechat_tid, $node->get('field_short_name')->value);
+    break;
   }
+  return;
   // Other Key words
   $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs','hot_spots','oversee_spots','general_key_words']);
   foreach( $keywords_terms as $term){
-    getGoogleNews($term->name, $term->tid, $google_tid);
+   // getGoogleNews($term->name, $term->tid, $google_tid);
   }
-  return;
-   */
   $account_terms = _capital_news_getTermsByVocabularies(['wechat_accounts']);
   $wechat_offical_tid = 179;
   foreach( $account_terms as $account_term){
@@ -62,6 +63,14 @@ function getGoogleNews($key, $key_tid, $search_type_tid, $or_key = null){
   } elseif(isset($json->queries->request->totalResults) && $json->queries->request->totalResults != 0){
     \Drupal::logger('capital-rest')->error('Unexpected returned structure, ' . print_r($json, true));
   }
+}
+function getWechatSearchNews($key, $key_tid, $search_type_tid, $or_key = null){
+  $json = capital_common_get_wechat_search($key);
+  //\Drupal::logger('capital-rest')->warning('Date format d, ' . print_r($json, true));
+    foreach($json as $result){
+    $time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
+    _capital_news_createNews($result->title, $result->digest, $result->url, $time, 0, $search_type_tid, $key_tid, $result->content);
+    }
 }
 
 function getWechatOfficalNews($account_term, $search_type_tid){

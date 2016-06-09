@@ -32,7 +32,7 @@ class FavoriteNewsLink {
     return $rids;
   }
   public function getLink(){
-    return empty($this->exists())? $this->getRemoveLink(): $this->getAddLink();
+    return empty($this->exists())?  $this->getAddLink() : $this->getRemoveLink();
   }
   public function getAddLink(){
     $link = [
