@@ -27,7 +27,6 @@ function _capital_news_get_news() {
     getWechatSearchNews($node->getTitle(), $node->id());
     getWechatSearchNews($node->get('field_short_name')->value, $node->id());
   }
-
   // Core staff news
   $nodes = getNodesByType('staff');
   foreach( $nodes as $node){
@@ -39,7 +38,6 @@ function _capital_news_get_news() {
   foreach( $keywords_terms as $term){
     getGoogleNews($term->name);
   }
-
   // Other wechat accounts
   $account_terms = _capital_news_getTermsByVocabularies(['wechat_accounts']);
   foreach( $account_terms as $account_term){
@@ -124,7 +122,12 @@ function _capital_news_createNews($key, $title, $description, $link, $timestamp,
     $links = $db->select('node__field_search_words','w')->fields('w', ['entity_id'])->condition('entity_id', $result[0]->entity_id)->condition('field_search_words_value', $key)->execute()->fetchAll();
     if (count($links)  == 0 ){
       $node = Node::load($result[0]->entity_id);
-      $node->field_search_words[]['value'] = $key;
+      $node->field_search_words[] = ['value' => $key];
+      if($nid){
+        $node->field_related_nids[] = $nid;
+      }
+
+
       $node->save();
     }
   } elseif (count($result) == 0){
