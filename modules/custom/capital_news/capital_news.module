@@ -18,11 +18,13 @@ define('WECHAT_OFFICIAL_TID', 179);
 function capital_news_cron(){
   _capital_news_get_news();
 }
-function _capital_news_get_news() {
+function _capital_news_get_news($google_flag = true) {
   // Company News
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
-    getGoogleNews($node->getTitle(), $node->id(), $node->get('field_short_name')->value);
+    if($google_flag){
+      getGoogleNews($node->getTitle(), $node->id(), $node->get('field_short_name')->value);
+    }
     getWechatOfficalNews($node->get('field_wechat')->value, $node->id(), $node->getTitle());
     getWechatSearchNews($node->getTitle(), $node->id());
     getWechatSearchNews($node->get('field_short_name')->value, $node->id());
@@ -30,13 +32,17 @@ function _capital_news_get_news() {
   // Core staff news
   $nodes = getNodesByType('staff');
   foreach( $nodes as $node){
-    getGoogleNews($node->getTitle(), $node->id());
+    if($google_flag){
+      getGoogleNews($node->getTitle(), $node->id());
+    }
     getWechatSearchNews($node->getTitle(), $node->id());
   }
   // Other Google Key words
-  $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs','hot_spots','oversee_spots','general_key_words']);
-  foreach( $keywords_terms as $term){
-    getGoogleNews($term->name);
+  if($google_flag){
+    $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs','hot_spots','oversee_spots','general_key_words']);
+    foreach( $keywords_terms as $term){
+      getGoogleNews($term->name);
+    }
   }
   // Other wechat accounts
   $account_terms = _capital_news_getTermsByVocabularies(['wechat_accounts']);
@@ -81,7 +87,8 @@ function getGoogleNews($key, $nid = null, $or_key = null){
 function getWechatSearchNews($key, $nid = null){
   $json = capital_common_get_wechat_search($key);
   foreach($json as $result){
-    $time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
+    //$time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
+    $time = (new DateTime($result->date, new DateTimeZone('Etc/GMT+0')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
     _capital_news_createNews($key, $result->title, $result->digest, $result->url, $time, null, WECHAT_SEARCH_TID, $nid);
   }
 }
@@ -89,7 +96,8 @@ function getWechatSearchNews($key, $nid = null){
 function getWechatOfficalNews($key, $nid = null, $display_name, $tid = null){
   $json = capital_common_get_wechat_offical_search($key);
   foreach($json as $result){
-    $time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
+    //$time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
+    $time = (new DateTime($result->date, new DateTimeZone('Etc/GMT+0')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
     _capital_news_createNews($display_name, $result->title, $result->digest, $result->url, $time, $tid, WECHAT_OFFICIAL_TID, $nid, true);
   }
 }

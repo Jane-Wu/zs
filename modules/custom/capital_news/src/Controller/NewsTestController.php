@@ -12,7 +12,7 @@ use Drupal\Core\Controller\ControllerBase;
 class NewsTestController extends ControllerBase {
 
     public function content() {
-        _capital_news_get_news();
+        _capital_news_get_news(false);
         //   self::createTerms();
         $news=array();
         return $news;
