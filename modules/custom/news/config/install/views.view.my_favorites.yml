@@ -5,6 +5,7 @@ dependencies:
     - field.storage.node.field_approximate_time
     - field.storage.node.field_description
     - field.storage.node.field_news_link
+    - field.storage.node.field_search_words
     - field.storage.node.field_title
     - node.type.news
     - taxonomy.vocabulary.search_type
@@ -338,6 +339,69 @@ display:
           hide_alter_empty: true
           entity_type: node
           plugin_id: favorite_link
+        field_search_words:
+          id: field_search_words
+          table: node__field_search_words
+          field: field_search_words
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: span
+          element_class: pull-right
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
         field_title:
           id: field_title
           table: node__field_title
@@ -360,7 +424,7 @@ display:
             alt: ''
             rel: ''
             link_class: ''
-            prefix: '<span class="label label-default">{{ field_key_words }}</span>     '
+            prefix: '<span class="label label-default">{{ field_search_words }}</span>     '
             suffix: ''
             target: _blank
             nl2br: false
@@ -694,6 +758,7 @@ display:
         - 'config:field.storage.node.field_approximate_time'
         - 'config:field.storage.node.field_description'
         - 'config:field.storage.node.field_news_link'
+        - 'config:field.storage.node.field_search_words'
         - 'config:field.storage.node.field_title'
   page_1:
     display_plugin: page
@@ -747,4 +812,5 @@ display:
         - 'config:field.storage.node.field_approximate_time'
         - 'config:field.storage.node.field_description'
         - 'config:field.storage.node.field_news_link'
+        - 'config:field.storage.node.field_search_words'
         - 'config:field.storage.node.field_title'
