@@ -63,8 +63,10 @@ body.navbar-is-fixed-top {
 }
 .view-header .view-btn-right {
   position: absolute;
-  top: -43px;
   right: 0;
+}
+.block .view-header .view-btn-right {
+  top: -43px;
 }
 
 /* news */
