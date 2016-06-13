@@ -20,18 +20,15 @@ function capital_news_cron(){
 }
 function _capital_news_get_news($google_flag = true) {
   // Company News
-  /*
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
     if($google_flag){
       getGoogleNews($node->getTitle(), $node->id(), $node->get('field_short_name')->value);
     }
     getWechatOfficalNews($node->get('field_wechat')->value, $node->id(), $node->getTitle());
-    //getWechatSearchNews($node->getTitle(), $node->id());
-    //getWechatSearchNews($node->get('field_short_name')->value, $node->id());
+    getWechatSearchNews($node->getTitle(), $node->id());
+    getWechatSearchNews($node->get('field_short_name')->value, $node->id());
   }
-  return;
-   */
   // Core staff news
   $nodes = getNodesByType('staff');
   foreach( $nodes as $node){
@@ -42,7 +39,6 @@ function _capital_news_get_news($google_flag = true) {
     }
     getWechatSearchNews($key, $node->id());
   }
-  return;
   // Other Google Key words
   if($google_flag){
     $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs','hot_spots','oversee_spots','general_key_words']);
@@ -95,7 +91,9 @@ function getWechatSearchNews($key, $nid = null){
   foreach($json as $result){
     //$time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
     $time = (new DateTime($result->date, new DateTimeZone('Etc/GMT+0')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
-    _capital_news_createNews($key, $result->title, $result->digest, $result->url, $time, null, WECHAT_SEARCH_TID, $nid);
+    $description = preg_replace('/<.?p( |=|"|\w)*>/', '', $result->digest);
+    $description = str_replace(['<em>', '</em>'], ['<strong>', '</strong>'], $description);
+    _capital_news_createNews($key, $result->title, $description, $result->url, $time, null, WECHAT_SEARCH_TID, $nid);
   }
 }
 
