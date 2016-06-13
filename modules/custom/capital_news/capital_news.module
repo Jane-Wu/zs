@@ -26,9 +26,10 @@ function _capital_news_get_news($google_flag = true) {
       getGoogleNews($node->getTitle(), $node->id(), $node->get('field_short_name')->value);
     }
     getWechatOfficalNews($node->get('field_wechat')->value, $node->id(), $node->getTitle());
-    getWechatSearchNews($node->getTitle(), $node->id());
-    getWechatSearchNews($node->get('field_short_name')->value, $node->id());
+    //getWechatSearchNews($node->getTitle(), $node->id());
+    //getWechatSearchNews($node->get('field_short_name')->value, $node->id());
   }
+  return;
   // Core staff news
   $nodes = getNodesByType('staff');
   foreach( $nodes as $node){
@@ -98,7 +99,12 @@ function getWechatOfficalNews($key, $nid = null, $display_name, $tid = null){
   foreach($json as $result){
     //$time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
     $time = (new DateTime($result->date, new DateTimeZone('Etc/GMT+0')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
-    _capital_news_createNews($display_name, $result->title, $result->digest, $result->url, $time, $tid, WECHAT_OFFICIAL_TID, $nid, true);
+    $news_id = _capital_news_createNews($display_name, $result->title, $result->digest, $result->url, $time, $tid, WECHAT_OFFICIAL_TID, $nid, true);
+
+    if($nid){
+      $link = new LinkNewsNodeLink($news_id, $nid);
+      $link->create();
+    }
   }
 }
 
@@ -176,6 +182,7 @@ function _capital_news_createNews($key, $title, $description, $link, $timestamp,
     }
     $node = Node::create($content);
     $node->save();
+    return $node->id();
   }
 }
 function capital_news_theme() {
