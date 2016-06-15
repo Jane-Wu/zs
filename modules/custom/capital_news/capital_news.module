@@ -104,7 +104,7 @@ function getWechatOfficalNews($key, $nid = null, $display_name, $tid = null){
     $time = (new DateTime($result->date, new DateTimeZone('Etc/GMT+0')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
     $news_id = _capital_news_createNews($display_name, $result->title, $result->digest, $result->url, $time, $tid, WECHAT_OFFICIAL_TID, $nid, true);
 
-    if($nid){
+    if($nid && $news_id){
       $link = new LinkNewsNodeLink($news_id, $nid);
       $link->create();
     }

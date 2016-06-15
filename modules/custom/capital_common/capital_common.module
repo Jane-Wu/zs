@@ -4,7 +4,6 @@
  * Implements hook_theme().
  */
 function capital_common_get_rest_api($url, $headers = array()) {
-  \Drupal::logger('capital-rest')->notice('URL ' . print_r($url, true));
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);
   curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -66,6 +65,10 @@ function capital_common_get_rest_custom_search($key, $orterms = null, $sort = 'd
       \Drupal::logger('capital-rest')->error('Error ' . print_r($results, true));
     }
   }
+  \Drupal::logger('capital-google')->info( print_r($key . ' ' . $url, true));
+  if(isset($results->items) && count($results->items) == 0){
+    \Drupal::logger('capital-google-no-result')->info( print_r($key . ' ' . $url, true));
+  }
   return $results;
 }
 function capital_common_get_wechat_search($key){
@@ -73,7 +76,11 @@ function capital_common_get_wechat_search($key){
   $encoded_key = implode('+', array_map('_capital_common_wrap_search_key', explode(' ', $key)));
   $url = "http://52.78.11.123/keyword-day/" . $encoded_key;
   $results = capital_common_get_rest_api($url);
-  \Drupal::logger('capital-wechat')->error( print_r($results, true));
+  \Drupal::logger('capital-wechat')->info( print_r($key . ' ' . $url, true));
+  if(count($results) == 0){
+    \Drupal::logger('capital-wechat-no-result')->info( print_r($key . ' ' . $url, true));
+  }
+
   return $results;
 }
 function _capital_common_wrap_search_key($key){
@@ -81,9 +88,5 @@ function _capital_common_wrap_search_key($key){
 }
 function capital_common_get_wechat_offical_search($account_name) {
   $url = "http://52.78.11.123/account/" . urlencode($account_name);
-  return (capital_common_get_rest_api($url));
-}
-function capital_common_get_wechat_offical_test_search($account_name) {
-  $url = "http://api.aerchi.com/weixin/api.php?wxID=" . $account_name . "&key=FR2sIR7jULp2dVhw2CURrSVfhjvgGVlLNK2C6Vshy3IQhDJL+G2uqw";
   return (capital_common_get_rest_api($url));
 }
