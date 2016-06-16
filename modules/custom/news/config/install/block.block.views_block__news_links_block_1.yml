@@ -1,0 +1,31 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - views.view.news_links
+  module:
+    - node
+    - views
+  theme:
+    - capital
+id: views_block__news_links_block_1
+theme: capital
+region: content
+weight: null
+provider: null
+plugin: 'views_block:news_links-block_1'
+settings:
+  id: 'views_block:news_links-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: '5'
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      company: company
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

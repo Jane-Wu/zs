@@ -21,5 +21,6 @@ function capital_news_views_data() {
       'id' => 'linknode_link',
     ),
   );
+
   return $data;
 }
