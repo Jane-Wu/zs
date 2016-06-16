@@ -11,7 +11,7 @@ use Drupal\dblog\Controller\DbLogController;
 class NewsReportController extends DbLogController{
   public function getContent($type) {
     // Keep a backup of the old filer for dblog page
-    $old_filter = $_SESSION['dblog_overview_filter'];
+    $old_filter = isset($_SESSION['dblog_overview_filter']) ? $_SESSION['dblog_overview_filter'] : NULL;
 
     $filter_type = "capital-$type-no-result";
     // Create the filter for our customized type
@@ -40,7 +40,12 @@ class NewsReportController extends DbLogController{
     $content['dblog_table']['#rows'] = $new_rows;
 
     // Set back the old filter for dblog
-    $_SESSION['dblog_overview_filter'] = $old_filter;
+    if ($old_filter) {
+      $_SESSION['dblog_overview_filter'] = $old_filter;
+    }
+    else {
+      unset($_SESSION['dblog_overview_filter']);
+    }
 
     return $content;
   }
