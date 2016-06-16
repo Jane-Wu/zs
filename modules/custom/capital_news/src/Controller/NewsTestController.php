@@ -13,8 +13,7 @@ class NewsTestController extends ControllerBase {
 
   public function content() {
     //_capital_news_get_news(false);
-    _capital_news_getTidByLinkAndVocabulary('www.cankaoxiaoxi.com');
-    //_capital_news_get_news();
+    _capital_news_get_news();
     //   self::createTerms();
     $news=array();
     return $news;
