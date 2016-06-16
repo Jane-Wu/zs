@@ -33,11 +33,13 @@ function _capital_news_get_news($google_flag = true) {
   $nodes = getNodesByType('staff');
   foreach( $nodes as $node){
     $company = Node::load($node->get('field_company')->target_id);
-    $key = $node->getTitle() . ' ' . $company->get('field_short_name')->value;
-    if($google_flag){
-      getGoogleNews($key, $node->id());
+    if($company && $node->get('field_staff_type')->target_id == 10){
+      $key = $node->getTitle() . ' ' . $company->get('field_short_name')->value;
+      if($google_flag){
+        getGoogleNews($key, $node->id());
+      }
+      getWechatSearchNews($key, $node->id());
     }
-    getWechatSearchNews($key, $node->id());
   }
   // Other Google Key words
   if($google_flag){
