@@ -26,6 +26,13 @@ capital_news.test:
     _title: 'test'
   requirements:
     _permission: 'access content'
+capital_news.report:
+  path: 'news/report/{type}'
+  defaults:
+    _controller: '\Drupal\capital_news\Controller\NewsReportController::getContent'
+    _title_callback: '\Drupal\capital_news\Controller\NewsReportController::getTitle'
+  requirements:
+    _permission: 'access content'
 capital_news.config.google:
   path: 'news/config/google'
   defaults:
