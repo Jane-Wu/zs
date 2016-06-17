@@ -108,7 +108,10 @@ function getWechatOfficalNews($key, $nid = null, $display_name, $tid = null){
 
     if($nid && $news_id){
       $link = new LinkNewsNodeLink($news_id, $nid);
-      $link->create();
+      $exist = $link->exist();
+      if(count($exist) ==0){
+        $link->create();
+      }
     }
   }
 }
@@ -150,6 +153,7 @@ function _capital_news_createNews($key, $title, $description, $link, $timestamp,
         $node->field_related_nids[] = $nid;
       }
       $node->save();
+      return $node->id();
     }
   } elseif (count($result) == 0){
 
