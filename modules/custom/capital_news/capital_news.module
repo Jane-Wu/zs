@@ -25,7 +25,9 @@ function _capital_news_get_news($google_flag = true) {
     if($google_flag){
       getGoogleNews($node->getTitle(), $node->id(), $node->get('field_short_name')->value);
     }
-    getWechatOfficalNews($node->get('field_wechat')->value, $node->id(), $node->getTitle());
+    if($node->get('field_wechat')->value != null){
+      getWechatOfficalNews($node->get('field_wechat')->value, $node->id(), $node->getTitle());
+    }
     getWechatSearchNews($node->getTitle(), $node->id());
     getWechatSearchNews($node->get('field_short_name')->value, $node->id());
   }
@@ -108,7 +110,7 @@ function getWechatOfficalNews($key, $nid = null, $display_name, $tid = null){
 
     if($nid && $news_id){
       $link = new LinkNewsNodeLink($news_id, $nid);
-      $exist = $link->exist();
+      $exist = $link->exists();
       if(count($exist) ==0){
         $link->create();
       }
