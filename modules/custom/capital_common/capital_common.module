@@ -95,15 +95,15 @@ function capital_common_get_wechat_search($key){
 function _capital_common_wrap_search_key($key){
   return '"' . urlencode($key) . '"';
 }
-function capital_common_get_wechat_offical_search($key) {
+function capital_common_get_wechat_official_search($key) {
   if( empty($key)){
     return;
   }
   $url = "http://52.78.7.61/account/" . urlencode($key);
   $results = capital_common_get_rest_api($url);
-  \Drupal::logger('capital-wechat-offical')->info( print_r($key . ' ' . $url, true));
+  \Drupal::logger('capital-wechat-official')->info( print_r($key . ' ' . $url, true));
   if(count($results) == 0 || isset($results[0]->error)){
-    \Drupal::logger('capital-wechat-offical-no-result')->info( print_r($key . ' ' . $url, true));
+    \Drupal::logger('capital-wechat-official-no-result')->info( print_r($key . ' ' . $url, true));
     $results = [];
   } 
   return $results;

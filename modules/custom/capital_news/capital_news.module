@@ -102,7 +102,7 @@ function getWechatSearchNews($key, $nid = null){
 }
 
 function getWechatOfficalNews($key, $nid = null, $display_name, $tid = null){
-  $json = capital_common_get_wechat_offical_search($key);
+  $json = capital_common_get_wechat_official_search($key);
   foreach($json as $result){
     //$time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
     $time = (new DateTime($result->date, new DateTimeZone('Etc/GMT+0')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
