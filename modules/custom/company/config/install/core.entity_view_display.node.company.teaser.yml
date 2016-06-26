@@ -32,6 +32,7 @@ dependencies:
     - field.field.node.company.field_registered_capital
     - field.field.node.company.field_researcher_staff
     - field.field.node.company.field_risk_control
+    - field.field.node.company.field_search_keyword
     - field.field.node.company.field_short_name
     - field.field.node.company.field_talent_management
     - field.field.node.company.field_total_staff
@@ -77,6 +78,7 @@ hidden:
   field_registered_capital: true
   field_researcher_staff: true
   field_risk_control: true
+  field_search_keyword: true
   field_short_name: true
   field_talent_management: true
   field_total_staff: true
