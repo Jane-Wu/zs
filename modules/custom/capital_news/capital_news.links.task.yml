@@ -34,3 +34,15 @@ capital_news.config.wechat:
   title: 微信搜索关键词管理
   route_name: capital_news.config.wechat
   base_route: capital_news.config.google
+capital_news.report.google:
+  title: 谷歌无内容关键词
+  route_name: capital_news.report.google
+  base_route: capital_news.config.google
+capital_news.report.official:
+  title: 微信无内容公众号
+  route_name: capital_news.report.official
+  base_route: capital_news.config.google
+capital_news.report.wechat:
+  title: 微信无内容关键词
+  route_name: capital_news.report.wechat
+  base_route: capital_news.config.google
