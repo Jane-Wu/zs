@@ -26,29 +26,43 @@ capital_news.test:
     _title: 'test'
   requirements:
     _permission: 'access content'
-capital_news.report:
-  path: 'news/report/{type}'
+capital_news.report.google:
+  path: 'report/google-news'
   defaults:
-    _controller: '\Drupal\capital_news\Controller\NewsReportController::getContent'
-    _title_callback: '\Drupal\capital_news\Controller\NewsReportController::getTitle'
+    _controller: '\Drupal\capital_news\Controller\NewsReportController::googleReport'
+    _title: ''
+  requirements:
+    _permission: 'access content'
+capital_news.report.official:
+  path: 'report/official-news'
+  defaults:
+    _controller: '\Drupal\capital_news\Controller\NewsReportController::officialReport'
+    _title: ''
+  requirements:
+    _permission: 'access content'
+capital_news.report.wechat:
+  path: 'report/wechat-news'
+  defaults:
+    _controller: '\Drupal\capital_news\Controller\NewsReportController::wechatReport'
+    _title: ''
   requirements:
     _permission: 'access content'
 capital_news.config.google:
-  path: 'news/config/google'
+  path: 'config/google-news'
   defaults:
     _controller: '\Drupal\capital_news\Controller\NewsConfigController::googleConfig'
     _title: ''
   requirements:
     _permission: 'administer taxonomy'
 capital_news.config.official:
-  path: 'news/config/official'
+  path: 'config/official-news'
   defaults:
     _controller: '\Drupal\capital_news\Controller\NewsConfigController::officialConfig'
     _title: ''
   requirements:
     _permission: 'administer taxonomy'
 capital_news.config.wechat:
-  path: 'news/config/wechat'
+  path: 'config/wechat-news'
   defaults:
     _controller: '\Drupal\capital_news\Controller\NewsConfigController::wechatConfig'
     _title: ''

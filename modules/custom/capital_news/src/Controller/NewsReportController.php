@@ -50,16 +50,15 @@ class NewsReportController extends DbLogController{
     return $content;
   }
 
-  public function getTitle($type) {
-    $type = strtolower($type);
-    if ($type == 'google') {
-      return '谷歌搜索无内容关键词';
-    }
-    elseif ($type == 'wechat') {
-      return '微信搜索无内容关键词';
-    }
-    else {
-      return '';
-    }
+  public function googleReport() {
+    return self::getContent('google');
+  }
+
+  public function officialReport() {
+    return self::getContent('official');
+  }
+
+  public function wechatReport() {
+    return self::getContent('wechat');
   }
 }
