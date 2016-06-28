@@ -4,4 +4,4 @@ capital_regulation.content:
     _controller: '\Drupal\capital_regulation\Controller\RegulationListController::getContent'
     _title: '政策法规'
   requirements:
-    _permission: 'add regulation content'
+    _permission: 'edit any regulation content'

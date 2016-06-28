@@ -16,7 +16,7 @@ class NewsTestController extends ControllerBase {
     //_capital_news_get_news(false);
     //_capital_news_get_news();
     //   self::createTerms();
-    self::createRegulations();
+    //self::createRegulations();
     $news=array();
     return $news;
   }
