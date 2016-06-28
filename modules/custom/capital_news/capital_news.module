@@ -33,7 +33,7 @@ function _capital_news_get_google_news($date_flag) {
   // Company News
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
-    $company_results =+ getGoogleNews($date_flag, $node->getTitle(), $node->id(), $node->get('field_short_name')->value);
+    $company_results += getGoogleNews($date_flag, $node->getTitle(), $node->id(), $node->get('field_short_name')->value);
     $company_counts++;
   }
   // Core staff news
@@ -42,14 +42,14 @@ function _capital_news_get_google_news($date_flag) {
     $company = Node::load($node->get('field_company')->target_id);
     if($company && $node->get('field_staff_type')->target_id == 10){
       $key = $node->getTitle() . ' ' . $company->get('field_short_name')->value;
-      $company_results =+ getGoogleNews($date_flag, $key, $node->id());
+      $company_results += getGoogleNews($date_flag, $key, $node->id());
       $company_counts++;
     }
   }
   // Other Google Key words
   $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs','hot_spots','oversee_spots','general_key_words']);
   foreach( $keywords_terms as $term){
-    $results =+ getGoogleNews($date_flag, $term->name);
+    $results += getGoogleNews($date_flag, $term->name);
     $counts++;
   }
   $summary = [
@@ -78,12 +78,12 @@ function _capital_news_get_wechat_news() {
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
     if($node->get('field_wechat')->value != null){
-      $company_account_results =+ getWechatOfficalNews($node->get('field_wechat')->value, $node->id(), $node->getTitle());
+      $company_account_results += getWechatOfficalNews($node->get('field_wechat')->value, $node->id(), $node->getTitle());
       $company_account_counts++;
     }
-    $company_news_results =+ getWechatSearchNews($node->getTitle(), $node->id());
+    $company_news_results += getWechatSearchNews($node->getTitle(), $node->id());
     $company_news_counts++;
-    $company_news_results =+ getWechatSearchNews($node->get('field_short_name')->value, $node->id());
+    $company_news_results += getWechatSearchNews($node->get('field_short_name')->value, $node->id());
     $company_news_counts++;
   }
   // Core staff news
@@ -92,7 +92,7 @@ function _capital_news_get_wechat_news() {
     $company = Node::load($node->get('field_company')->target_id);
     if($company && $node->get('field_staff_type')->target_id == 10){
       $key = $node->getTitle() . ' ' . $company->get('field_short_name')->value;
-      $company_news_results =+ getWechatSearchNews($key, $node->id());
+      $company_news_results += getWechatSearchNews($key, $node->id());
       $company_news_counts++;
     }
   }
@@ -100,13 +100,13 @@ function _capital_news_get_wechat_news() {
   $account_terms = _capital_news_getTermsByVocabularies(['wechat_accounts']);
   foreach( $account_terms as $account_term){
     $term = Term::load($account_term->tid);
-    $account_results =+ getWechatOfficalNews($term->get('field_wechat_account')->value, null, $account_term->name);
+    $account_results += getWechatOfficalNews($term->get('field_wechat_account')->value, null, $account_term->name);
     $account_counts++;
   }
   // Other Wechat Key words
   $keywords_terms = _capital_news_getTermsByVocabularies(['wechat_keywords']);
   foreach( $keywords_terms as $term){
-    $news_results =+ getWechatSearchNews($term->name);
+    $news_results += getWechatSearchNews($term->name);
     $news_counts++;
   }
   $summary = [
@@ -158,7 +158,7 @@ function getGoogleNews($date_flag, $key, $nid = null, $or_key = null){
       $description = isset($matches[3])? str_replace('<br>', '', $matches[3]) : $result->htmlSnippet;
       _capital_news_createNews($key, $result->htmlTitle, $description, $result->link, $approximate_timestamp, $origin_tid, GOOGLE_SEARCH_TID, $nid);
     }
-    return count($json);
+    return count($json->items);
   } elseif(isset($json->queries->request->totalResults) && $json->queries->request->totalResults != 0){
     \Drupal::logger('capital-rest')->error('Unexpected returned structure, ' . print_r($json, true));
   }
