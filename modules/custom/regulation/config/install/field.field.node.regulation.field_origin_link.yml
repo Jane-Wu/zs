@@ -10,7 +10,7 @@ id: node.regulation.field_origin_link
 field_name: field_origin_link
 entity_type: node
 bundle: regulation
-label: 来源网址
+label: 来源链接
 description: ''
 required: false
 translatable: false

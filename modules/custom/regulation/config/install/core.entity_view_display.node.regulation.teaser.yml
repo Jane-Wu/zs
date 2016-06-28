@@ -5,6 +5,7 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.regulation.field_content
     - field.field.node.regulation.field_description
+    - field.field.node.regulation.field_news_origin
     - field.field.node.regulation.field_origin_link
     - field.field.node.regulation.field_regulation
     - field.field.node.regulation.field_release_date
@@ -21,6 +22,7 @@ content:
 hidden:
   field_content: true
   field_description: true
+  field_news_origin: true
   field_origin_link: true
   field_regulation: true
   field_release_date: true

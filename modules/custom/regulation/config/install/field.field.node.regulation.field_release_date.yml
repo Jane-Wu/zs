@@ -10,7 +10,7 @@ id: node.regulation.field_release_date
 field_name: field_release_date
 entity_type: node
 bundle: regulation
-label: 发布日期
+label: 颁布日期
 description: ''
 required: false
 translatable: true

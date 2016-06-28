@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.node.regulation.field_content
     - field.field.node.regulation.field_description
+    - field.field.node.regulation.field_news_origin
     - field.field.node.regulation.field_origin_link
     - field.field.node.regulation.field_regulation
     - field.field.node.regulation.field_release_date
@@ -30,6 +31,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+  field_news_origin:
+    weight: 3
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
   field_origin_link:
     weight: 4
     label: inline
