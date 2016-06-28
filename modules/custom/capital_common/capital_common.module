@@ -29,15 +29,15 @@ function capital_common_get_rest_custom_search($key, $orterms = null, $sort = 'd
     $api_pool = [
       [
         'cx_token' => '003694133148730748554:int3nhexlhs',
-        'key_token'  => 'AIzaSyAppfuBlfh65dfelZ4jtW7oYaWu41y1z1E',
+        'key_token' => 'AIzaSyAppfuBlfh65dfelZ4jtW7oYaWu41y1z1E',
       ],
       [
-        'cx_token' => ' 004400752527919370638:1im7xfvdeea',
+        'cx_token' => '004400752527919370638:1im7xfvdeea',
         'key_token' => 'AIzaSyB406FpOxPYJFYVdNambqiHCAPexkBaqJE',
       ],
       [
         'cx_token' => '018285748448364676852:5frjoz_qxdu',
-        'key_token'  => 'AIzaSyB4LApwAusy_M7FyS7nWkjX3hf5zO0W4AA',
+        'key_token' => 'AIzaSyB4LApwAusy_M7FyS7nWkjX3hf5zO0W4AA',
       ],
     ];
     \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search.api_pool', $api_pool)->save();
@@ -71,7 +71,7 @@ function capital_common_get_rest_custom_search($key, $orterms = null, $sort = 'd
     }
   }
   \Drupal::logger('capital-google')->info( print_r($key . ' ' . $full_url, true));
-  if(isset($results->items) && count($results->items) == 0){
+  if(!isset($results->items) || count($results->items) == 0){
     \Drupal::logger('capital-google-no-result')->info( print_r($key . ' ' . $full_url, true));
   }
   return $results;
