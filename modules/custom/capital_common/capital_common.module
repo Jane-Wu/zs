@@ -18,7 +18,7 @@ function capital_common_get_rest_api($url, $headers = array()) {
 
   return json_decode($body);
 }
-function capital_common_get_rest_custom_search($key, $orterms = null, $sort = 'date') {
+function capital_common_get_rest_custom_search($key, $orterms = null, $sort) {
   if( empty($key)){
     return;
   }

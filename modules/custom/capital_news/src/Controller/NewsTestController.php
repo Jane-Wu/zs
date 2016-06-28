@@ -12,7 +12,10 @@ use Drupal\Core\Controller\ControllerBase;
 class NewsTestController extends ControllerBase {
 
   public function content() {
-    capital_common_get_wechat_official_search('sdfasdfads');
+    _capital_news_get_wechat_news();
+            _capital_news_get_google_news(false);
+
+//    capital_common_get_wechat_official_search('sdfasdfads');
     //_capital_news_get_news(false);
     //_capital_news_get_news();
     //   self::createTerms();
