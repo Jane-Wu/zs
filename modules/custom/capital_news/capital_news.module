@@ -230,7 +230,8 @@ function get_url_content($url) {
   $html_content = file_get_contents($url);
 
   $dom = new \DOMDocument();
-  $dom->loadHTML($html_content);
+  // Avoid warnings for "Unexpected end tag"
+  @$dom->loadHTML($html_content);
 
   _remove_script_elements($dom);
 
