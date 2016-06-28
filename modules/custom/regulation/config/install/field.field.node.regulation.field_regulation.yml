@@ -1,0 +1,27 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_regulation
+    - node.type.regulation
+    - taxonomy.vocabulary.regulation
+id: node.regulation.field_regulation
+field_name: field_regulation
+entity_type: node
+bundle: regulation
+label: 标签
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      regulation: regulation
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

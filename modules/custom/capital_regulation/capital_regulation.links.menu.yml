@@ -1,0 +1,4 @@
+capital_regulation.content:
+  title: 政策法规
+  route_name: capital_regulation.content
+  description: '政策法规'

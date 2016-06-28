@@ -1,0 +1,8 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+name: 政策法规
+vid: regulation
+description: ''
+hierarchy: 0
+weight: 0

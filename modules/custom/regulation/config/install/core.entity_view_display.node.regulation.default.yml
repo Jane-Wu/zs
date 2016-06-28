@@ -1,0 +1,64 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.node.regulation.field_content
+    - field.field.node.regulation.field_description
+    - field.field.node.regulation.field_origin_link
+    - field.field.node.regulation.field_regulation
+    - field.field.node.regulation.field_release_date
+    - node.type.regulation
+  module:
+    - datetime
+    - link
+    - text
+    - user
+id: node.regulation.default
+targetEntityType: node
+bundle: regulation
+mode: default
+content:
+  field_content:
+    weight: 6
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_description:
+    weight: 5
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+  field_origin_link:
+    weight: 4
+    label: inline
+    settings:
+      trim_length: null
+      target: _blank
+      url_only: false
+      url_plain: false
+      rel: '0'
+    third_party_settings: {  }
+    type: link
+  field_regulation:
+    weight: 2
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_label
+  field_release_date:
+    weight: 1
+    label: inline
+    settings:
+      timezone_override: ''
+      format_type: html_date
+    third_party_settings: {  }
+    type: datetime_default
+  links:
+    weight: 0
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  langcode: true
