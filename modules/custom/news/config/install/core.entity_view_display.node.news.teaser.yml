@@ -8,7 +8,9 @@ dependencies:
     - field.field.node.news.field_description
     - field.field.node.news.field_news_link
     - field.field.node.news.field_news_origin
+    - field.field.node.news.field_related_nodes
     - field.field.node.news.field_search_type
+    - field.field.node.news.field_search_words
     - field.field.node.news.field_title
     - node.type.news
   module:
@@ -26,6 +28,8 @@ hidden:
   field_description: true
   field_news_link: true
   field_news_origin: true
+  field_related_nodes: true
   field_search_type: true
+  field_search_words: true
   field_title: true
   langcode: true

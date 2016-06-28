@@ -1,0 +1,18 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_search_keyword
+    - node.type.company
+id: node.company.field_search_keyword
+field_name: field_search_keyword
+entity_type: node
+bundle: company
+label: 搜索简称
+description: "此字段仅用于辅助<strong>关键人物</strong>相关新闻的搜索。搜索关键人物相关新闻时，将使用<strong>关键人物+搜索简称</strong>字段进行搜索，以此减少人物重名带来的错误结果。\r\n<br>在搜索公司相关新闻时，将使用<strong>公司名称</strong>或<strong>公司简称</strong>字段作为关键词进行搜索。"
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

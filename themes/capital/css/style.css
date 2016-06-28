@@ -79,7 +79,8 @@ body.navbar-is-fixed-top {
     padding-left:20px;
 }
 
-div.view-id-news_links ul{
+div.view-id-news_links ul,
+div.view-id-regulations ul{
     list-style-type:none;
     padding-left: 0;
 }

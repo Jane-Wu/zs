@@ -1,0 +1,73 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.field.node.regulation.field_content
+    - field.field.node.regulation.field_description
+    - field.field.node.regulation.field_news_origin
+    - field.field.node.regulation.field_origin_link
+    - field.field.node.regulation.field_regulation
+    - field.field.node.regulation.field_release_date
+    - node.type.regulation
+  module:
+    - datetime
+    - link
+    - text
+id: node.regulation.default
+targetEntityType: node
+bundle: regulation
+mode: default
+content:
+  field_content:
+    weight: 6
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  field_description:
+    weight: 5
+    settings:
+      size: 255
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textfield
+  field_news_origin:
+    weight: 3
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+  field_origin_link:
+    weight: 4
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
+  field_regulation:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+  field_release_date:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  title:
+    type: string_textfield
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  langcode: true
+  path: true
+  promote: true
+  sticky: true
+  uid: true
