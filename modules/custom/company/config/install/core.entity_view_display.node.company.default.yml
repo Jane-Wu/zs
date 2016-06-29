@@ -26,6 +26,7 @@ dependencies:
     - field.field.node.company.field_phone_number
     - field.field.node.company.field_postcode
     - field.field.node.company.field_product_count
+    - field.field.node.company.field_product_count_accumulated
     - field.field.node.company.field_register_date
     - field.field.node.company.field_register_no
     - field.field.node.company.field_registered_capital
@@ -80,7 +81,7 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
   field_decision_making_process:
-    weight: 29
+    weight: 30
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -115,7 +116,7 @@ content:
     third_party_settings: {  }
     type: telephone_link
   field_general_evaluation:
-    weight: 33
+    weight: 34
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -147,19 +148,19 @@ content:
     third_party_settings: {  }
     type: basic_string
   field_investment_philosophy:
-    weight: 27
+    weight: 28
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_investment_process:
-    weight: 30
+    weight: 31
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_market_activity:
-    weight: 35
+    weight: 36
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -171,7 +172,7 @@ content:
     third_party_settings: {  }
     type: basic_string
   field_organization_architecture:
-    weight: 28
+    weight: 29
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -184,7 +185,7 @@ content:
     third_party_settings: {  }
     type: string
   field_performance_assessment:
-    weight: 34
+    weight: 35
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -205,6 +206,14 @@ content:
     type: string
   field_product_count:
     weight: 26
+    label: inline
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+  field_product_count_accumulated:
+    weight: 27
     label: inline
     settings:
       thousand_separator: ''
@@ -241,7 +250,7 @@ content:
     third_party_settings: {  }
     type: field_collection_items
   field_risk_control:
-    weight: 32
+    weight: 33
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -261,7 +270,7 @@ content:
     third_party_settings: {  }
     type: string
   field_talent_management:
-    weight: 31
+    weight: 32
     label: above
     settings: {  }
     third_party_settings: {  }

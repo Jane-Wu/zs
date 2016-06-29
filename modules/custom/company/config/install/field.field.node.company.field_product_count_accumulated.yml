@@ -2,13 +2,13 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - field.storage.node.field_product_count
+    - field.storage.node.field_product_count_accumulated
     - node.type.company
-id: node.company.field_product_count
-field_name: field_product_count
+id: node.company.field_product_count_accumulated
+field_name: field_product_count_accumulated
 entity_type: node
 bundle: company
-label: 产品数量（存续）
+label: 产品数量（累计）
 description: ''
 required: false
 translatable: false

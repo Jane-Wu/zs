@@ -477,7 +477,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 产品数量
+          label: 产品数量（存续）
           exclude: false
           alter:
             alter_text: false
