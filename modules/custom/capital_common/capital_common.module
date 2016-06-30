@@ -104,7 +104,7 @@ function capital_common_get_wechat_search($key){
   }
   $encoded_key = strpos($key, ' ') !== false? implode('+', array_map('_capital_common_wrap_search_key', explode(' ', $key))): '"' . urlencode($key) . '"';
   $encoded_key = implode('+', array_map('_capital_common_wrap_search_key', explode(' ', $key)));
-  $url = "http://52.78.7.61/key-day/" . $encoded_key;
+  $url = "http://52.78.7.61:8088/key-day/" . $encoded_key;
   $results = capital_common_get_rest_api($url);
   \Drupal::logger('capital-wechat')->info( print_r($key . ' ' . $url, true));
   if(count($results) == 0 || isset($results[0]->error)){
@@ -121,7 +121,7 @@ function capital_common_get_wechat_official_search($key) {
   if( empty($key)){
     return;
   }
-  $url = "http://52.78.7.61/account/" . urlencode($key);
+  $url = "http://52.78.7.61:8088/account/" . urlencode($key);
   $results = capital_common_get_rest_api($url);
   \Drupal::logger('capital-wechat-official')->info( print_r($key . ' ' . $url, true));
   if(count($results) == 0 || isset($results[0]->error)){
