@@ -27,6 +27,7 @@ dependencies:
     - field.field.node.company.field_phone_number
     - field.field.node.company.field_postcode
     - field.field.node.company.field_product_count
+    - field.field.node.company.field_product_count_accumulated
     - field.field.node.company.field_register_date
     - field.field.node.company.field_register_no
     - field.field.node.company.field_registered_capital
@@ -73,6 +74,7 @@ hidden:
   field_phone_number: true
   field_postcode: true
   field_product_count: true
+  field_product_count_accumulated: true
   field_register_date: true
   field_register_no: true
   field_registered_capital: true
