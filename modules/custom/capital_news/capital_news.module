@@ -33,7 +33,9 @@ function _capital_news_get_google_news($date_flag) {
   // Company News
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
-    $company_results += getGoogleNews($date_flag, $node->getTitle(), $node->id(), $node->get('field_short_name')->value);
+    $company_results += getGoogleNews($date_flag, true, $node->getTitle(), $node->id(), $node->get('field_short_name')->value);
+    $company_counts++;
+    $company_results += getGoogleNews($date_flag, false, $node->getTitle(), $node->id(), $node->get('field_short_name')->value);
     $company_counts++;
   }
   // Core staff news
@@ -41,15 +43,19 @@ function _capital_news_get_google_news($date_flag) {
   foreach( $nodes as $node){
     $company = Node::load($node->get('field_company')->target_id);
     if($company && $node->get('field_staff_type')->target_id == 10){
-      $key = $node->getTitle() . ' ' . $company->get('field_short_name')->value;
-      $company_results += getGoogleNews($date_flag, $key, $node->id());
+      $key = $node->getTitle() . ' ' . $company->get('field_search_keyword')->value;
+      $company_results += getGoogleNews($date_flag, true, $key, $node->id());
+      $company_counts++;
+      $company_results += getGoogleNews($date_flag, false, $key, $node->id());
       $company_counts++;
     }
   }
   // Other Google Key words
   $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs','hot_spots','oversee_spots','general_key_words']);
   foreach( $keywords_terms as $term){
-    $results += getGoogleNews($date_flag, $term->name);
+    $results += getGoogleNews($date_flag, true, $term->name);
+    $counts++;
+    $results += getGoogleNews($date_flag, false, $term->name);
     $counts++;
   }
   $summary = [
@@ -141,8 +147,8 @@ function getNodesByType($type){
   $nids = $query->execute();
   return \Drupal::entityManager()->getStorage('node')->loadMultiple(array_values($nids));
 }
-function getGoogleNews($date_flag, $key, $nid = null, $or_key = null){
-  $json = capital_common_get_rest_custom_search($key, $or_key, $date_flag? 'date': null);
+function getGoogleNews($date_flag, $from_trusted, $key, $nid = null, $or_key = null){
+  $json = capital_common_get_rest_custom_search($key, $or_key, $date_flag? 'date': null, $from_trusted);
   if(isset($json->items)){
     $current_time = time();
     foreach($json->items as $result){

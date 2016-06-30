@@ -18,32 +18,52 @@ function capital_common_get_rest_api($url, $headers = array()) {
 
   return json_decode($body);
 }
-function capital_common_get_rest_custom_search($key, $orterms = null, $sort) {
+function capital_common_get_rest_custom_search($key, $orterms = null, $sort, $from_trusted) {
   if( empty($key)){
     return;
   }
   $encoded_key = strpos($key, ' ') !== false? implode('+', array_map('_capital_common_wrap_search_key', explode(' ', $key))): '"' . urlencode($key) . '"';
   $encoded_key = implode('+', array_map('_capital_common_wrap_search_key', explode(' ', $key)));
   $config = \Drupal::config('capital_news.settings');
-  if($config->get('search.api_pool') == null || count($config->get('search.api_pool')) < 3){
+//  if($config->get('search.api_pool') == null || count($config->get('search.api_pool')) < 3){
     $api_pool = [
       [
-        'cx_token' => '003694133148730748554:int3nhexlhs',
-        'key_token'  => 'AIzaSyAppfuBlfh65dfelZ4jtW7oYaWu41y1z1E',
+        'trusted' => [
+          'cx_token' => '003694133148730748554:kuvoapkccge',
+          'key_token'  => 'AIzaSyAppfuBlfh65dfelZ4jtW7oYaWu41y1z1E',
+        ],
+        'clues' => [
+          'cx_token' => '003694133148730748554:5mzc31ouqgo',
+          'key_token'  => 'AIzaSyAppfuBlfh65dfelZ4jtW7oYaWu41y1z1E',
+        ],
       ],
       [
-        'cx_token' => ' 004400752527919370638:1im7xfvdeea',
-        'key_token' => 'AIzaSyB406FpOxPYJFYVdNambqiHCAPexkBaqJE',
+        'trusted' => [
+          'cx_token' => '004400752527919370638:64owq-rlmuw',
+          'key_token'  => 'AIzaSyB406FpOxPYJFYVdNambqiHCAPexkBaqJE',
+        ],
+        'clues' => [
+          'cx_token' => '004400752527919370638:m5x7nlkusq8',
+          'key_token'  => 'AIzaSyB406FpOxPYJFYVdNambqiHCAPexkBaqJE',
+        ],
       ],
       [
-        'cx_token' => '018285748448364676852:5frjoz_qxdu',
-        'key_token'  => 'AIzaSyB4LApwAusy_M7FyS7nWkjX3hf5zO0W4AA',
+        'trusted' => [
+          'cx_token' => '018285748448364676852:x9egru9jrj0',
+          'key_token'  => 'AIzaSyB4LApwAusy_M7FyS7nWkjX3hf5zO0W4AA',
+        ],
+        'clues' => [
+          'cx_token' => '018285748448364676852:oitoamdpzay',
+          'key_token'  => 'AIzaSyB4LApwAusy_M7FyS7nWkjX3hf5zO0W4AA',
+        ],
       ],
     ];
     \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search.api_pool', $api_pool)->save();
-  } else {
-    $api_pool = $config->get('search.api_pool');
-  }
+//  } else {
+ //   $api_pool = $config->get('search.api_pool');
+    //}
+
+  $origin = $from_trusted? 'trusted': 'clues';
 
   $api_index = $config->get('search.api_index') == null ? 0: $config->get('search.api_index');
   $url = 'https://www.googleapis.com/customsearch/v1?key=key_token&cx=cx_token&filter=1&dateRestrict=d1&q=' . $encoded_key; 
@@ -53,12 +73,14 @@ function capital_common_get_rest_custom_search($key, $orterms = null, $sort) {
   if($orterms){
     $url = $url . '&orTerms=' . (strpos($orterms, ' ') !== false? implode('+', array_map('_capital_common_wrap_search_key', explode(' ', $orterms))): '"' . urlencode($orterms) . '"');
   }
-  $full_url = str_replace(array_keys($api_pool[$api_index]), array_values($api_pool[$api_index]), $url);
+  $full_url = str_replace(array_keys($api_pool[$api_index][$origin]), array_values($api_pool[$api_index][$origin]), $url);
+  \Drupal::logger('capital-google')->info( print_r($api_pool[$api_index][$origin], true));
+  return [];
   $results = capital_common_get_rest_api($full_url);
   if(isset($results->error)){
     if($results->error->code == 403){
       $next_index = $api_index + 1 == count($api_pool)? 0: $api_index + 1;
-      $full_url = str_replace(array_keys($api_pool[$next_index]), array_values($api_pool[$next_index]), $url);
+      $full_url = str_replace(array_keys($api_pool[$next_index][$origin]), array_values($api_pool[$next_index][$origin]), $url);
       $results = capital_common_get_rest_api($full_url);
       \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search.api_index', $next_index)->save();
 
