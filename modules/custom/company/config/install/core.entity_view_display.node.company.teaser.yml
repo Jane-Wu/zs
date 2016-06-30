@@ -27,11 +27,13 @@ dependencies:
     - field.field.node.company.field_phone_number
     - field.field.node.company.field_postcode
     - field.field.node.company.field_product_count
+    - field.field.node.company.field_product_count_accumulated
     - field.field.node.company.field_register_date
     - field.field.node.company.field_register_no
     - field.field.node.company.field_registered_capital
     - field.field.node.company.field_researcher_staff
     - field.field.node.company.field_risk_control
+    - field.field.node.company.field_search_keyword
     - field.field.node.company.field_short_name
     - field.field.node.company.field_talent_management
     - field.field.node.company.field_total_staff
@@ -72,11 +74,13 @@ hidden:
   field_phone_number: true
   field_postcode: true
   field_product_count: true
+  field_product_count_accumulated: true
   field_register_date: true
   field_register_no: true
   field_registered_capital: true
   field_researcher_staff: true
   field_risk_control: true
+  field_search_keyword: true
   field_short_name: true
   field_talent_management: true
   field_total_staff: true

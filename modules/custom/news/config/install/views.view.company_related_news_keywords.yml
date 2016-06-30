@@ -2,6 +2,7 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
+    - field.storage.node.field_search_keyword
     - field.storage.node.field_short_name
     - field.storage.node.field_wechat
     - node.type.company
@@ -371,7 +372,7 @@ display:
           empty: true
           tokenize: false
           content:
-            value: '如需修改或添加以下内容，请前往<a href="[site:url]company">私募信息库</a>或进入公司详情页面进行对应操作。'
+            value: "搜索公司相关新闻时，将使用<strong>公司名称</strong>或<strong>公司简称</strong>字段作为关键词进行搜索。搜索关键人物相关新闻时，将使用<strong>关键人物+搜索简称</strong>字段进行搜索。\n<br>如需修改或添加以下内容，请前往<a href=\"[site:url]company\">私募信息库</a>或进入公司详情页面进行对应操作。"
             format: full_html
           plugin_id: text
       footer: {  }
@@ -590,6 +591,69 @@ display:
           staff_link: 1
           entity_type: node
           plugin_id: company_staff
+        field_search_keyword:
+          id: field_search_keyword
+          table: node__field_search_keyword
+          field: field_search_keyword
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 搜索简称
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
       defaults:
         fields: false
         title: false
@@ -603,6 +667,7 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
+        - 'config:field.storage.node.field_search_keyword'
         - 'config:field.storage.node.field_short_name'
   wechat:
     display_plugin: block

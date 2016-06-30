@@ -26,11 +26,13 @@ dependencies:
     - field.field.node.company.field_phone_number
     - field.field.node.company.field_postcode
     - field.field.node.company.field_product_count
+    - field.field.node.company.field_product_count_accumulated
     - field.field.node.company.field_register_date
     - field.field.node.company.field_register_no
     - field.field.node.company.field_registered_capital
     - field.field.node.company.field_researcher_staff
     - field.field.node.company.field_risk_control
+    - field.field.node.company.field_search_keyword
     - field.field.node.company.field_short_name
     - field.field.node.company.field_talent_management
     - field.field.node.company.field_total_staff
@@ -52,11 +54,11 @@ mode: default
 content:
   field_asset_under_management:
     type: field_collection_embed
-    weight: 21
+    weight: 22
     settings: {  }
     third_party_settings: {  }
   field_city:
-    weight: 12
+    weight: 13
     settings:
       match_operator: CONTAINS
       size: 60
@@ -64,19 +66,19 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
   field_company_image:
-    weight: 3
+    weight: 4
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
     type: image_image
   field_company_type:
-    weight: 4
+    weight: 5
     settings: {  }
     third_party_settings: {  }
     type: options_select
   field_decision_making_process:
-    weight: 28
+    weight: 30
     settings:
       rows: 5
       placeholder: ''
@@ -90,153 +92,166 @@ content:
     third_party_settings: {  }
     type: string_textfield
   field_enterprise_nature:
-    weight: 15
+    weight: 16
     settings: {  }
     third_party_settings: {  }
     type: options_select
   field_establishment_date:
-    weight: 10
+    weight: 11
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
   field_fax_number:
-    weight: 18
+    weight: 19
     settings:
       placeholder: ''
     third_party_settings: {  }
     type: telephone_default
   field_general_evaluation:
-    weight: 32
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-  field_hand_in_capital:
-    weight: 14
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-  field_human_resource:
-    weight: 24
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textarea
-  field_introduction:
-    weight: 5
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textarea
-  field_introduction_original:
-    weight: 6
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textarea
-  field_investment_philosophy:
-    weight: 26
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-  field_investment_process:
-    weight: 29
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-  field_market_activity:
     weight: 34
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
-  field_office_address:
-    weight: 11
+  field_hand_in_capital:
+    weight: 15
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+  field_human_resource:
+    weight: 25
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
-  field_organization_architecture:
-    weight: 27
+  field_introduction:
+    weight: 6
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-  field_organization_no:
-    weight: 8
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-  field_performance_assessment:
-    weight: 33
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
-  field_phone_number:
-    weight: 17
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: telephone_default
-  field_postcode:
-    weight: 16
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textfield
-  field_product_count:
-    weight: 25
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-    type: number
-  field_register_date:
-    weight: 9
-    settings: {  }
-    third_party_settings: {  }
-    type: datetime_default
-  field_register_no:
+    type: string_textarea
+  field_introduction_original:
     weight: 7
     settings:
-      size: 60
+      rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-  field_registered_capital:
-    weight: 13
+    type: string_textarea
+  field_investment_philosophy:
+    weight: 28
     settings:
+      rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: number
-  field_researcher_staff:
-    type: field_collection_embed
-    weight: 23
-    settings: {  }
-    third_party_settings: {  }
-  field_risk_control:
+    type: text_textarea
+  field_investment_process:
     weight: 31
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+  field_market_activity:
+    weight: 36
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  field_office_address:
+    weight: 12
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+  field_organization_architecture:
+    weight: 29
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  field_organization_no:
+    weight: 9
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_performance_assessment:
+    weight: 35
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  field_phone_number:
+    weight: 18
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: telephone_default
+  field_postcode:
+    weight: 17
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_product_count:
+    weight: 26
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+  field_product_count_accumulated:
+    weight: 27
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+  field_register_date:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+  field_register_no:
+    weight: 8
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+  field_registered_capital:
+    weight: 14
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+  field_researcher_staff:
+    type: field_collection_embed
+    weight: 24
+    settings: {  }
+    third_party_settings: {  }
+  field_risk_control:
+    weight: 33
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+  field_search_keyword:
+    weight: 3
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
   field_short_name:
     weight: 2
     settings:
@@ -245,7 +260,7 @@ content:
     third_party_settings: {  }
     type: string_textfield
   field_talent_management:
-    weight: 30
+    weight: 32
     settings:
       rows: 5
       placeholder: ''
@@ -253,18 +268,18 @@ content:
     type: text_textarea
   field_total_staff:
     type: field_collection_embed
-    weight: 22
+    weight: 23
     settings: {  }
     third_party_settings: {  }
   field_website:
-    weight: 19
+    weight: 20
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
   field_wechat:
-    weight: 20
+    weight: 21
     settings:
       size: 60
       placeholder: ''

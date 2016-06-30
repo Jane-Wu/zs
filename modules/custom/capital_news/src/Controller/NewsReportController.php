@@ -55,7 +55,7 @@ class NewsReportController extends DbLogController{
   }
 
   public function officialReport() {
-    return self::getContent('official');
+    return self::getContent('wechat-official');
   }
 
   public function wechatReport() {

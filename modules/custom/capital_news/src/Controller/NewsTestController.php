@@ -12,12 +12,19 @@ use Drupal\Core\Controller\ControllerBase;
 class NewsTestController extends ControllerBase {
 
   public function content() {
-    //_capital_news_get_news(false);
-    _capital_news_get_news();
-    //   self::createTerms();
+    //_capital_news_get_wechat_news();
+    _capital_news_get_google_news(false);
+
     $news=array();
     return $news;
   }
+  private function createRegulations() {
+    $keys = ["私募法规", "管理办法", "起草说明", "业务指引", "行为准则",  "监管动态", "监管会议", "重要观点", "专业解读", "监管解读", "市场解读"];
+    foreach( $keys as $key){
+      self::createTerm($key, 'regulation');
+    }
+  }
+
   private function createTerms(){
     $keys = ["www.caixin.com","www.csrc.gov.cn","www.amac.org.cn","www.eeo.com.cn","www.xtxh.net","www.ftchinese.com","www.sse.com.cn","www.szse.cn","www.cnr.cn","www.cctv.com","www.ssf.gov.cn","cn.reuters.com","cn.wsj.com","www.thepaper.cn","www.barrons.com","www.circ.gov.cn","www.sac.net.cn","www.cankaoxiaoxi.com","www.pbc.gov.cn","www.cbrc.gov.cn","www.gov.cn","www.sasac.gov.cn","www.iachina.cn","www.etnet.com.cn","www.yicai.com","www.fx678.com","www.oid.com","www.institutionalinvestorsalpha.com","www.bloomberg.com","www.bbc.com","www.nanzao.com","www.audit.gov.cn","www.ccdi.gov.cn"];
     $keys1 = ["财新网","证监会","基金业协会","经济观察网","信托业协会","FT中文网","上海证券交易所","深圳证券交易所","中央人民广播电台","央视网","全国社保基金理事会","路透中文网","华尔街日报中文网","澎湃新闻网","巴伦周刊","中国保监会","中国证券业协会","参考消息","中国人民银行","中国银监会","中国政府网","国务院国资委","中国保险业协会","经济通","一财网","汇通网","杰出投资者文摘","阿尔法杂志","彭博社","BBC中文网","南华早报中文","中国审计署","中纪委"];

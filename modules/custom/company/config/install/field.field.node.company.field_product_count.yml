@@ -8,7 +8,7 @@ id: node.company.field_product_count
 field_name: field_product_count
 entity_type: node
 bundle: company
-label: 产品数量
+label: 产品数量（存续）
 description: ''
 required: false
 translatable: false

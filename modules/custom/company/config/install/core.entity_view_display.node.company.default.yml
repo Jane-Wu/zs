@@ -26,11 +26,13 @@ dependencies:
     - field.field.node.company.field_phone_number
     - field.field.node.company.field_postcode
     - field.field.node.company.field_product_count
+    - field.field.node.company.field_product_count_accumulated
     - field.field.node.company.field_register_date
     - field.field.node.company.field_register_no
     - field.field.node.company.field_registered_capital
     - field.field.node.company.field_researcher_staff
     - field.field.node.company.field_risk_control
+    - field.field.node.company.field_search_keyword
     - field.field.node.company.field_short_name
     - field.field.node.company.field_talent_management
     - field.field.node.company.field_total_staff
@@ -51,13 +53,13 @@ bundle: company
 mode: default
 content:
   field_asset_under_management:
-    weight: 21
+    weight: 22
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: field_collection_items
   field_city:
-    weight: 12
+    weight: 13
     label: inline
     settings:
       link: false
@@ -65,21 +67,21 @@ content:
     type: entity_reference_label
   field_company_image:
     weight: 1
-    label: hidden
+    label: above
     settings:
       image_style: ''
       image_link: ''
     third_party_settings: {  }
     type: image
   field_company_type:
-    weight: 4
+    weight: 5
     label: inline
     settings:
       link: false
     third_party_settings: {  }
     type: entity_reference_label
   field_decision_making_process:
-    weight: 28
+    weight: 30
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -92,14 +94,14 @@ content:
     third_party_settings: {  }
     type: string
   field_enterprise_nature:
-    weight: 15
+    weight: 16
     label: above
     settings:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
   field_establishment_date:
-    weight: 10
+    weight: 11
     label: inline
     settings:
       format_type: html_date
@@ -107,20 +109,20 @@ content:
     third_party_settings: {  }
     type: datetime_default
   field_fax_number:
-    weight: 18
+    weight: 19
     label: inline
     settings:
       title: ''
     third_party_settings: {  }
     type: telephone_link
   field_general_evaluation:
-    weight: 32
+    weight: 34
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_hand_in_capital:
-    weight: 14
+    weight: 15
     label: inline
     settings:
       thousand_separator: ''
@@ -128,82 +130,90 @@ content:
     third_party_settings: {  }
     type: number_integer
   field_human_resource:
-    weight: 24
+    weight: 25
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
   field_introduction:
-    weight: 5
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-  field_introduction_original:
     weight: 6
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+  field_introduction_original:
+    weight: 7
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
   field_investment_philosophy:
-    weight: 26
+    weight: 28
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_investment_process:
-    weight: 29
+    weight: 31
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_market_activity:
-    weight: 34
+    weight: 36
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_office_address:
-    weight: 11
+    weight: 12
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
   field_organization_architecture:
-    weight: 27
+    weight: 29
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_organization_no:
-    weight: 8
+    weight: 9
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_performance_assessment:
-    weight: 33
+    weight: 35
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_phone_number:
-    weight: 17
+    weight: 18
     label: inline
     settings:
       title: ''
     third_party_settings: {  }
     type: telephone_link
   field_postcode:
-    weight: 16
+    weight: 17
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_product_count:
-    weight: 25
+    weight: 26
+    label: inline
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    type: number_integer
+  field_product_count_accumulated:
+    weight: 27
     label: inline
     settings:
       thousand_separator: ''
@@ -211,7 +221,7 @@ content:
     third_party_settings: {  }
     type: number_integer
   field_register_date:
-    weight: 9
+    weight: 10
     label: inline
     settings:
       timezone_override: ''
@@ -219,14 +229,14 @@ content:
     third_party_settings: {  }
     type: datetime_default
   field_register_no:
-    weight: 7
+    weight: 8
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   field_registered_capital:
-    weight: 13
+    weight: 14
     label: inline
     settings:
       thousand_separator: ''
@@ -234,17 +244,24 @@ content:
     third_party_settings: {  }
     type: number_integer
   field_researcher_staff:
-    weight: 23
+    weight: 24
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: field_collection_items
   field_risk_control:
-    weight: 31
+    weight: 33
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
+  field_search_keyword:
+    weight: 4
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   field_short_name:
     weight: 3
     label: inline
@@ -253,19 +270,19 @@ content:
     third_party_settings: {  }
     type: string
   field_talent_management:
-    weight: 30
+    weight: 32
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
   field_total_staff:
-    weight: 22
+    weight: 23
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: field_collection_items
   field_website:
-    weight: 19
+    weight: 20
     label: inline
     settings:
       trim_length: null
@@ -276,7 +293,7 @@ content:
     third_party_settings: {  }
     type: link
   field_wechat:
-    weight: 20
+    weight: 21
     label: inline
     settings:
       link_to_entity: false

@@ -1,0 +1,20 @@
+name: 政策法规
+description: 'Provides 政策法规 类型 and related configuration. 政策法规'
+type: module
+core: 8.x
+dependencies:
+  - block
+  - capital_views
+  - core
+  - datetime
+  - field
+  - language
+  - link
+  - menu_ui
+  - news
+  - node
+  - own_report
+  - taxonomy
+  - text
+  - user
+  - views
