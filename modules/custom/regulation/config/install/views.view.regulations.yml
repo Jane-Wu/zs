@@ -9,17 +9,22 @@ dependencies:
     - node.type.regulation
     - taxonomy.vocabulary.regulation
   content:
-    - 'taxonomy_term:regulation:1cd767f5-80bd-4ab8-8404-4b28faa76df0'
-    - 'taxonomy_term:regulation:23220736-fb6b-4944-b40a-042cd6bad058'
-    - 'taxonomy_term:regulation:45f7fd6a-dfc5-4aa6-a482-5a4319617f02'
-    - 'taxonomy_term:regulation:85d32c06-fb3a-40f7-bdeb-1b0999f585c3'
-    - 'taxonomy_term:regulation:aac69638-2308-46e5-a942-fa54468da823'
-    - 'taxonomy_term:regulation:c7ec7e1f-b166-49b8-b9b6-d6980df38c44'
-    - 'taxonomy_term:regulation:cbd7e33d-2b24-45b0-95cb-921338d4b14c'
-    - 'taxonomy_term:regulation:d12ee0dc-5869-421d-a91b-b0985c10e23d'
-    - 'taxonomy_term:regulation:de49cd51-2915-4b13-97f6-ce076f53b13d'
-    - 'taxonomy_term:regulation:de8d3fe3-a000-4a1e-9d8d-0d0b113643ad'
-    - 'taxonomy_term:regulation:fa484dc4-4b77-4e51-8e96-a7f32befb417'
+    - 'taxonomy_term:regulation:0822e3f0-d2fa-421d-a39f-761da009d11c'
+    - 'taxonomy_term:regulation:1c5a6291-b4fd-4b4b-8c3b-541902e03616'
+    - 'taxonomy_term:regulation:5592a1de-b0df-4321-a938-66af144e3769'
+    - 'taxonomy_term:regulation:64323551-da6b-474b-9db9-b21fb74cfbbb'
+    - 'taxonomy_term:regulation:7758f344-1fe5-41aa-9e68-21cd305da383'
+    - 'taxonomy_term:regulation:a820e433-7ee2-48d6-bd45-67316047fcc2'
+    - 'taxonomy_term:regulation:ae457b3a-7d94-4f9a-a23d-24fb0c026d56'
+    - 'taxonomy_term:regulation:af3bfafa-b325-470e-ba0c-b0a318516bc0'
+    - 'taxonomy_term:regulation:d2d8a032-8835-46a5-8ee5-32559a4a3c4b'
+    - 'taxonomy_term:regulation:f9e1fb10-8809-49cb-8ddd-ccc28045f152'
+    - 'taxonomy_term:regulation:fc0d0032-44ff-47c0-a559-3a0229e6467e'
+    - 'taxonomy_term:wechat_accounts:01dbb264-5bcd-47b0-bba1-caed311e9fd6'
+    - 'taxonomy_term:wechat_accounts:7d9bad78-238b-4565-b195-61a76ce446a6'
+    - 'taxonomy_term:wechat_accounts:bfda90e3-7054-48b4-8539-33204f5805d3'
+    - 'taxonomy_term:wechat_accounts:c19bace7-ef23-47df-b294-0a8ac395ddca'
+    - 'taxonomy_term:wechat_accounts:d0cbc34f-e189-4b13-817b-fb949a46af68'
   module:
     - capital_views
     - datetime
@@ -631,11 +636,11 @@ display:
           admin_label: ''
           operator: or
           value:
-            192: 192
-            193: 193
-            194: 194
-            195: 195
-            196: 196
+            214: 214
+            215: 215
+            216: 216
+            217: 217
+            218: 218
           group: 1
           exposed: false
           expose:
@@ -679,10 +684,10 @@ display:
           admin_label: ''
           operator: or
           value:
-            193: 193
-            194: 194
-            195: 195
-            196: 196
+            215: 215
+            216: 216
+            217: 217
+            218: 218
           group: 1
           exposed: true
           expose:
@@ -786,9 +791,9 @@ display:
           admin_label: ''
           operator: or
           value:
-            197: 197
-            198: 198
-            199: 199
+            219: 219
+            220: 220
+            221: 221
           group: 1
           exposed: false
           expose:
@@ -832,8 +837,8 @@ display:
           admin_label: ''
           operator: or
           value:
-            198: 198
-            199: 199
+            220: 220
+            221: 221
           group: 1
           exposed: true
           expose:
@@ -934,9 +939,9 @@ display:
           admin_label: ''
           operator: or
           value:
-            200: 200
-            201: 201
-            202: 202
+            222: 222
+            223: 223
+            224: 224
           group: 1
           exposed: false
           expose:
@@ -980,13 +985,13 @@ display:
           admin_label: ''
           operator: or
           value:
-            201: 201
-            202: 202
+            223: 223
+            224: 224
           group: 1
           exposed: true
           expose:
             operator_id: field_regulation_target_id_1_op
-            label: '标签 (field_regulation)'
+            label: 标签
             description: ''
             use_operator: false
             operator: field_regulation_target_id_1_op
