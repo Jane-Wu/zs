@@ -35,7 +35,8 @@ function _capital_news_get_google_news($date_flag) {
   foreach( $nodes as $node){
     $company_results += getGoogleNews($date_flag, true, $node->getTitle(), $node->id(), $node->get('field_short_name')->value);
     $company_counts++;
-    $company_results += getGoogleNews($date_flag, false, $node->getTitle(), $node->id(), $node->get('field_short_name')->value);
+    // For news from clue origin, never sort by date
+    $company_results += getGoogleNews(false, false, $node->getTitle(), $node->id(), $node->get('field_short_name')->value);
     $company_counts++;
   }
   // Core staff news
