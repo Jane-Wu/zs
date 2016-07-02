@@ -58,18 +58,8 @@ function _capital_news_get_google_news($date_flag) {
     $results += getGoogleNews($date_flag, false, $term->name);
     $counts++;
   }
-  $summary = [
-    'time' => date('m/d/Y h:i:s', time()),
-      'counts' => $counts,
-      'results' => $results,
-    ];
-  \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search-results.page_1', $summary)->save();
-  $summary = [
-    'time' => date('m/d/Y h:i:s', time()),
-      'counts' => $company_counts,
-      'results' => $company_results,
-    ];
-  \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search-results.page_6', $summary)->save();
+  _capital_news_search_summary($counts, $results, 'page_1');
+  _capital_news_search_summary($company_counts, $company_results, 'page_6');
 }
 function _capital_news_get_wechat_news() {
   $account_counts = 0;
@@ -115,30 +105,10 @@ function _capital_news_get_wechat_news() {
     $news_results += getWechatSearchNews($term->name);
     $news_counts++;
   }
-  $summary = [
-    'time' => date('m/d/Y h:i:s', time()),
-      'counts' => $account_counts,
-      'results' => $account_results,
-    ];
-  \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search-results.page_2', $summary)->save();
-  $summary = [
-    'time' => date('m/d/Y h:i:s', time()),
-      'counts' => $news_counts,
-      'results' => $news_results,
-    ];
-  \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search-results.page_3', $summary)->save();
-  $summary = [
-    'time' => date('m/d/Y h:i:s', time()),
-      'counts' => $company_account_counts,
-      'results' => $company_account_results,
-    ];
-  \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search-results.page_5', $summary)->save();
-  $summary = [
-    'time' => date('m/d/Y h:i:s', time()),
-      'counts' => $company_news_counts,
-      'results' => $company_news_results,
-    ];
-  \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search-results.page_7', $summary)->save();
+  _capital_news_search_summary($account_counts, $account_results, 'page_2');
+  _capital_news_search_summary($news_counts, $news_results, 'page_3');
+  _capital_news_search_summary($company_account_counts, $company_account_results, 'page_5');
+  _capital_news_search_summary($company_news_counts, $company_news_results, 'page_7');
 }
 function getNodesByType($type){
   $query = \Drupal::entityQuery('node')
@@ -392,4 +362,13 @@ function capital_news_preprocess_views_view(array &$variables) {
     $summary_data = $config->get('search-results.' . $variables['display_id']);
     $variables['summary'] = '搜索时间：' . $summary_data['time'] . ' 搜索次数：' . $summary_data['counts']. ' 结果数目：' . $summary_data['results'];
   }
+}
+function _capital_news_search_summary($search_counts, $result_counts, $config_key) {
+  $summary = [
+    'time' => date('m/d/Y H:i:s', time()),
+      'counts' => $search_counts,
+      'results' => $result_results,
+    ];
+  \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search-results.' . $config_key, $summary)->save();
+  \Drupal::logger('capital-summary')->info(print_r($summary, true));
 }
