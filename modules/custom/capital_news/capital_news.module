@@ -133,7 +133,7 @@ function getGoogleNews($date_flag, $from_trusted, $key, $nid = null, $or_key = n
       }
       $approximate_timestamp = str_replace('+00:00', '', date_format(date_timestamp_set(new DateTime("now", new DateTimeZone('Etc/GMT+0')), $approximate_timestamp), 'c'));
       $origin_tid = _capital_news_getTidByLinkAndVocabulary($result->displayLink);
-      $description = isset($matches[3])? str_replace('<br>', '', $matches[3]) : $result->htmlSnippet;
+      $description = str_replace('<br>', '', isset($matches[3])? $matches[3] : $result->htmlSnippet);
       $is_new = _capital_news_createNews($key, $result->htmlTitle, $description, $result->link, $approximate_timestamp, $origin_tid, GOOGLE_SEARCH_TID, $nid);
       if($is_new){
         $count++;
