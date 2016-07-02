@@ -7,10 +7,12 @@
 
 namespace Drupal\capital_news\Controller;
 
+use Drupal\Core\Ajax;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Ajax\AfterCommand;
 use Drupal\Core\Ajax\AppendCommand;
+use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityInterface;
@@ -21,9 +23,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
 use Drupal\relation\Entity\Relation;
-use Drupal\capital_news\FavoriteNewsLink;
 use Drupal\Core\Render\Element;
 
+use Drupal\capital_news\FavoriteNewsLink;
 use Drupal\relation\Entity\RelationType;
 
 /**
@@ -108,6 +110,36 @@ class NewsLinkController extends ControllerBase implements ContainerInjectionInt
    */
   protected function getList(Request $request, $news_id){
     if ($request->get(MainContentViewSubscriber::WRAPPER_FORMAT) == 'drupal_ajax') {
+      /*
+      $node_title = $form_state->getValue('node_title');
+      $query = \Drupal::entityQuery('node')
+        ->condition('title', $node_title);
+      $entity = $query->execute();
+      $key = array_keys($entity);
+      $id = !empty($key[0]) ? $key[0] : NULL;
+       */
+      $node_title  = 234;
+      $id = $news_id;
+      $response = new AjaxResponse();
+      $title = 'Node ID';
+      if ($id !== NULL) {
+        $content = '<div class="test-popup-content"> Node ID is: ' . $id . '</div>';
+        $options = array(
+          'dialogClass' => 'popup-dialog-class',
+          'width' => '300',
+          'height' => '300',
+        );
+        $response->addCommand(new OpenModalDialogCommand($title, $content, $options));
+
+      }
+      else {
+        $content = 'Not found record with this title <strong>' . $node_title .'</strong>';
+        $response->addCommand(new OpenModalDialogCommand($title, $content));
+        \Drupal::logger('capital-test')->debug(print_r($response, true));
+      }
+        \Drupal::logger('capital-test')->debug(print_r($response, true));
+      return $response;
+
       // Create a new AJAX response.
       $response = new AjaxResponse();
       $link_id = '#capital-link-news-' . $news_id;// . $relation->news_id;
@@ -115,9 +147,9 @@ class NewsLinkController extends ControllerBase implements ContainerInjectionInt
 
       $list = [
         '#type' => 'container',
-          '#attributes' => [
-            'class' => 'dropdown-toggle',
-          ],
+        '#attributes' => [
+          'class' => 'dropdown-toggle',
+        ],
         'button' => [
           '#type' => 'dropbutton',
           '#links' => [
@@ -130,8 +162,8 @@ class NewsLinkController extends ControllerBase implements ContainerInjectionInt
           ],
         ],
       ];
-      
-          
+
+
 
       $list = '<div class="dropdown">
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

@@ -96,6 +96,13 @@ capital_news.search_keys:
     _title: 'News Settings'
   requirements:
     _permission: 'access content'
+capital_news.link_news_form:
+  path: 'link-news'
+  defaults:
+    _form: '\Drupal\capital_news\Form\LinkNewsForm'
+    _title: 'News Settings'
+  requirements:
+    _permission: 'access content'
 capital_news.config.news:
   path: 'config/keys'
   defaults:

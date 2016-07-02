@@ -6,3 +6,4 @@ global-styling:
     js/footer.js: {}
   dependencies:
     - core/jquery
+    - core/drupal.dialog.ajax
