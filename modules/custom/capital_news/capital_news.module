@@ -26,18 +26,17 @@ function capital_news_cron(){
   }
 }
 function _capital_news_get_google_news($date_flag) {
-  $counts = 0;
-  $results = 0;
-  $company_counts = 0;
-  $company_results = 0;
+  $summary = $company_summary = [
+    'count' => 0,
+    'all_result' => 0,
+    'new_result' => 0,
+  ];
   // Company News
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
-    $company_results += getGoogleNews($date_flag, true, $node->getTitle(), $node->id(), $node->get('field_short_name')->value);
-    $company_counts++;
+    getGoogleNews($date_flag, true, $company_summary, $node->getTitle(), $node->id(), $node->get('field_short_name')->value);
     // For news from clue origin, never sort by date
-    $company_results += getGoogleNews(false, false, $node->getTitle(), $node->id(), $node->get('field_short_name')->value);
-    $company_counts++;
+    getGoogleNews(false, false, $company_summary, $node->getTitle(), $node->id(), $node->get('field_short_name')->value);
   }
   // Core staff news
   $nodes = getNodesByType('staff');
@@ -45,43 +44,33 @@ function _capital_news_get_google_news($date_flag) {
     $company = Node::load($node->get('field_company')->target_id);
     if($company && $node->get('field_staff_type')->target_id == 10){
       $key = $node->getTitle() . ' ' . $company->get('field_search_keyword')->value;
-      $company_results += getGoogleNews($date_flag, true, $key, $node->id());
-      $company_counts++;
-      $company_results += getGoogleNews($date_flag, false, $key, $node->id());
-      $company_counts++;
+      getGoogleNews($date_flag, true, $company_summary, $key, $node->id());
+      getGoogleNews($date_flag, false, $company_summary, $key, $node->id());
     }
   }
   // Other Google Key words
   $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs','hot_spots','oversee_spots','general_key_words']);
   foreach( $keywords_terms as $term){
-    $results += getGoogleNews($date_flag, true, $term->name);
-    $counts++;
-    $results += getGoogleNews($date_flag, false, $term->name);
-    $counts++;
+    getGoogleNews($date_flag, true, $summary, $term->name);
+    getGoogleNews($date_flag, false, $summary, $term->name);
   }
-  _capital_news_search_summary($counts, $results, 'page_1');
-  _capital_news_search_summary($company_counts, $company_results, 'page_6');
+  _capital_news_search_summary($summary, 'page_1');
+  _capital_news_search_summary($company_summary, 'page_6');
 }
 function _capital_news_get_wechat_news() {
-  $account_counts = 0;
-  $news_counts = 0;
-  $account_results = 0;
-  $news_results = 0;
-  $company_account_counts = 0;
-  $company_news_counts = 0;
-  $company_account_results = 0;
-  $company_news_results = 0;
+  $news_summary = $company_news_summary = $account_summary = $company_account_summary = [
+    'count' => 0,
+    'all_result' => 0,
+    'new_result' => 0,
+  ];
   // Company News
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
     if($node->get('field_wechat')->value != null){
-      $company_account_results += getWechatOfficalNews($node->get('field_wechat')->value, $node->id(), $node->getTitle());
-      $company_account_counts++;
+      getWechatOfficalNews($company_account_summary, $node->get('field_wechat')->value, $node->id(), $node->getTitle());
     }
-    $company_news_results += getWechatSearchNews($node->getTitle(), $node->id());
-    $company_news_counts++;
-    $company_news_results += getWechatSearchNews($node->get('field_short_name')->value, $node->id());
-    $company_news_counts++;
+    getWechatSearchNews($company_news_summary, $node->getTitle(), $node->id());
+    getWechatSearchNews($company_news_summary, $node->get('field_short_name')->value, $node->id());
   }
   // Core staff news
   $nodes = getNodesByType('staff');
@@ -89,27 +78,24 @@ function _capital_news_get_wechat_news() {
     $company = Node::load($node->get('field_company')->target_id);
     if($company && $node->get('field_staff_type')->target_id == 10){
       $key = $node->getTitle() . ' ' . $company->get('field_short_name')->value;
-      $company_news_results += getWechatSearchNews($key, $node->id());
-      $company_news_counts++;
+      getWechatSearchNews($company_news_summary, $key, $node->id());
     }
   }
   // Other wechat accounts
   $account_terms = _capital_news_getTermsByVocabularies(['wechat_accounts']);
   foreach( $account_terms as $account_term){
     $term = Term::load($account_term->tid);
-    $account_results += getWechatOfficalNews($term->get('field_wechat_account')->value, null, $account_term->name);
-    $account_counts++;
+    getWechatOfficalNews($account_summary, $term->get('field_wechat_account')->value, null, $account_term->name);
   }
   // Other Wechat Key words
   $keywords_terms = _capital_news_getTermsByVocabularies(['wechat_keywords']);
   foreach( $keywords_terms as $term){
-    $news_results += getWechatSearchNews($term->name);
-    $news_counts++;
+    getWechatSearchNews($news_summary, $term->name);
   }
-  _capital_news_search_summary($account_counts, $account_results, 'page_2');
-  _capital_news_search_summary($news_counts, $news_results, 'page_3');
-  _capital_news_search_summary($company_account_counts, $company_account_results, 'page_5');
-  _capital_news_search_summary($company_news_counts, $company_news_results, 'page_7');
+  _capital_news_search_summary($account_summary, 'page_2');
+  _capital_news_search_summary($news_summary, 'page_3');
+  _capital_news_search_summary($company_account_summary, 'page_5');
+  _capital_news_search_summary($company_news_summary, 'page_7');
 }
 function getNodesByType($type){
   $query = \Drupal::entityQuery('node')
@@ -118,35 +104,37 @@ function getNodesByType($type){
   $nids = $query->execute();
   return \Drupal::entityManager()->getStorage('node')->loadMultiple(array_values($nids));
 }
-function getGoogleNews($date_flag, $from_trusted, $key, $nid = null, $or_key = null){
+function getGoogleNews($date_flag, $from_trusted, &$summary, $key, $nid = null, $or_key = null){
   $json = capital_common_get_rest_custom_search($key, $or_key, $date_flag? 'date': null, $from_trusted);
-  $count = 0;
+  $summary['count'] ++;
   if(isset($json->items)){
     $current_time = time();
     foreach($json->items as $result){
       $approximate_timestamp = $current_time; 
       preg_match('/^(\d+) (hours|hour|day|minutes) ago (.+)/s', $result->htmlSnippet, $matches);
-      if (count($matches) != 4){
-        \Drupal::logger('capital-rest')->warning('Date format unexpected, ' . print_r($result->htmlSnippet, true));
-      } else{
-        $approximate_timestamp = $current_time - (($matches[2] == 'hours' || $matches[2] == 'hour')? 3600 * $matches[1] : ($matches[2] == 'minutes'? 60 * $matches[1]: 86400));
+      if ($date_flag){
+        if (count($matches) != 4){
+          \Drupal::logger('capital-rest')->warning('Date format unexpected, ' . print_r($result->htmlSnippet, true));
+        } else{
+          $approximate_timestamp = $current_time - (($matches[2] == 'hours' || $matches[2] == 'hour')? 3600 * $matches[1] : ($matches[2] == 'minutes'? 60 * $matches[1]: 86400));
+        }
       }
       $approximate_timestamp = str_replace('+00:00', '', date_format(date_timestamp_set(new DateTime("now", new DateTimeZone('Etc/GMT+0')), $approximate_timestamp), 'c'));
       $origin_tid = _capital_news_getTidByLinkAndVocabulary($result->displayLink);
       $description = str_replace('<br>', '', isset($matches[3])? $matches[3] : $result->htmlSnippet);
       $is_new = _capital_news_createNews($key, $result->htmlTitle, $description, $result->link, $approximate_timestamp, $origin_tid, GOOGLE_SEARCH_TID, $nid);
       if($is_new){
-        $count++;
+        $summary['new_result']++;
       }
     }
+    $summary['all_result'] += count($json->items);
   } elseif(isset($json->queries->request->totalResults) && $json->queries->request->totalResults != 0){
     \Drupal::logger('capital-rest')->error('Unexpected returned structure, ' . print_r($json, true));
   }
-  return $count;
 }
-function getWechatSearchNews($key, $nid = null){
+function getWechatSearchNews(&$summary, $key, $nid = null){
   $json = capital_common_get_wechat_search($key);
-  $count = 0;
+  $summary['count'] ++;
   foreach($json as $result){
     //$time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
     $time = (new DateTime($result->date, new DateTimeZone('Etc/GMT+0')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
@@ -154,23 +142,24 @@ function getWechatSearchNews($key, $nid = null){
     $description = str_replace(['<em>', '</em>'], ['<strong>', '</strong>'], $description);
     $is_new = _capital_news_createNews($key, $result->title, $description, $result->url, $time, null, WECHAT_SEARCH_TID, $nid);
     if($is_new){
-      $count++;
+      $summary['new_result']++;
     }
   }
-  return $count;
+  $summary['all_result'] += count($json);
 }
 
-function getWechatOfficalNews($key, $nid = null, $display_name, $tid = null){
+function getWechatOfficalNews(&$summary, $key, $nid = null, $display_name, $tid = null){
   $json = capital_common_get_wechat_official_search($key);
+  $summary['count'] ++;
   foreach($json as $result){
     //$time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
     $time = (new DateTime($result->date, new DateTimeZone('Etc/GMT+0')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
     $is_new = _capital_news_createNews($display_name, $result->title, $result->digest, $result->url, $time, $tid, WECHAT_OFFICIAL_TID, $nid, true);
     if($is_new){
-      $count++;
+      $summary['new_result']++;
     }
   }
-  return $count;
+  $summary['all_result'] += count($json);
 }
 
 function _capital_news_getTermsByVocabularies($vids){
@@ -203,17 +192,18 @@ function _capital_news_createNews($key, $title, $description, $link, $timestamp,
   $result = $db->select('node__field_news_link','l')->fields('l', ['entity_id'])->condition('field_news_link_uri', $link)->execute()->fetchAll();
   if (count($result)  > 0 ){
     $news = Node::load($result[0]->entity_id);
-    foreach($news->field_search_words as $search_word){
+    foreach($news->get('field_search_words')->getValue() as $search_word){
       if($search_word['value'] == $key){
         $find = true;
+        break;
       }
     }
     if(!isset($find)){
       $news->field_search_words[] = ['value' => $key];
       $news->save();
     }
-    if($nid && !in_array($nid, $news->field_related_nids)){
-      $news->field_related_nids[] = $nid;
+    if($nid && !in_array($nid, $news->get('field_related_nodes')->getValue())){
+      $news->field_related_nodes[] = $nid;
       $news->save();
     }
   } else{
@@ -253,7 +243,7 @@ function _capital_news_createNews($key, $title, $description, $link, $timestamp,
     }
     $news = Node::create($content);
     $news->save();
-    return true;
+    $is_new = true;
   }
 
   // Create relation if necessary
@@ -264,6 +254,7 @@ function _capital_news_createNews($key, $title, $description, $link, $timestamp,
       $link->create();
     }
   }
+  return isset($is_new);
 }
 function capital_news_theme() {
   $items = [
@@ -375,16 +366,12 @@ function removeRelation($relation_ids){
 function capital_news_preprocess_views_view(array &$variables) {
   if($variables['id'] == 'news_links'){
     $config = \Drupal::config('capital_news.settings');
-    $summary_data = $config->get('search-results.' . $variables['display_id']);
-    $variables['summary'] = '搜索时间:' . $summary_data['time'] . '   搜索次数:' . $summary_data['counts']. '   新增结果(去重):' . $summary_data['results'];
+    $summary = $config->get('search-results.' . $variables['display_id']);
+    $variables['summary'] = '搜索时间:' . $summary['time'] . '   搜索次数:' . $summary['count'] . '   结果数目:' . $summary['all_result'] . '   新增结果(去重):' . $summary['new_result'];
   }
 }
-function _capital_news_search_summary($search_counts, $result_counts, $config_key) {
-  $summary = [
-    'time' => date('m/d/Y H:i:s', time()),
-      'counts' => $search_counts,
-      'results' => $result_results,
-    ];
-  \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search-results.' . $config_key, $summary)->save();
+function _capital_news_search_summary($summary, $config_key) {
+  $summary['time'] = date('m/d/Y H:i:s', time());
   \Drupal::logger('capital-summary')->info(print_r($summary, true));
+  \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search-results.' . $config_key, $summary)->save();
 }

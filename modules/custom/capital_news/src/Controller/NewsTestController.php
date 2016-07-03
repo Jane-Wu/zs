@@ -12,8 +12,8 @@ use Drupal\Core\Controller\ControllerBase;
 class NewsTestController extends ControllerBase {
 
   public function content() {
-    //_capital_news_get_wechat_news();
-    _capital_news_get_google_news(false);
+    _capital_news_get_wechat_news();
+    //_capital_news_get_google_news(false);
 
     $news=array();
     return $news;
