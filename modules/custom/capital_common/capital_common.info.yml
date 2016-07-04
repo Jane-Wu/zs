@@ -1,5 +1,5 @@
 name: 'Capital Common'
 type: module
-description: 'Capital News.'
+description: 'Capital common used functions.'
 package: Development
 core: '8.x'

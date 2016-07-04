@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * @file
+ * Allows users to create and organize staff information.
+ */
+
+use \Drupal\Core\Entity\EntityInterface;
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for node entities.
+ *
+ * Update the field collection item weight by date
+ */
+function capital_staff_node_presave(EntityInterface $entity) {
+  $collection_fields = array(
+    array(
+      'bundle' => 'staff',
+      'field_name' => 'field_served_companies',
+      'sort_by' => 'field_accession_date',
+    ),
+  );
+  capital_common_field_collection_sort($entity, $collection_fields);
+}
+

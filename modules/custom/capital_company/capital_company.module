@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -27,3 +28,30 @@ function capital_company_after_build(array $form, FormStateInterface $form_state
   }
   return $form;
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_presave() for node entities.
+ *
+ * Update the field collection item weight by date
+ */
+function capital_company_node_presave(EntityInterface $entity) {
+  $collection_fields = array(
+    array(
+      'bundle' => 'company',
+      'field_name' => 'field_asset_under_management',
+      'sort_by' => 'field_data_collection_date',
+    ),
+    array(
+      'bundle' => 'company',
+      'field_name' => 'field_total_staff',
+      'sort_by' => 'field_data_collection_date',
+    ),
+    array(
+      'bundle' => 'company',
+      'field_name' => 'field_researcher_staff',
+      'sort_by' => 'field_data_collection_date',
+    ),
+  );
+  capital_common_field_collection_sort($entity, $collection_fields);
+}
+
