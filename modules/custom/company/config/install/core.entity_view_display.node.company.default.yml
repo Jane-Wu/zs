@@ -53,11 +53,11 @@ bundle: company
 mode: default
 content:
   field_asset_under_management:
-    weight: 22
+    weight: 24
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: field_collection_items
+    type: field_collection_table
   field_city:
     weight: 13
     label: inline
@@ -130,7 +130,7 @@ content:
     third_party_settings: {  }
     type: number_integer
   field_human_resource:
-    weight: 25
+    weight: 27
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -205,7 +205,7 @@ content:
     third_party_settings: {  }
     type: string
   field_product_count:
-    weight: 26
+    weight: 22
     label: inline
     settings:
       thousand_separator: ''
@@ -213,7 +213,7 @@ content:
     third_party_settings: {  }
     type: number_integer
   field_product_count_accumulated:
-    weight: 27
+    weight: 23
     label: inline
     settings:
       thousand_separator: ''
@@ -244,11 +244,11 @@ content:
     third_party_settings: {  }
     type: number_integer
   field_researcher_staff:
-    weight: 24
+    weight: 26
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: field_collection_items
+    type: field_collection_table
   field_risk_control:
     weight: 33
     label: above
@@ -276,11 +276,11 @@ content:
     third_party_settings: {  }
     type: text_default
   field_total_staff:
-    weight: 23
+    weight: 25
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: field_collection_items
+    type: field_collection_table
   field_website:
     weight: 20
     label: inline

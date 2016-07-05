@@ -45,14 +45,14 @@ function _capital_news_get_google_news($date_flag) {
     if($company && $node->get('field_staff_type')->target_id == 10){
       $key = $node->getTitle() . ' ' . $company->get('field_search_keyword')->value;
       getGoogleNews($date_flag, true, $company_summary, $key, $node->id());
-      getGoogleNews($date_flag, false, $company_summary, $key, $node->id());
+      getGoogleNews(false, false, $company_summary, $key, $node->id());
     }
   }
   // Other Google Key words
   $keywords_terms = _capital_news_getTermsByVocabularies(['additional_orgs','hot_spots','oversee_spots','general_key_words']);
   foreach( $keywords_terms as $term){
     getGoogleNews($date_flag, true, $summary, $term->name);
-    getGoogleNews($date_flag, false, $summary, $term->name);
+    getGoogleNews(false, false, $summary, $term->name);
   }
   _capital_news_search_summary($summary, 'page_1');
   _capital_news_search_summary($company_summary, 'page_6');
@@ -77,7 +77,7 @@ function _capital_news_get_wechat_news() {
   foreach( $nodes as $node){
     $company = Node::load($node->get('field_company')->target_id);
     if($company && $node->get('field_staff_type')->target_id == 10){
-      $key = $node->getTitle() . ' ' . $company->get('field_short_name')->value;
+      $key = $node->getTitle() . ' ' . $company->get('field_search_keyword')->value;
       getWechatSearchNews($company_news_summary, $key, $node->id());
     }
   }

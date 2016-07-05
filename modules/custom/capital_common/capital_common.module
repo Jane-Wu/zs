@@ -1,5 +1,7 @@
 <?php
 
+use \Drupal\Core\Entity\EntityInterface;
+
 /**
  * Implements hook_theme().
  */
@@ -57,7 +59,47 @@ function capital_common_get_rest_custom_search($key, $orterms = null, $sort, $fr
           'key_token'  => 'AIzaSyB4LApwAusy_M7FyS7nWkjX3hf5zO0W4AA',
         ],
       ],
-    ];
+      [
+        'trusted' => [
+          'cx_token' => '016187665819742734062:yenerw6ca-0',
+          'key_token' => 'AIzaSyAmvDwifvL-iRTFs--yaBEBfH5064dZUx0',
+        ],
+        'clues' => [
+          'cx_token' => '016187665819742734062:qdrzpshllrs',
+          'key_token' => 'AIzaSyAmvDwifvL-iRTFs--yaBEBfH5064dZUx0',
+        ],
+      ],
+      [
+        'trusted' => [
+          'cx_token' => '002547595546245460654:ceqx2h4kj9o',
+          'key_token' => 'AIzaSyDThjVc7RI2OwD5xM4ZUV6YciNfZ3i1qf4',
+        ],
+      'clues' => [
+        'cx_token' => '002547595546245460654:jfuskbxf2p8',
+        'key_token' => 'AIzaSyDThjVc7RI2OwD5xM4ZUV6YciNfZ3i1qf4',
+      ],
+    ],
+    [
+      'trusted' => [
+        'cx_token' => '000143090098609230264:g6yyvmj1p7w',
+        'key_token' => 'AIzaSyB1PIWvUHEiXgIp7eqWTnkTG1tr2-UlQP4',
+      ],
+      'clues' => [
+        'cx_token' => '000143090098609230264:s2vjraqqtd8',
+        'key_token' => 'AIzaSyB1PIWvUHEiXgIp7eqWTnkTG1tr2-UlQP4',
+      ],
+    ],
+    [
+      'trusted' => [
+        'cx_token' => '018341388468362291190:lnrrtbvd2bo',
+        'key_token' => 'AIzaSyCAfYAtfzB3ygKihhCirVzeugBabe4Muxw',
+      ],
+      'clues' => [
+        'cx_token' => '018341388468362291190:mbi3ngftvmm',
+        'key_token' => 'AIzaSyCAfYAtfzB3ygKihhCirVzeugBabe4Muxw',
+      ],
+    ],
+  ];
     \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search.api_pool', $api_pool)->save();
   } else {
     $api_pool = $config->get('search.api_pool');
@@ -66,7 +108,7 @@ function capital_common_get_rest_custom_search($key, $orterms = null, $sort, $fr
   $origin = $from_trusted? 'trusted': 'clues';
 
   $api_index = $config->get('search.api_index') == null ? 0: $config->get('search.api_index');
-  $url = 'https://www.googleapis.com/customsearch/v1?key=key_token&cx=cx_token&filter=1&dateRestrict=d1&q=' . $encoded_key; 
+  $url = 'https://www.googleapis.com/customsearch/v1?key=key_token&cx=cx_token&filter=1&dateRestrict=d1&q=' . $encoded_key;
   if($sort){
     $url = $url . '&sort=' . $sort;
   }
@@ -108,7 +150,7 @@ function capital_common_get_wechat_search($key){
   if(count($results) == 0 || isset($results[0]->error)){
     \Drupal::logger('capital-wechat-no-result')->info( print_r($key . ' ' . $url, true));
     $results = [];
-  } 
+  }
 
   return $results;
 }
@@ -125,6 +167,51 @@ function capital_common_get_wechat_official_search($key) {
   if(count($results) == 0 || isset($results[0]->error)){
     \Drupal::logger('capital-wechat-official-no-result')->info( print_r($key . ' ' . $url, true));
     $results = [];
-  } 
+  }
   return $results;
+}
+
+/**
+ * Update the 'field_collection' fields to sort by field specified.
+ * $collection_fields: array of fields that needs to be sorted
+ *   Each item in the array should be in the following format:
+ *     array(
+ *       'bundle' => $bundle_name, // Entity's bundle name
+ *       'field_name' => $field_name, // Field to be sorted
+ *       'sort_by' => $sort_by_field_name, // Field to be sorted by
+ *     );
+ */
+function capital_common_field_collection_sort($entity, $collection_fields) {
+  foreach ($collection_fields as $field_info) {
+    if ($entity->getEntityTypeId() == 'node' &&
+      $entity->bundle() == $field_info['bundle']) {
+        $items = array();
+        $field_name = $field_info['field_name'];
+        $field = $entity->get($field_name)->getValue();
+        foreach ($field as $key => $item) {
+          if (isset($item['field_collection_item'])) {
+            // Get the sort_by field and save it as the items array key
+            $sort_by = $item['field_collection_item']->get($field_info['sort_by'])->getValue();
+            if (!empty($sort_by)) {
+              $items[$sort_by[0]['value']] = $item;
+            }
+            else {
+              $items[] = $item;
+            }
+          }
+        }
+        // If no items available, skip saving empty value
+        if (empty($items)) {
+          continue;
+        }
+
+        // Sort items by specified field reverse
+        krsort($items);
+        $sorted_items = array();
+        foreach ($items as $key => $sorted_item) {
+          $sorted_items[] = $sorted_item;
+        }
+        $entity->get($field_name)->setValue($sorted_items);
+      }
+  }
 }

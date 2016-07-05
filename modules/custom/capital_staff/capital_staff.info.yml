@@ -1,0 +1,6 @@
+name: Capital Staff Customization
+description: 'Customization code for staff content type'
+type: module
+core: 8.x
+dependencies:
+  - staff
