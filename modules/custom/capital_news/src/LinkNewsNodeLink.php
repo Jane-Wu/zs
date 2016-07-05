@@ -4,6 +4,7 @@ namespace Drupal\capital_news;
 
 use Drupal\relation\Entity\Relation;
 use Drupal\Core\Url;
+use Drupal\Component\Serialization\Json;
 
 class LinkNewsNodeLink {
   public $rids;
@@ -44,6 +45,10 @@ class LinkNewsNodeLink {
       '#attributes' => [
         'class' => 'use-ajax glyphicon glyphicon-link',
         'id' => 'capital-link-news-' . $this->news_id,
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => Json::encode([
+          'width' => 700,
+        ]),
       ],
 
     ];
@@ -58,16 +63,20 @@ class LinkNewsNodeLink {
       '#attributes' => [
         'class' => 'use-ajax glyphicon glyphicon-link',
         'id' => 'capital-favorite-news-' . $this->news_id,
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => Json::encode([
+          'width' => 700,
+        ]),
       ],
-
     ];
     return $link;
   }
   public function getUrl(){
-    return Url::fromRoute('capital_news.linknews', ['nid' => 121, 'news_id' => $this->news_id]);
+    return Url::fromRoute('capital_news.linkform', ['nid' => 121, 'news_id' => $this->news_id]);
     return Url::fromRoute('capital_news.linknews', ['nid' => $this->nid, 'news_id' => $this->news_id]);
   }
   public function getListUrl(){
+    return Url::fromRoute('capital_news.linkform', ['news_id' => $this->news_id]);
     return Url::fromRoute('capital_news.getlist', ['news_id' => $this->news_id]);
   }
   public function getRemoveLink(){

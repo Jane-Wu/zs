@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\node\NodeInterface;
 use Drupal\node\Entity\Node;
+use Drupal\node\Entity\NodeType;
 use Drupal\relation\Entity\Relation;
 use Drupal\Core\Render\Element;
 
@@ -121,25 +122,39 @@ class NewsLinkController extends ControllerBase implements ContainerInjectionInt
       $id = !empty($key[0]) ? $key[0] : NULL;
        */
       $node_title  = 234;
-      $id = $news_id;
       $response = new AjaxResponse();
-      $title = 'Node ID';
-      if ($id !== NULL) {
-        $content = '<div class="test-popup-content"> Node ID is: ' . $id . '</div>';
+      $title = '收藏新闻';
+      if ($news_id !== NULL) {
+      $news = Node::load($news_id);
+      $related_nid_fields = $news->get('field_related_nodes')->getValue();
+      $options = [];
+      foreach($related_nid_fields as $related_nid_field){
+        $node = Node::load($related_nid_field['target_id']);
+        //$nodeType = NodeType::load($node->getType());
+        $options[$related_nid_field['target_id']] = $node->type->entity->label() . ': ' . $node->getTitle();
+      }
+      \Drupal::logger('capital-test')->debug(print_r($options, true));
+
+
+      $form = [
+        '#type' => 'container',
+        '#attributes' => [
+          //   'class' => 'accommodation',
+        ],
+        'recommendation' => [
+          '#type' => 'checkboxes',
+          '#options' => $options,
+          '#title' => $this->t('推荐收藏公司/人员'),
+        ]
+      ];
         $options = array(
           'dialogClass' => 'popup-dialog-class',
           'width' => '300',
           'height' => '300',
         );
-        $response->addCommand(new OpenModalDialogCommand($title, $content, $options));
-
+        $response->addCommand(new OpenModalDialogCommand($title, $form, $options));
       }
-      else {
-        $content = 'Not found record with this title <strong>' . $node_title .'</strong>';
-        $response->addCommand(new OpenModalDialogCommand($title, $content));
-        \Drupal::logger('capital-test')->debug(print_r($response, true));
-      }
-        \Drupal::logger('capital-test')->debug(print_r($response, true));
+      \Drupal::logger('capital-test')->debug(print_r($response, true));
       return $response;
 
       // Create a new AJAX response.

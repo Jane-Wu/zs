@@ -19,6 +19,13 @@ capital_news.getlist:
     _title: ''
   requirements:
     _permission: 'access content'
+capital_news.linkform:
+  path: 'news/{news_id}/linkform'
+  defaults:
+    _form: '\Drupal\capital_news\Form\LinkNewsForm2'
+    _title: 'News Settings'
+  requirements:
+    _permission: 'access content'
 capital_news.test:
   path: '/test'
   defaults:
