@@ -21,6 +21,7 @@ function capital_common_get_rest_api($url, $headers = array()) {
   return json_decode($body);
 }
 function capital_common_get_rest_custom_search($key, $orterms = null, $sort, $from_trusted) {
+  $key = trim($key);
   if( empty($key)){
     return;
   }
@@ -139,6 +140,7 @@ function capital_common_get_rest_custom_search($key, $orterms = null, $sort, $fr
   return $results;
 }
 function capital_common_get_wechat_search($key){
+  $key = trim($key);
   if( empty($key)){
     return;
   }
@@ -158,6 +160,7 @@ function _capital_common_wrap_search_key($key){
   return '"' . urlencode($key) . '"';
 }
 function capital_common_get_wechat_official_search($key) {
+  $key = trim($key);
   if( empty($key)){
     return;
   }

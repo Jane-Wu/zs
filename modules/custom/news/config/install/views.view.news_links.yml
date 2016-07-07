@@ -218,7 +218,7 @@ display:
             url_plain: false
             rel: '0'
             target: '0'
-          group_column: ''
+          group_column: uri
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -381,7 +381,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -443,7 +443,7 @@ display:
           click_sort_column: value
           type: text_default
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -570,7 +570,7 @@ display:
           click_sort_column: value
           type: text_default
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -3562,6 +3562,7 @@ display:
         filters: false
         filter_groups: false
         fields: false
+        group_by: false
       filter_groups:
         operator: AND
         groups:
@@ -3689,7 +3690,7 @@ display:
             url_plain: false
             rel: '0'
             target: '0'
-          group_column: ''
+          group_column: uri
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -3852,7 +3853,7 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -3977,7 +3978,7 @@ display:
           click_sort_column: value
           type: text_default
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -4104,7 +4105,7 @@ display:
           click_sort_column: value
           type: text_default
           settings: {  }
-          group_column: value
+          group_column: entity_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -4115,6 +4116,7 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+      group_by: true
     cache_metadata:
       max-age: -1
       contexts:
@@ -4248,10 +4250,12 @@ display:
       defaults:
         filters: false
         filter_groups: false
+        group_by: false
       filter_groups:
         operator: AND
         groups:
           1: AND
+      group_by: true
     cache_metadata:
       max-age: -1
       contexts:
