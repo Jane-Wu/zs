@@ -3,3 +3,5 @@ type: module
 description: 'Capital Regulation.'
 package: Development
 core: '8.x'
+dependencies:
+  - regulation
