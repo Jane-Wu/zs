@@ -10,11 +10,15 @@ use Drupal\Core\StreamWrapper\PublicStream;
 use Drupal\relation\Entity\Relation;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\capital_news\LinkNewsNodeLink;
+use Drupal\Core\Database\Database;
 
 define('GOOGLE_SEARCH_TID', 178);
 define('WECHAT_SEARCH_TID', 180);
 define('WECHAT_OFFICIAL_TID', 179);
 
+/**
+ * Implements hook_cron().
+ */
 function capital_news_cron(){
   $hour = date('H');
   if(in_array($hour,  [6, 14 ,18])){
@@ -23,8 +27,92 @@ function capital_news_cron(){
     _capital_news_get_google_news(false);
   } elseif ($hour == 17){
     _capital_news_get_google_news(true);
+  } elseif ($hour == 0) {
+    _capital_news_delete_obsolete_news();
   }
 }
+
+/**
+ * Delete all the obsolete news nodes in batch
+ */
+function _capital_news_delete_obsolete_news() {
+  $result = _capital_news_get_obsolete_news();
+  $total = count($result);
+  $operations = array();
+  if (!empty($total)) {
+    \Drupal::logger('capital-news-deletion')->debug('delete news count: ' . $total);
+    // Create batch of 20 nodes.
+    $count = 1;
+    foreach ($result as $row) {
+      $nids[] = $row->nid;
+      if ($count % 20 === 0 || $count === $total) {
+        $operations[] = array('_capital_news_process_batch', array($nids));
+        $nids = array();
+      }
+      ++$count;
+    }
+    // Set up the Batch API
+    $batch = array(
+      'operations' => $operations,
+      'finished' => array('_capital_news_finished_batch'),
+      'init_message' => t('Starting news nodes deletion.'),
+      'progress_message' => t('Completed @current step of @total.'),
+      'error_message' => t('Bulk news deletion has encountered an error.'),
+    );
+    batch_set($batch);
+  }
+}
+
+/**
+ * Processes the bulk news deletion.
+ *
+ * @param array $nids
+ *   Node nid.
+ * @param array $context
+ *   The batch context.
+ */
+function _capital_news_process_batch($nids, &$context) {
+  entity_delete_multiple('node', $nids);
+}
+
+/**
+ * This function is called by the batch 'finished' parameter.
+ * The cache must not be cleared as the last batch operation,
+ * but after the batch is finished.
+ * @param $success
+ * @param $results
+ * @param $operations
+ */
+function _capital_news_finished_batch($success, $results, $operations) {
+  drupal_flush_all_caches();
+  $message = $success ? t('Bulk news delete performed successfully.') : t('Bulk news delete has not been finished successfully.');
+  \Drupal::logger('capital-news-deletion')->debug($message);
+  drupal_set_message($message);
+}
+
+/**
+ * Get all the obsolete news nids from database
+ */
+function _capital_news_get_obsolete_news(){
+  $bundle = 'news';
+  // Check the news changed date older than 10 days
+  $changed = strtotime('-10 days');
+  $connection = Database::getConnection();
+  $query = $connection->select('node_field_data', 'nfd')
+    ->fields('nfd', array('nid'));
+  $query->leftJoin('relation__endpoints', 'r',
+    'nfd.nid=r.endpoints_entity_id');
+  $query->condition('nfd.type', $bundle);
+  $query->condition('nfd.changed', $changed, '<');
+  $db_or = db_or();
+  // Get the news nodes those have no relations with other nodes
+  $db_or->condition('r.entity_id', NULL, 'IS NULL');
+  $db_or->condition('r.endpoints_entity_type', 'node', '!=');
+  $query->condition($db_or);
+  $result = $query->execute()->fetchAll();
+  return $result;
+}
+
 function _capital_news_get_google_news($date_flag) {
   $summary = $company_summary = [
     'count' => 0,
