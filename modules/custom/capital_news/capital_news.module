@@ -94,21 +94,30 @@ function _capital_news_finished_batch($success, $results, $operations) {
  * Get all the obsolete news nids from database
  */
 function _capital_news_get_obsolete_news(){
-  $bundle = 'news';
-  // Check the news changed date older than 10 days
-  $changed = strtotime('-10 days');
   $connection = Database::getConnection();
   $query = $connection->select('node_field_data', 'nfd')
     ->fields('nfd', array('nid'));
-  $query->leftJoin('relation__endpoints', 'r',
-    'nfd.nid=r.endpoints_entity_id');
+
+  // Check the news those changed date is older than 10 days
+  $bundle = 'news';
+  $changed = strtotime('-10 days');
   $query->condition('nfd.type', $bundle);
   $query->condition('nfd.changed', $changed, '<');
+
+  // Get the news those have no relations with other nodes
+  $query->leftJoin('relation__endpoints', 'r',
+    'nfd.nid=r.endpoints_entity_id');
   $db_or = db_or();
-  // Get the news nodes those have no relations with other nodes
   $db_or->condition('r.entity_id', NULL, 'IS NULL');
   $db_or->condition('r.endpoints_entity_type', 'node', '!=');
   $query->condition($db_or);
+
+  // Get the news those search type is not 'official news'
+  $query->join('node__field_search_type', 'fst',
+    'nfd.nid=fst.entity_id AND nfd.type=fst.bundle');
+  $query->condition('fst.field_search_type_target_id',
+    WECHAT_OFFICIAL_TID, '!=');
+
   $result = $query->execute()->fetchAll();
   return $result;
 }
