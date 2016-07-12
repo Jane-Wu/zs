@@ -15,7 +15,12 @@ class LinkNewsNodeLink {
   public function __construct($news_id, $nid = null){//, $src_bundle){
     $this->news_id = $news_id;
     $this->nid = $nid;
-//    $this->src_bundle = $src_bundle;
+    //    $this->src_bundle = $src_bundle;
+  }
+  public function checkAndCreate(){
+    if(count($this->exists()) == 0){
+      $this->create();
+    }
   }
 
   public function exists(){
