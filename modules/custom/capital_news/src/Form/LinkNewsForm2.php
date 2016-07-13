@@ -8,6 +8,8 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax;
 use Drupal\Core\Ajax\OpenModalDialogCommand;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
+use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Ajax\InvokeCommand;
 use Drupal\node\Entity\Node;
 use Drupal\Core\Entity\Element\EntityAutocomplete;
 use Drupal\capital_news\LinkNewsNodeLink;
@@ -25,35 +27,37 @@ class LinkNewsForm2 extends FormBase {
     if ($news_id !== NULL) {
       $news = Node::load($news_id);
       $title .= $news->getTitle();
+
+      $link = new LinkNewsNodeLink($news_id);
+      $linked_nids = $link->getParentNids();
+      $linked_nodes = [];
+      foreach($linked_nids as $linked_nid){
+        $linked_nodes[] = Node::load($linked_nid)->getTitle();
+      }
       $related_nid_fields = $news->get('field_related_nodes')->getValue();
       $options = [];
       foreach($related_nid_fields as $related_nid_field){
         $node = Node::load($related_nid_field['target_id']);
-        //$nodeType = NodeType::load($node->getType());
         $options[$related_nid_field['target_id']] = $node->type->entity->label() . ': ' . $node->getTitle();
       }
       \Drupal::logger('capital-test')->debug(print_r($options, true));
 
       $form = [
         '#type' => 'container',
-        /*
-        '#attributes' => [
-          //   'class' => 'accommodation',
+        'linked' => [
+          '#theme' => 'item_list',
+          '#items' => $linked_nodes,
+          '#title' => $this->t('已关联的内容'),
         ],
-         */
         'recommendation' => [
           '#type' => 'checkboxes',
           '#options' => $options,
           '#title' => $this->t('推荐收藏公司/人员'),
-          '#required' =>false,
-          'required' =>false,
         ],
         'other_nodes' => [
-          //'#type' => 'fieldset',
           '#type' => 'entity_autocomplete',
           '#title' => $this->t('关联到其他内容'),
           '#bundles' => array('company'),
-          //'#entity_type' => 'node',
           //'#autocreate' => ['bundle' => 'company'],
           '#target_type' => 'node',
         ],
@@ -91,8 +95,12 @@ class LinkNewsForm2 extends FormBase {
    *   Array of ajax commands to execute on submit of the modal form.
    */
   public function ajaxSubmitForm(array &$form, FormStateInterface $form_state) {
+    $news_id = \Drupal::request()->get('news_id');
     $response = new AjaxResponse();
     $response->addCommand(new CloseModalDialogCommand());
+    $selector = '#capital-link-news-' . $news_id;
+    $response->addCommand(new InvokeCommand($selector, "addClass", ["glyphicon-ok"]));
+    $response->addCommand(new InvokeCommand($selector, "removeClass", ["glyphicon-plus"]));
     return $response;
   }
 

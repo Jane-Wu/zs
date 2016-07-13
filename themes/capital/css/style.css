@@ -94,3 +94,18 @@ div.view-id-news_links ul li{
 ul.ui-autocomplete{
   z-index: 2147483647;
 }
+
+.view li:hover {
+  background-color: aliceblue;
+}
+.view li span.pull-right{
+  display: none;
+  padding-left: 5px;
+}
+.view li:hover span.pull-right{
+  display: block;
+}
+
+.view li{
+  padding: 1px 0px 1px 0px;
+}

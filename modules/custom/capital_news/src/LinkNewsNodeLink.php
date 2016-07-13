@@ -35,10 +35,25 @@ class LinkNewsNodeLink {
     $rids = $query->execute()->fetchAllAssoc('entity_id');
     $rids = array_keys($rids);
 
-    $this->rid = $rids;
+    $this->rids = $rids;
 
     return $rids;
   }
+
+  public function getParentNids(){
+    $query = \Drupal::database()->select('relation__endpoints', 'endpoint');
+    $query->fields('endpoint', ['endpoints_entity_id']);
+    $query->join('relation__endpoints', 'endpoint2', 'endpoint.entity_id = endpoint2.entity_id');
+    $query->condition('endpoint.bundle', 'link_news');
+    $query->condition('endpoint.endpoints_entity_type', 'node');
+    $query->condition('endpoint2.endpoints_entity_type', 'node');
+    $query->condition('endpoint2.endpoints_entity_id', $this->news_id);
+    $query->condition('endpoint.endpoints_r_index', 0);
+    $nids = $query->execute()->fetchAllAssoc('endpoints_entity_id');
+    $nids = array_keys($nids);
+    return $nids;
+  }
+
   public function getLink(){
     return empty($this->exists())? $this->getRemoveLink(): $this->getAddLink();
   }
@@ -48,7 +63,7 @@ class LinkNewsNodeLink {
       '#title' => ' ',
       '#url' => $this->getListUrl(),
       '#attributes' => [
-        'class' => 'use-ajax glyphicon glyphicon-link',
+        'class' => 'use-ajax glyphicon glyphicon-plus',
         'id' => 'capital-link-news-' . $this->news_id,
         'data-dialog-type' => 'modal',
         'data-dialog-options' => Json::encode([
@@ -66,7 +81,7 @@ class LinkNewsNodeLink {
       '#title' => 'sdf',
       '#url' => $this->getUrl(),
       '#attributes' => [
-        'class' => 'use-ajax glyphicon glyphicon-link',
+        'class' => 'use-ajax glyphicon glyphicon-plus',
         'id' => 'capital-favorite-news-' . $this->news_id,
         'data-dialog-type' => 'modal',
         'data-dialog-options' => Json::encode([
