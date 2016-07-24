@@ -32,28 +32,29 @@ class LinkNewsForm extends FormBase {
       $linked_nids = $link->getParentNids();
       $linked_nodes = [];
       foreach($linked_nids as $linked_nid){
+        $node = Node::load($linked_nid);
         $linked_nodes[] = Node::load($linked_nid)->getTitle();
       }
       $related_nid_fields = $news->get('field_related_nodes')->getValue();
       $options = [];
       //$default_options = [];
       foreach($related_nid_fields as $related_nid_field){
-        $node = Node::load($related_nid_field['target_id']);
-        $options[$related_nid_field['target_id']] = $node->type->entity->label() . ': ' . $node->getTitle();
+        $options[$related_nid_field['target_id']] = Node::load($related_nid_field['target_id'])->getTitle();
       }
-      \Drupal::logger('capital-test')->debug(print_r($options, true));
 
       $form = [
         '#type' => 'container',
         'linked' => [
           '#theme' => 'item_list',
-          '#items' => $linked_nodes,
+          '#items' => empty($linked_nodes)? [$this->t('暂无关联内容')] : $linked_nodes,
           '#title' => $this->t('已关联的内容'),
+          '#description' => $this->t('暂无关联内容'),
         ],
         'recommendation' => [
           '#type' => 'checkboxes',
           '#options' => $options,
           '#title' => $this->t('推荐收藏公司/人员'),
+          '#access' => !empty($options),
         ],
         'other_nodes' => [
           '#type' => 'entity_autocomplete',

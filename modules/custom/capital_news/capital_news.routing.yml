@@ -9,7 +9,7 @@ capital_news.linkform:
   path: 'news/{news_id}/linkform'
   defaults:
     _form: '\Drupal\capital_news\Form\LinkNewsForm'
-    _title: 'News Settings'
+    _title: '关联新闻'
   requirements:
     _permission: 'access content'
 capital_news.test:
