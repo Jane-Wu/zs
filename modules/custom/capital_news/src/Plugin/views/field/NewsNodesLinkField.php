@@ -25,17 +25,7 @@ class NewsNodesLinkField extends FieldPluginBase {
   public function render(ResultRow $values) {
     $nid = $values->_entity->id();
     $relation = new LinkNewsNodeLink($nid);
-    /*
-    if(isset($values->_relationship_entities['relation_user_favorite_news_user'])){
-      if( $values->_relationship_entities['relation_user_favorite_news_user']->id() == \Drupal::currentUser()->id()){
-        $link = $relation->getRemoveLink();
-      } else{
-        $link = $relation->getAddLink();
-      }
-    } else{
-      $link = $relation->getListLink();
-    }*/
-      $link = $relation->getListLink();
+    $link = $relation->getLink();
     return $this->getRenderer()->render($link);
   }
 }

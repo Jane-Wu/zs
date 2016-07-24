@@ -55,62 +55,27 @@ class LinkNewsNodeLink {
   }
 
   public function getLink(){
-    return empty($this->exists())? $this->getRemoveLink(): $this->getAddLink();
-  }
-  public function getListLink(){
     $link = [
       '#type' => 'link',
       '#title' => ' ',
-      '#url' => $this->getListUrl(),
+      '#url' => $this->getUrl(),
       '#attributes' => [
-        'class' => 'use-ajax glyphicon glyphicon-plus',
+        'class' => 'use-ajax glyphicon ' . (empty($this->getParentNids())? 'glyphicon-plus': 'glyphicon-ok'), 
         'id' => 'capital-link-news-' . $this->news_id,
         'data-dialog-type' => 'modal',
         'data-dialog-options' => Json::encode([
           'width' => 700,
         ]),
       ],
+    ];
+    return $link;
+  }
 
-    ];
-    return $link;
-    return empty($this->exists())? $this->getRemoveLink(): $this->getAddLink();
-  }
-  public function getAddLink(){
-    $link = [
-      '#type' => 'link',
-      '#title' => 'sdf',
-      '#url' => $this->getUrl(),
-      '#attributes' => [
-        'class' => 'use-ajax glyphicon glyphicon-plus',
-        'id' => 'capital-favorite-news-' . $this->news_id,
-        'data-dialog-type' => 'modal',
-        'data-dialog-options' => Json::encode([
-          'width' => 700,
-        ]),
-      ],
-    ];
-    return $link;
-  }
   public function getUrl(){
-    return Url::fromRoute('capital_news.linkform', ['nid' => 121, 'news_id' => $this->news_id]);
-    return Url::fromRoute('capital_news.linknews', ['nid' => $this->nid, 'news_id' => $this->news_id]);
-  }
-  public function getListUrl(){
     return Url::fromRoute('capital_news.linkform', ['news_id' => $this->news_id]);
     return Url::fromRoute('capital_news.getlist', ['news_id' => $this->news_id]);
   }
-  public function getRemoveLink(){
-    $link = [
-      '#type' => 'link',
-      '#title' => ' ',
-      '#url' => $this->getUrl(),
-      '#attributes' => [
-        'class' => 'use-ajax glyphicon glyphicon-link',
-        'id' => 'capital-favorite-news-' . $this->news_id,
-      ],
-    ];
-    return $link;
-  }
+
   public function create(){
     createRelation('link_news', 'node', $this->nid, 'node', $this->news_id);
   }

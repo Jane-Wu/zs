@@ -36,6 +36,7 @@ class LinkNewsForm2 extends FormBase {
       }
       $related_nid_fields = $news->get('field_related_nodes')->getValue();
       $options = [];
+      //$default_options = [];
       foreach($related_nid_fields as $related_nid_field){
         $node = Node::load($related_nid_field['target_id']);
         $options[$related_nid_field['target_id']] = $node->type->entity->label() . ': ' . $node->getTitle();
@@ -58,19 +59,12 @@ class LinkNewsForm2 extends FormBase {
           '#type' => 'entity_autocomplete',
           '#title' => $this->t('关联到其他内容'),
           '#bundles' => array('company'),
-          //'#autocreate' => ['bundle' => 'company'],
           '#target_type' => 'node',
         ],
       ];
     }
 
     $form['#attached']['library'][] = 'core/drupal.dialog.ajax';
-    /*
-    $form['node_title'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Node`s title'),
-    );
-     */
     $form['actions']['#type'] = 'actions';
     $form['actions']['submit'] = array(
       '#type' => 'submit',
@@ -104,14 +98,7 @@ class LinkNewsForm2 extends FormBase {
     return $response;
   }
 
-  /**
-
-   * {@inheritdoc}
-
-   */
-
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    //drupal_set_message(t('You specified a title of %title.', ['%title' => 'asdf']));
     $news_id = \Drupal::request()->get('news_id');
     \Drupal::logger('capital-ttest')->debug(print_r($news_id, true));
     $values = $form_state->getValues();
@@ -126,29 +113,5 @@ class LinkNewsForm2 extends FormBase {
       $link = new LinkNewsNodeLink($news_id, $values['other_nodes']);
       $link->checkAndCreate();
     }
-  }
-  public function open_modal(&$form, FormStateInterface $form_state) {
-    $node_title = $form_state->getValue('node_title');
-    $query = \Drupal::entityQuery('node')
-      ->condition('title', $node_title);
-    $entity = $query->execute();
-    $key = array_keys($entity);
-    $id = !empty($key[0]) ? $key[0] : NULL;
-    $response = new AjaxResponse();
-    $title = 'Node ID';
-    if ($id !== NULL) {
-      $content = '<div class="test-popup-content"> Node ID is: ' . $id . '</div>';
-      $options = array(
-        'dialogClass' => 'popup-dialog-class',
-        'width' => '300',
-        'height' => '300',
-      );
-      $response->addCommand(new OpenModalDialogCommand($title, $content, $options));
-    }
-    else {
-      $content = 'Not found record with this title <strong>' . $node_title .'</strong>';
-      $response->addCommand(new OpenModalDialogCommand($title, $content));
-    }
-    return $response;
   }
 }

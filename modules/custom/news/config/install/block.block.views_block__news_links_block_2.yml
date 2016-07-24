@@ -8,14 +8,14 @@ dependencies:
     - views
   theme:
     - capital
-id: views_block__news_links_block_1
+id: views_block__news_links_block_2
 theme: capital
 region: content
-weight: -10
+weight: -9
 provider: null
-plugin: 'views_block:news_links-block_1'
+plugin: 'views_block:news_links-block_2'
 settings:
-  id: 'views_block:news_links-block_1'
+  id: 'views_block:news_links-block_2'
   label: ''
   provider: views
   label_display: visible
@@ -25,7 +25,7 @@ visibility:
   node_type:
     id: node_type
     bundles:
-      company: company
+      staff: staff
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
