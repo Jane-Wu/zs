@@ -73,7 +73,6 @@ class LinkNewsNodeLink {
 
   public function getUrl(){
     return Url::fromRoute('capital_news.linkform', ['news_id' => $this->news_id]);
-    return Url::fromRoute('capital_news.getlist', ['news_id' => $this->news_id]);
   }
 
   public function create(){

@@ -30,9 +30,9 @@
   {%- endif -%}
 
   {%- if items -%}
-    <{{ list_type }}{{ attributes }}>
+    <{{ list_type }}{{ attributes.addClass('list-group')}}>
       {%- for item in items -%}
-        <li{{ item.attributes }}>{{ item.value }}</li>
+        <li{{ item.attributes.addClass('list-group-item') }}>{{ item.value }}</li>
       {%- endfor -%}
     </{{ list_type }}>
   {%- else -%}

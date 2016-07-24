@@ -5,24 +5,10 @@ capital_news.favoritenews:
     _title: ''
   requirements:
     _permission: 'access content'
-capital_news.linknews:
-  path: 'news/{news_id}/link/{nid}'
-  defaults:
-    _controller: '\Drupal\capital_news\Controller\NewsLinkController::link'
-    _title: ''
-  requirements:
-    _permission: 'access content'
-capital_news.getlist:
-  path: 'news/{news_id}/list'
-  defaults:
-    _controller: '\Drupal\capital_news\Controller\NewsLinkController::listNodes'
-    _title: ''
-  requirements:
-    _permission: 'access content'
 capital_news.linkform:
   path: 'news/{news_id}/linkform'
   defaults:
-    _form: '\Drupal\capital_news\Form\LinkNewsForm2'
+    _form: '\Drupal\capital_news\Form\LinkNewsForm'
     _title: 'News Settings'
   requirements:
     _permission: 'access content'
