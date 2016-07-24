@@ -38,56 +38,21 @@ function capital_news_cron(){
 function _capital_news_delete_obsolete_news() {
   $result = _capital_news_get_obsolete_news();
   $total = count($result);
-  $operations = array();
+  $queue = Drupal::queue('obsolete_news');
+  \Drupal::logger('capital-news-deletion')->debug('delete news count: ' . $total);
   if (!empty($total)) {
-    \Drupal::logger('capital-news-deletion')->debug('delete news count: ' . $total);
-    // Create batch of 20 nodes.
+    // Create queue item of 20 nodes.
     $count = 1;
+    $nids = array();
     foreach ($result as $row) {
       $nids[] = $row->nid;
       if ($count % 20 === 0 || $count === $total) {
-        $operations[] = array('_capital_news_process_batch', array($nids));
+        $queue->createItem($nids);
         $nids = array();
       }
       ++$count;
     }
-    // Set up the Batch API
-    $batch = array(
-      'operations' => $operations,
-      'finished' => array('_capital_news_finished_batch'),
-      'init_message' => t('Starting news nodes deletion.'),
-      'progress_message' => t('Completed @current step of @total.'),
-      'error_message' => t('Bulk news deletion has encountered an error.'),
-    );
-    batch_set($batch);
   }
-}
-
-/**
- * Processes the bulk news deletion.
- *
- * @param array $nids
- *   Node nid.
- * @param array $context
- *   The batch context.
- */
-function _capital_news_process_batch($nids, &$context) {
-  entity_delete_multiple('node', $nids);
-}
-
-/**
- * This function is called by the batch 'finished' parameter.
- * The cache must not be cleared as the last batch operation,
- * but after the batch is finished.
- * @param $success
- * @param $results
- * @param $operations
- */
-function _capital_news_finished_batch($success, $results, $operations) {
-  drupal_flush_all_caches();
-  $message = $success ? t('Bulk news delete performed successfully.') : t('Bulk news delete has not been finished successfully.');
-  \Drupal::logger('capital-news-deletion')->debug($message);
-  drupal_set_message($message);
 }
 
 /**
