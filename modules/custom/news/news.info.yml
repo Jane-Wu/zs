@@ -9,6 +9,7 @@ dependencies:
   - company
   - core
   - datetime
+  - feeds
   - field
   - language
   - link
