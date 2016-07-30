@@ -1,0 +1,10 @@
+services:
+  stream_wrapper.s3fs:
+    class: Drupal\s3fs\StreamWrapper\S3fsStream
+    tags:
+      - { name: stream_wrapper, scheme: s3fs }
+  stream_wrapper.s3fsstreamoverride:
+      class: Drupal\s3fs\S3fsStreamOverrideManager
+  s3fs.validate:
+    class: Drupal\s3fs\ValidateService
+    arguments: ['@database', '@config.factory']

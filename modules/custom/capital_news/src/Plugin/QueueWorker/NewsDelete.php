@@ -19,7 +19,7 @@ class NewsDelete extends QueueWorkerBase {
    * {@inheritdoc}
    */
   public function processItem($data) {
-    \Drupal::logger('capital-news-deletion')->debug('delete news: ' . print_r($data, TRUE));
+    \Drupal::logger('capital-news-delete')->debug('Delete news: ' . print_r($data, TRUE));
     entity_delete_multiple('node', $data);
   }
 

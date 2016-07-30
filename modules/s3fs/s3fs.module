@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Hook implementations and other primary functionality for S3 File System.
+ */
+
+/**
+ * The prefix for our Drupal-cached metadata.
+ */
+define('S3FS_CACHE_PREFIX', 's3fs:uri:');
+define('S3FS_CACHE_BIN', 'cache');
+
+/**
+ * Convert file metadata returned from S3 into a metadata cache array.
+ *
+ * @param string $uri
+ *   The uri of the resource.
+ * @param array $s3_metadata
+ *   An array containing the collective metadata for the object in S3.
+ *   The caller may send an empty array here to indicate that the returned
+ *   metadata should represent a directory.
+ *
+ * @return array
+ *   A file metadata cache array.
+ */
+function _s3fs_convert_metadata($uri, $s3_metadata) {
+  // Need to fill in a default value for everything, so that DB calls
+  // won't complain about missing fields.
+  $metadata = array(
+    'uri' => $uri,
+    'filesize' => 0,
+    'timestamp' => REQUEST_TIME,
+    'dir' => 0,
+    'version' => '',
+  );
+
+  if (empty($s3_metadata)) {
+    // The caller wants directory metadata.
+    $metadata['dir'] = 1;
+  }
+  else {
+    // The filesize value can come from either the Size or ContentLength
+    // attribute, depending on which AWS API call built $s3_metadata.
+    if (isset($s3_metadata['ContentLength'])) {
+      $metadata['filesize'] = $s3_metadata['ContentLength'];
+    }
+    else if (isset($s3_metadata['Size'])) {
+      $metadata['filesize'] = $s3_metadata['Size'];
+    }
+
+    if (isset($s3_metadata['LastModified'])) {
+      $metadata['timestamp'] = date('U', strtotime($s3_metadata['LastModified']));
+    }
+
+    if (isset($s3_metadata['VersionId'])) {
+      $metadata['version'] = $s3_metadata['VersionId'];
+    }
+  }
+  return $metadata;
+}

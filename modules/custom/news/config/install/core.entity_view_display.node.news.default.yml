@@ -5,6 +5,7 @@ dependencies:
     - field.field.node.news.field_approximate_time
     - field.field.node.news.field_content
     - field.field.node.news.field_description
+    - field.field.node.news.field_news_archive_link
     - field.field.node.news.field_news_link
     - field.field.node.news.field_news_origin
     - field.field.node.news.field_related_nodes
@@ -42,6 +43,17 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: text_default
+  field_news_archive_link:
+    weight: 112
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
   field_news_link:
     weight: 103
     label: above
