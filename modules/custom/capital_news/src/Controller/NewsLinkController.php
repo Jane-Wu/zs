@@ -73,9 +73,6 @@ class NewsLinkController extends ControllerBase implements ContainerInjectionInt
 
       return $response;
     }
-    else {
-      //\Drupal::logger('capital-test')->notice(print_r('else', true));
-    }
   }
 }
 
