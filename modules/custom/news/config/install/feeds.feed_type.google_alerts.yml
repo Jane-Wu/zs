@@ -1,0 +1,51 @@
+langcode: zh-hans
+status: true
+dependencies: {  }
+label: 'Google Alerts'
+id: google_alerts
+description: ''
+import_period: 10800
+fetcher: http
+fetcher_configuration:
+  auto_detect_feeds: true
+  use_pubsubhubbub: false
+  fallback_hub: ''
+  request_timeout: 30
+parser: syndication
+parser_configuration: {  }
+processor: 'entity:node'
+processor_configuration:
+  update_existing: 2
+  expire: -1
+  owner_id: 1
+  authorize: true
+  skip_hash_check: false
+  values:
+    type: news
+mappings:
+  -
+    target: title
+    map:
+      value: title
+    unique: {  }
+  -
+    target: field_approximate_time
+    map:
+      value: timestamp
+  -
+    target: field_description
+    map:
+      value: content
+    settings:
+      format: full_html
+  -
+    target: field_title
+    map:
+      value: title
+    settings:
+      format: full_html
+  -
+    target: field_news_link
+    map:
+      uri: url
+      title: title

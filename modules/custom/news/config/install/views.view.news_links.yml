@@ -2510,6 +2510,9 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+      menu:
+        enabled: true
+        expanded: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -2853,7 +2856,7 @@ display:
           group_type: group
           admin_label: ''
           label: ''
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
             text: ''
@@ -3197,6 +3200,9 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+      menu:
+        enabled: true
+        expanded: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -3334,6 +3340,9 @@ display:
         operator: AND
         groups:
           1: AND
+      menu:
+        enabled: true
+        expanded: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -4020,6 +4029,9 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+      menu:
+        enabled: true
+        expanded: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -4709,6 +4721,9 @@ display:
           field_api_classes: false
           plugin_id: field
       group_by: true
+      menu:
+        enabled: true
+        expanded: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -5335,6 +5350,9 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+      menu:
+        enabled: true
+        expanded: false
     cache_metadata:
       max-age: -1
       contexts:

@@ -798,6 +798,9 @@ display:
         operator: AND
         groups:
           1: AND
+      menu:
+        enabled: true
+        expanded: false
     cache_metadata:
       max-age: -1
       contexts:
