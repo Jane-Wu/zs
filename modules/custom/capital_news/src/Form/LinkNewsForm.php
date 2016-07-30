@@ -96,7 +96,7 @@ class LinkNewsForm extends FormBase {
     $selector = '#capital-link-news-' . $news_id;
     $response->addCommand(new InvokeCommand($selector, "addClass", ["glyphicon-ok"]));
     $response->addCommand(new InvokeCommand($selector, "removeClass", ["glyphicon-plus"]));
-    drupal_set_message(t('ssAn error occurred and processing did not complete.'), 'status');
+    //drupal_set_message(t('ssAn error occurred and processing did not complete.'), 'status');
     return $response;
   }
 
@@ -115,6 +115,6 @@ class LinkNewsForm extends FormBase {
       $link = new LinkNewsNodeLink($news_id, $values['other_nodes']);
       $link->checkAndCreate();
     }
-    drupal_set_message(t('ssAn error ddoccurred and processing did not complete.'), 'status');
+    //drupal_set_message(t('ssAn error ddoccurred and processing did not complete.'), 'status');
   }
 }

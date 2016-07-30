@@ -6,6 +6,7 @@
 
 namespace Drupal\capital_news\Controller;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\feeds\Entity\Feed;
 
 use Drupal\Core\Controller\ControllerBase;
 
@@ -14,9 +15,19 @@ class NewsTestController extends ControllerBase {
   public function content() {
     //_capital_news_get_wechat_news();
     //_capital_news_get_google_news(false);
+    capital_news_sync_feeds();
 
     $news=array();
     return $news;
+  }
+  private function deleteFeeds() {
+    $feeds = entity_load_multiple('feeds_feed');
+    $fids =  [];
+    foreach($feeds as $feed){
+      $fids[]  = $feed->id();
+    }
+    \Drupal::logger('capital-test')->debug(print_r($fids, true));
+    entity_delete_multiple('feeds_feed', $fids);
   }
   private function createRegulations() {
     $keys = ["私募法规", "管理办法", "起草说明", "业务指引", "行为准则",  "监管动态", "监管会议", "重要观点", "专业解读", "监管解读", "市场解读"];

@@ -56,10 +56,25 @@ class NewsLinkController extends ControllerBase implements ContainerInjectionInt
       $relation->create();
       // Save the news to local
       save_news_content($nid);
-      return $this->generateResponse($request, true, $relation);
+      return $this->favoriteResponse($request, true, $relation);
     } else{
       $relation->remove();
-      return $this->generateResponse($request, false, $relation);
+      return $this->favoriteResponse($request, false, $relation);
+    }
+  }
+
+  protected function favoriteResponse(Request $request, $isNew, $relation) {
+    if ($request->get(MainContentViewSubscriber::WRAPPER_FORMAT) == 'drupal_ajax') {
+      // Create a new AJAX response.
+      $response = new AjaxResponse();
+      $link_id = '#capital-favorite-news-' . $relation->news_id;
+      $replace = new ReplaceCommand($link_id, $isNew? $relation->getRemoveLink(): $relation->getAddLink());
+      $response->addCommand($replace);
+
+      return $response;
+    }
+    else {
+      //\Drupal::logger('capital-test')->notice(print_r('else', true));
     }
   }
 }

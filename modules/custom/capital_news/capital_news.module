@@ -11,6 +11,10 @@ use Drupal\relation\Entity\Relation;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\capital_news\LinkNewsNodeLink;
 use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\feeds\Entity\Feed;
 
 define('GOOGLE_SEARCH_TID', 178);
 define('WECHAT_SEARCH_TID', 180);
@@ -29,6 +33,40 @@ function capital_news_cron(){
     _capital_news_get_google_news(true);
   } elseif ($hour == 0) {
     _capital_news_delete_obsolete_news();
+  }
+}
+/**
+ * Implements hook_mail().
+ */
+function capital_news_mail($key, &$message, $params) {
+  $options = array(
+    'langcode' => $message['langcode'],
+  );
+  switch ($key) {
+  case 'google_alerts_action':
+    $message['from'] = \Drupal::config('system.site')->get('mail');
+    $message['subject'] = t('Please update Google Alerts') . " " . date('Y-m-d');
+    $message['body'][] = $params['message'];
+    break;
+  }
+}
+function capital_news_node_presave(EntityInterface $entity) {
+  $type = $entity->getType();
+  if($type == "news"){
+    if(($entity->get('feeds_item'))){
+
+      $news_link = $entity->get('field_news_link')->getValue();
+      $news_link = $news_link[0]['uri'];
+      preg_match('/url=(.+)&ct=ga/', $news_link, $matches);
+      if(count($matches) == 2){
+        $entity->field_news_link = ['uri' => $matches[1]];
+        $entity->field_news_origin[] = _capital_news_getTidByLinkAndVocabulary($matches[1]);
+      }
+      $fid = $entity->get('feeds_item')->getValue();
+      $fid = $fid[0]['target_id'];
+      $feed = Feed::load($fid);
+      $entity->field_related_nodes = $feed->get('field_related_nid')->getValue();
+    }
   }
 }
 
@@ -434,6 +472,112 @@ function capital_news_preprocess_views_view(array &$variables) {
 }
 function _capital_news_search_summary($summary, $config_key) {
   $summary['time'] = date('m/d/Y H:i:s', time());
-  \Drupal::logger('capital-summary')->info(print_r($summary, true));
+  \Drupal::logger('capital-summary')->info($config_key . print_r($summary, true));
   \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search-results.' . $config_key, $summary)->save();
 }
+
+function capital_news_sync_feeds(){
+  // Find all the missing feeds
+  $result = \Drupal::database()->query("SELECT f.fid as fid, t.name as name , t.tid as id, 0 AS is_node
+    FROM taxonomy_term_field_data AS t
+    LEFT JOIN feeds_feed AS f ON f.title = t.name and
+    f.status =1
+    WHERE t.vid
+    IN (
+      'general_key_words','additional_orgs','hot_spots','oversee_spots','general_key_words'
+    )
+    UNION
+    SELECT f.fid as fid, w.word as name, w.nid as id,  1 AS is_node
+    FROM feeds_feed AS f
+    RIGHT JOIN (
+      SELECT CONCAT_WS(  '', TRIM( n.title ) ,  ' ', TRIM( k.field_search_keyword_value ) ) AS word, n.nid AS nid
+      FROM node_field_data AS n
+      LEFT JOIN node__field_search_keyword AS k ON n.nid = k.entity_id
+      WHERE n.type =  'company'
+      UNION
+      SELECT CONCAT_WS(  '', TRIM( n.title ) ,  ' ', TRIM( k.field_search_keyword_value ) ) AS word, n.nid AS nid
+      FROM node_field_data AS n
+      JOIN node__field_company AS c ON n.nid = c.entity_id
+      LEFT JOIN node__field_search_keyword AS k ON c.field_company_target_id = k.entity_id
+      WHERE n.type =  'staff'
+    ) AS w ON f.title = w.word
+    AND f.status =1
+    ");
+  $query = \Drupal::database()->select('feeds_feed', 'f');
+  $query->fields('f', ['fid']);
+  $query->condition('f.status', 1);
+  $rids = $query->execute()->fetchAllAssoc('fid');
+  $feeds = entity_load_multiple('feeds_feed');
+
+  $actions = [];
+  $new_feeds = [];
+  $correct_feeds = [];
+  $message = null;
+  global $base_url;
+  // Parse the search results
+  foreach ($result as $row) {
+    if ($row->fid == null){
+      $new_feeds[] = $row;
+      $feed = [
+        'type' => 'google_alerts',
+        'title'=> $row->name,
+        'status' =>1,
+      ];
+      if($row->is_node){
+        $feed['field_related_nid'] = $row->id;
+      }
+
+      $feed = Feed::create($feed);
+      $feed->save();
+      $message .= 'Add alerts for ' . $row->name . ' ' . $base_url . '/feed/' . $feed->id() . '/edit <br>';
+    } else {
+      $correct_feeds[$row->fid] = null;
+    }
+  }
+  \Drupal::logger('capital-test')->debug(print_r($new_feeds, true));
+  \Drupal::logger('capital-test')->debug(print_r($rids, true));
+  \Drupal::logger('capital-test')->debug(print_r($correct_feeds, true));
+  // @TODO Turn to use entity multiple load when available
+  //$feeds = entity_load_multiple('feeds_feed', array_keys($rids));
+  //$fids = array_keys($rids);
+  foreach($feeds as $fid => $feed){
+    if(array_key_exists($fid, $rids)){
+      if( array_key_exists($fid, $correct_feeds)){
+        // check correctness
+        $url = $feed->getSource();
+        if($url){
+          $response = capital_common_get_rest_api($feed->getSource(), [], false);
+          preg_match('/<title>Google Alert - (.*?)<\/title>/', $response, $matches);
+          if(count($matches) < 2 || $matches[1] != $feed->label()){
+            $message .= 'The RSS source does not match the search key ' . $feed->label() . ' at ' . $base_url . '/feed/' . $feed->id() . '/edit <br>';
+          }
+        } else{
+          $message .= 'Fill in the RSS source for  ' . $feed->label() . ' at ' . $base_url . '/feed/' . $feed->id() . '/edit <br>';
+        }
+      }else{
+        $feed->setActive(false);
+        $feed->save();
+        $message .= 'Delete alerts for ' . $feed->label() . '<br>';
+      }
+    }
+  }
+  \Drupal::logger('capital-mail')->debug(print_r($message, true));
+  if(!$message == null){
+    $message = 'Please take following actions:<br>' . $message;
+    $mailManager = \Drupal::service('plugin.manager.mail');
+    $module = 'capital_news';
+    $key = 'google_alerts_action';
+    $to = 'zishi8alerts@gmail.com';
+    $params['message'] = $message;
+    $langcode = \Drupal::currentUser()->getPreferredLangcode();
+    $send = true;
+    $result = $mailManager->mail($module, $key, $to, $langcode, $params, NULL, $send);
+    if ($result['result'] !== true) {
+      drupal_set_message(t('There was a problem sending your message and it was not sent.'), 'error');
+    }
+    else {
+      drupal_set_message(t('Your message has been sent.'));
+    }
+  }
+}
+
