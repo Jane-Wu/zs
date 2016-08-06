@@ -1,0 +1,7 @@
+s3fs.admin_settings:
+  path: '/admin/config/media/s3fs'
+  defaults:
+    _form: '\Drupal\s3fs\Form\SettingsForm'
+    _title: 'S3FS settings'
+  requirements:
+    _permission: 'administer s3fs'

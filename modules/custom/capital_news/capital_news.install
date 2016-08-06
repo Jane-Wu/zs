@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * @file
+ * Contains install and update functions for capital_news.
+ */
+
+/**
+ * Update existing news node content.
+ */
+function capital_news_update_8001(&$sandbox) {
+  if (!isset($sandbox['progress'])) {
+    // This must be the first run. Initialize the sandbox.
+    $result = _capital_news_get_linked_news(false);
+    $total = count($result);
+    $sandbox['progress'] = 0;
+    $sandbox['max'] = $total;
+    // Cache the result in the sandbox variable
+    $sandbox['result'] = $result;
+    \Drupal::logger('capital-news-archive')->debug('Archive news count: ' . $total);
+  }
+
+  $records = array_slice($sandbox['result'], $sandbox['progress'], 1);
+  foreach ($records as $record) {
+    _capital_news_save_news_content($record->nid);
+
+    $sandbox['progress']++;
+  }
+
+  $sandbox['#finished'] = empty($sandbox['max']) ? 1 : ($sandbox['progress'] / $sandbox['max']);
+
+  return t('All linked news were updated.');
+}

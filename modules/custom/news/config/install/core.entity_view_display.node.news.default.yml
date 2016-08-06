@@ -2,11 +2,14 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
+    - field.field.node.news.feeds_item
     - field.field.node.news.field_approximate_time
     - field.field.node.news.field_content
     - field.field.node.news.field_description
+    - field.field.node.news.field_news_archive_link
     - field.field.node.news.field_news_link
     - field.field.node.news.field_news_origin
+    - field.field.node.news.field_news_s3_link
     - field.field.node.news.field_related_nodes
     - field.field.node.news.field_search_type
     - field.field.node.news.field_search_words
@@ -30,18 +33,23 @@ content:
       timezone_override: ''
     third_party_settings: {  }
     type: datetime_default
-  field_content:
-    weight: 105
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: text_default
   field_description:
     weight: 104
     label: above
     settings: {  }
     third_party_settings: {  }
     type: text_default
+  field_news_archive_link:
+    weight: 112
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
   field_news_link:
     weight: 103
     label: above
@@ -60,6 +68,17 @@ content:
     settings:
       link: true
     third_party_settings: {  }
+  field_news_s3_link:
+    weight: 113
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
   field_related_nodes:
     weight: 111
     label: above
@@ -92,4 +111,6 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  feeds_item: true
+  field_content: true
   langcode: true
