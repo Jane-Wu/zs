@@ -472,6 +472,7 @@ function _capital_news_save_news_content($nid) {
     return;
   }
 
+  $skip_image_save = false;
   $news_type = $node->get('field_search_type')->getValue();
   $is_google_news = ($news_type[0]['target_id'] == GOOGLE_SEARCH_TID);
   if ($is_google_news) {
@@ -486,19 +487,24 @@ function _capital_news_save_news_content($nid) {
         'uri' => $archive_link,
       )
     );
-  } else {
-    \Drupal::logger('capital-news-save-content')->debug('Save news content: ' . $nid . ' Request URL: ' . $request_url);
-    $content = _capital_news_get_url_content($request_url, $nid);
-    if (!$content) {
-      return;
-    }
-    $node->set('field_content',
-      array(
-        'value'  => $content,
-        'format' => 'full_html',
-      )
-    );
+    $skip_image_save = true;
   }
+
+  \Drupal::logger('capital-news-save-content')->debug('Save news content: ' . $nid . ' Request URL: ' . $request_url);
+  $content = _capital_news_get_url_content($request_url, $nid, $skip_image_save);
+  $node->set('field_content',
+    array(
+      'value'  => $content,
+      'format' => 'full_html',
+    )
+  );
+
+  $s3_link = _capital_news_save_news_html_to_s3($content, $nid);
+  $node->set('field_news_s3_link',
+    array(
+      'uri' => $s3_link,
+    )
+  );
   return $node->save();
 }
 
@@ -536,10 +542,12 @@ function _capital_news_get_archive_link($url) {
  * The source url to get the content
  * @param $nid
  * The node nid that need to save the content
+ * @param $skip_image_save
+ * The flag if we need to save all content images to s3
  * @return
  * The html content of the url
  */
-function _capital_news_get_url_content($url, $nid) {
+function _capital_news_get_url_content($url, $nid, $skip_image_save) {
   // Get the html content of the url
   $client = \Drupal::httpClient();
 
@@ -560,10 +568,12 @@ function _capital_news_get_url_content($url, $nid) {
   // Avoid warnings for "Unexpected end tag"
   @$dom->loadHTML($html_content);
 
-  _capital_news_remove_script_elements($dom);
+  //_capital_news_remove_script_elements($dom);
 
-  // Save the images to s3, replace the src with s3 url
-  _capital_news_replace_image_src($dom, $url, $nid);
+  if (!$skip_image_save) {
+    // Save the images to s3, replace the src with s3 url
+    _capital_news_replace_image_src($dom, $url, $nid);
+  }
 
   return $dom->saveHTML();
 }
@@ -661,6 +671,52 @@ function _capital_news_rel2abs($rel, $base) {
 }
 
 /**
+ * Save the content as html page and upload to s3
+ * Return the html page external url
+ * @param $content
+ * The content of the html page
+ * @param $nid
+ * The node nid that the content is used
+ * @return
+ * The S3 external link of the content saved
+ */
+function _capital_news_save_news_html_to_s3($content, $nid) {
+  \Drupal::logger('capital-news-s3')->debug('Save html: ' . print_r($nid, true));
+
+  $basename = 'index.html';
+  // Save the image to public folder first
+  $content_dir = "news_content";
+  $dir_prefix = $content_dir . '/' . $nid;
+  if (!is_dir("public://$dir_prefix")) {
+    mkdir("public://$dir_prefix", 0777, true);
+  }
+  $public_uri = "public://$dir_prefix/$basename";
+  $file = file_save_data($content, $public_uri, FILE_EXISTS_REPLACE);
+  $file_usage = \Drupal::service('file.usage');
+  $file_usage->add($file, 'capital_news', 'node', $nid);
+
+  // Copy the file to S3 bucket
+  $public_uri = $file->getFileUri();
+  $new_basename = drupal_basename($public_uri);
+  $s3_uri = "s3fs://$dir_prefix/$new_basename";
+  // add '@' to avoid error: Error executing "HeadObject"
+  @copy($public_uri, $s3_uri);
+
+  $stream = new S3fsStream();
+  $stream->setUri($s3_uri);
+  $stream->waitUntilFileExists($s3_uri);
+  $external_url = $stream->getExternalUrl();
+
+  if ($external_url) {
+    unlink($public_uri);
+  }
+  else {
+    \Drupal::logger('capital-news-s3')->error('Save html error: ' . print_r($nid, true));
+  }
+  return $external_url;
+}
+
+/**
  * Process the image path and save the image file to remote
  * Return the image external url
  * @param $image_url
@@ -687,8 +743,8 @@ function _capital_news_save_image_to_s3($image_url, $nid) {
   }
 
   // Save the image to public folder first
-  $image_dir = "news_images";
-  $dir_prefix = $image_dir . '/' . $nid;
+  $image_dir = "news_content";
+  $dir_prefix = $image_dir . '/' . $nid . '/images';
   if (!is_dir("public://$dir_prefix")) {
     mkdir("public://$dir_prefix", 0777, true);
   }
@@ -711,7 +767,6 @@ function _capital_news_save_image_to_s3($image_url, $nid) {
 
   if ($external_url) {
     unlink($public_uri);
-    touch($public_uri);
   }
   else {
     \Drupal::logger('capital-news-s3')->error('Save image error: ' . print_r($image_url, true));
