@@ -16,6 +16,7 @@ class NewsTestController extends ControllerBase {
     //_capital_news_get_wechat_news();
     //_capital_news_get_google_news(false);
     capital_news_sync_feeds();
+    //$this->deleteFeeds();
 
     $news=array();
     return $news;
@@ -25,9 +26,12 @@ class NewsTestController extends ControllerBase {
     $fids =  [];
     foreach($feeds as $feed){
       $fids[]  = $feed->id();
+    \Drupal::logger('capital-test')->debug(print_r($feed->id(), true));
+    //entity_delete_multiple('feeds_feed', $feed->id());
+      $feed->delete();
     }
-    \Drupal::logger('capital-test')->debug(print_r($fids, true));
-    entity_delete_multiple('feeds_feed', $fids);
+    //\Drupal::logger('capital-test')->debug(print_r($fids, true));
+    //entity_delete_multiple('feeds_feed', $fids);
   }
   private function createRegulations() {
     $keys = ["私募法规", "管理办法", "起草说明", "业务指引", "行为准则",  "监管动态", "监管会议", "重要观点", "专业解读", "监管解读", "市场解读"];

@@ -2,9 +2,24 @@
 
 use \Drupal\Core\Entity\EntityInterface;
 
-/**
- * Implements hook_theme().
- */
+define('CAPITAL_HTTP_METHOD_GET', 'GET');
+define('CAPITAL_HTTP_METHOD_POST', 'POST');
+define('CAPITAL_HTTP_METHOD_DELETE', 'DELETE');
+
+function capital_common_http_request($method, $url, $headers = array(), $is_json = true) {
+  $client = \Drupal::httpClient();
+  try{
+    $response = $request = $client->request($method, $url, ['headers' => $headers]);
+    $body = $response->getBody();
+  }
+  catch (RequestException $e) {
+    \Drupal::logger('capital-http-request')->error('Error ' . print_r($e, true));
+  }
+  if($body == null){
+    \Drupal::logger('capital-http-request')->notice('No return, invalid url ' . print_r($url, true));
+  }
+  return $is_json? json_decode($body): $body;
+}
 function capital_common_get_rest_api($url, $headers = array(), $is_json = true) {
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $url);
@@ -75,32 +90,32 @@ function capital_common_get_rest_custom_search($key, $orterms = null, $sort, $fr
           'cx_token' => '002547595546245460654:ceqx2h4kj9o',
           'key_token' => 'AIzaSyDThjVc7RI2OwD5xM4ZUV6YciNfZ3i1qf4',
         ],
-      'clues' => [
-        'cx_token' => '002547595546245460654:jfuskbxf2p8',
-        'key_token' => 'AIzaSyDThjVc7RI2OwD5xM4ZUV6YciNfZ3i1qf4',
+        'clues' => [
+          'cx_token' => '002547595546245460654:jfuskbxf2p8',
+          'key_token' => 'AIzaSyDThjVc7RI2OwD5xM4ZUV6YciNfZ3i1qf4',
+        ],
       ],
-    ],
-    [
-      'trusted' => [
-        'cx_token' => '000143090098609230264:g6yyvmj1p7w',
-        'key_token' => 'AIzaSyB1PIWvUHEiXgIp7eqWTnkTG1tr2-UlQP4',
+      [
+        'trusted' => [
+          'cx_token' => '000143090098609230264:g6yyvmj1p7w',
+          'key_token' => 'AIzaSyB1PIWvUHEiXgIp7eqWTnkTG1tr2-UlQP4',
+        ],
+        'clues' => [
+          'cx_token' => '000143090098609230264:s2vjraqqtd8',
+          'key_token' => 'AIzaSyB1PIWvUHEiXgIp7eqWTnkTG1tr2-UlQP4',
+        ],
       ],
-      'clues' => [
-        'cx_token' => '000143090098609230264:s2vjraqqtd8',
-        'key_token' => 'AIzaSyB1PIWvUHEiXgIp7eqWTnkTG1tr2-UlQP4',
+      [
+        'trusted' => [
+          'cx_token' => '018341388468362291190:lnrrtbvd2bo',
+          'key_token' => 'AIzaSyCAfYAtfzB3ygKihhCirVzeugBabe4Muxw',
+        ],
+        'clues' => [
+          'cx_token' => '018341388468362291190:mbi3ngftvmm',
+          'key_token' => 'AIzaSyCAfYAtfzB3ygKihhCirVzeugBabe4Muxw',
+        ],
       ],
-    ],
-    [
-      'trusted' => [
-        'cx_token' => '018341388468362291190:lnrrtbvd2bo',
-        'key_token' => 'AIzaSyCAfYAtfzB3ygKihhCirVzeugBabe4Muxw',
-      ],
-      'clues' => [
-        'cx_token' => '018341388468362291190:mbi3ngftvmm',
-        'key_token' => 'AIzaSyCAfYAtfzB3ygKihhCirVzeugBabe4Muxw',
-      ],
-    ],
-  ];
+    ];
     \Drupal::service('config.factory')->getEditable('capital_news.settings')->set('search.api_pool', $api_pool)->save();
   } else {
     $api_pool = $config->get('search.api_pool');
@@ -218,3 +233,33 @@ function capital_common_field_collection_sort($entity, $collection_fields) {
       }
   }
 }
+function capital_common_get_google_alert_list() {
+  $url = "http://52.78.7.61:8089/alerts/v1?x=ecbfdae899ab8da4";
+  $results = capital_common_http_request(CAPITAL_HTTP_METHOD_GET, $url);
+  if($results->responseStatus != 200 ){
+    \Drupal::logger('capital-google-alert-error')->error( print_r($results, true));
+  }
+  if(count($results->responseData->alerts) == 0 ){
+    \Drupal::logger('capital-google-alerts-no-result')->info( print_r($url, true));
+  }
+  return $results->responseData->alerts;
+}
+function capital_common_create_google_alert($key) {
+  $url = "http://52.78.7.61:8089/alerts/v1?x=ecbfdae899ab8da4&q=" . urlencode($key);
+  $results = capital_common_http_request(CAPITAL_HTTP_METHOD_POST, $url);
+  if(!in_array($results->responseStatus,[201, 409]) || count($results->responseData->alerts) != 1){
+    \Drupal::logger('capital-google-alert-error')->error( print_r($results, true));
+    return null;
+  }
+  return $results->responseData->alerts[0];
+}
+function capital_common_delete_google_alert($key) {
+  $url = "http://52.78.7.61:8089/alerts/v1?x=ecbfdae899ab8da4&q=" . urlencode($key);
+  $results = capital_common_http_request(CAPITAL_HTTP_METHOD_DELETE, $url);
+  if(!in_array($results->responseStatus,[204, 404]) || count($results->responseData->alerts) != 1){
+    \Drupal::logger('capital-google-alert-error')->error( print_r($results, true));
+    return null;
+  }
+  return $results->responseData->alerts[0];
+}
+
