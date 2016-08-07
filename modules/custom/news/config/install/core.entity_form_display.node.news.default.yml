@@ -2,10 +2,11 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
+    - field.field.node.news.feeds_item
     - field.field.node.news.field_approximate_time
-    - field.field.node.news.field_content
     - field.field.node.news.field_description
     - field.field.node.news.field_news_archive_link
+    - field.field.node.news.field_news_dir
     - field.field.node.news.field_news_link
     - field.field.node.news.field_news_origin
     - field.field.node.news.field_news_s3_link
@@ -34,13 +35,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: datetime_default
-  field_content:
-    weight: 35
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: text_textarea
   field_description:
     weight: 34
     settings:
@@ -55,6 +49,13 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: link_default
+  field_news_dir:
+    weight: 44
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
   field_news_link:
     weight: 33
     settings:
@@ -144,4 +145,5 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  feeds_item: true
