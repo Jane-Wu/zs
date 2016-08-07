@@ -17,6 +17,7 @@ use Drupal\feeds\Entity\Feed;
 define('GOOGLE_SEARCH_TID', 178);
 define('WECHAT_SEARCH_TID', 180);
 define('WECHAT_OFFICIAL_TID', 179);
+define('NEWS_DIR', 'news_archive');
 
 /**
  * Implements hook_cron().
@@ -103,25 +104,33 @@ function _capital_news_delete_obsolete_news() {
 function capital_news_entity_delete(EntityInterface $entity) {
   if ($entity->getEntityTypeId() == 'node' &&
     $entity->bundle() == 'news' &&
-    $entity->get('field_content')->getValue()) {
-      \Drupal::logger('capital-news-delete')->debug('delete news image for node nid: ' . $entity->id());
-      // Delete images in the folder
-      $uri = "s3fs://news_images/" . $entity->id() . '/%';
-      $connection = Database::getConnection();
-      $query = $connection->select('s3fs_file', 'f')
-        ->fields('f', array('uri'));
-      $query->condition('f.uri', $uri, 'LIKE');
-      $result = $query->execute()->fetchAll();
-      foreach ($result as $row) {
-      \Drupal::logger('capital-news-delete')->debug('delete news image: ' . $row->uri);
-        $stream = new S3fsStream();
-        $stream->unlink($row->uri);
-      }
-      // Delete the folder
-      $uri = "s3fs://news_images/" . $entity->id();
-      $stream = new S3fsStream();
-      $stream->unlink($uri);
+    $entity->get('field_news_dir')->getValue()) {
+      \Drupal::logger('capital-news-delete')->debug('delete news archive for node nid: ' . $entity->id());
+      $s3_dir = $entity->get('field_news_dir')->getValue();
+      $handle = fopen('test.txt', 'w'); fwrite($handle, print_r( $s3_dir , TRUE) . PHP_EOL); fclose($handle);
+      $s3_dir = "s3fs://" . $s3_dir[0]['value'];
+      // Delete images in the folder first
+      $uri = $s3_dir . '/images';
+      _capital_news_delete_s3_folder($uri);
+      $uri = $s3_dir;
+      _capital_news_delete_s3_folder($uri);
   }
+}
+
+function _capital_news_delete_s3_folder($uri) {
+  $connection = Database::getConnection();
+  $query = $connection->select('s3fs_file', 'f')
+    ->fields('f', array('uri'));
+  $query->condition('f.uri', $uri . DIRECTORY_SEPARATOR . '%', 'LIKE');
+  $result = $query->execute()->fetchAll();
+  foreach ($result as $row) {
+    //\Drupal::logger('capital-news-delete')->debug('delete s3 file: ' . $row->uri);
+    $stream = new S3fsStream();
+    $stream->unlink($row->uri);
+  }
+  // Delete the folder
+  $stream = new S3fsStream();
+  $stream->unlink($uri);
 }
 
 /**
@@ -457,7 +466,7 @@ function capital_news_theme() {
 }
 
 /**
- * Process the html content
+ * Archive the news content
  * @param $nid
  * The node nid that need to save content
  */
@@ -473,39 +482,30 @@ function _capital_news_save_news_content($nid) {
     return;
   }
 
+  \Drupal::logger('capital-news-save-content')->debug('Save news content: ' . $nid . ' Request URL: ' . $request_url);
   $skip_image_save = false;
   $news_type = $node->get('field_search_type')->getValue();
   $is_google_news = ($news_type[0]['target_id'] == GOOGLE_SEARCH_TID);
   if ($is_google_news) {
-    \Drupal::logger('capital-news-save-link')->debug('Save news content: ' . $nid . ' Request URL: ' . $request_url);
     $archive_link = _capital_news_get_archive_link($request_url);
     if (!$archive_link) {
       return;
     }
-    \Drupal::logger('capital-news-save-link')->debug('Save archive link: ' . $archive_link);
-    $node->set('field_news_archive_link',
-      array(
-        'uri' => $archive_link,
-      )
-    );
-    $skip_image_save = true;
+    //\Drupal::logger('capital-news-save-link')->debug('Save archive link: ' . $archive_link);
+    $node->set('field_news_archive_link', array('uri' => $archive_link));
   }
 
-  \Drupal::logger('capital-news-save-content')->debug('Save news content: ' . $nid . ' Request URL: ' . $request_url);
-  $content = _capital_news_get_url_content($request_url, $nid, $skip_image_save);
-  $node->set('field_content',
-    array(
-      'value'  => $content,
-      'format' => 'full_html',
-    )
-  );
-
-  $s3_link = _capital_news_save_news_html_to_s3($content, $nid);
-  $node->set('field_news_s3_link',
-    array(
-      'uri' => $s3_link,
-    )
-  );
+  $dir_prefix = _capital_news_get_news_dir_prefix($nid);
+  $node->set('field_news_dir', array('value' => $dir_prefix));
+  $s3_link = _capital_news_save_news_html_to_s3($request_url, $dir_prefix, $skip_image_save);
+  // fix mixed content error caused by different url scheme
+  $origin_scheme = parse_url($request_url, PHP_URL_SCHEME);
+  $s3_scheme = parse_url($s3_link, PHP_URL_SCHEME);
+  if ($origin_scheme != $s3_scheme) {
+    $s3_link = substr_replace($s3_link, $origin_scheme, 0, strlen($s3_scheme));
+  }
+  //\Drupal::logger('capital-news-save-link')->debug('Save s3 link: ' . $s3_link);
+  $node->set('field_news_s3_link', array('uri' => $s3_link));
   return $node->save();
 }
 
@@ -548,7 +548,7 @@ function _capital_news_get_archive_link($url) {
  * @return
  * The html content of the url
  */
-function _capital_news_get_url_content($url, $nid, $skip_image_save) {
+function _capital_news_get_url_content($url, $dir_prefix, $skip_image_save) {
   // Get the html content of the url
   $client = \Drupal::httpClient();
 
@@ -573,7 +573,7 @@ function _capital_news_get_url_content($url, $nid, $skip_image_save) {
 
   if (!$skip_image_save) {
     // Save the images to s3, replace the src with s3 url
-    _capital_news_replace_image_src($dom, $url, $nid);
+    _capital_news_replace_image_src($dom, $url, $dir_prefix);
   }
 
   return $dom->saveHTML();
@@ -601,13 +601,12 @@ function _capital_news_remove_script_elements($dom) {
  * The dom of the html content
  * @param $url
  * The base url of the news link
- * @param $nid
- * The node nid
+ * @param $dir_prefix
+ * The dir prefix that the images should be saved in
  */
-function _capital_news_replace_image_src($dom, $url, $nid) {
+function _capital_news_replace_image_src($dom, $url, $dir_prefix) {
   // Get all the img tags in the document
   $elements = $dom->getElementsByTagName('img');
-  \Drupal::logger('capital-news-save-image')->debug('Save content image: ' . print_r($elements->length, true));
 
   if($elements->length > 0) {
     foreach($elements as $element) {
@@ -616,7 +615,7 @@ function _capital_news_replace_image_src($dom, $url, $nid) {
       $data_src = $element->getAttribute('data-src');
       if (strlen($src) > 0) {
         $src = _capital_news_rel2abs($src, $url);
-        $new_src_url = _capital_news_save_image_to_s3($src, $nid);
+        $new_src_url = _capital_news_save_image_to_s3($src, $dir_prefix);
         if ($new_src_url) {
           $element->setAttribute('src', $new_src_url);
         }
@@ -625,7 +624,7 @@ function _capital_news_replace_image_src($dom, $url, $nid) {
       elseif (strlen($data_src) > 0) {
         $src = _capital_news_rel2abs($data_src, $url);
         $src_type = $element->getAttribute('data-type');
-        $new_src_url = _capital_news_save_image_to_s3($data_src, $nid);
+        $new_src_url = _capital_news_save_image_to_s3($data_src, $dir_prefix);
         if ($new_src_url) {
           $element->setAttribute('data-src', $new_src_url);
           $element->setAttribute('src', $new_src_url);
@@ -676,45 +675,36 @@ function _capital_news_rel2abs($rel, $base) {
  * Return the html page external url
  * @param $content
  * The content of the html page
- * @param $nid
- * The node nid that the content is used
+ * @param $dir_prefix
+ * The dir prefix that the news html should be saved
+ * @param $skip_image_save
+ * The flag if we need to save all content images to s3
  * @return
  * The S3 external link of the content saved
  */
-function _capital_news_save_news_html_to_s3($content, $nid) {
-  \Drupal::logger('capital-news-s3')->debug('Save html: ' . print_r($nid, true));
+function _capital_news_save_news_html_to_s3($request_url, $dir_prefix, $skip_image_save) {
+  //\Drupal::logger('capital-news-s3')->debug('Save html: ' . print_r($nid, true));
+  $content = _capital_news_get_url_content($request_url, $dir_prefix, $skip_image_save);
 
   $basename = 'index.html';
-  // Save the image to public folder first
-  $content_dir = "news_content";
-  $dir_prefix = $content_dir . '/' . $nid;
-  if (!is_dir("public://$dir_prefix")) {
-    mkdir("public://$dir_prefix", 0777, true);
-  }
-  $public_uri = "public://$dir_prefix/$basename";
-  $file = file_save_data($content, $public_uri, FILE_EXISTS_REPLACE);
-  $file_usage = \Drupal::service('file.usage');
-  $file_usage->add($file, 'capital_news', 'node', $nid);
-
-  // Copy the file to S3 bucket
-  $public_uri = $file->getFileUri();
-  $new_basename = drupal_basename($public_uri);
-  $s3_uri = "s3fs://$dir_prefix/$new_basename";
-  // add '@' to avoid error: Error executing "HeadObject"
-  @copy($public_uri, $s3_uri);
-
-  $stream = new S3fsStream();
-  $stream->setUri($s3_uri);
-  $stream->waitUntilFileExists($s3_uri);
-  $external_url = $stream->getExternalUrl();
-
-  if ($external_url) {
-    unlink($public_uri);
-  }
-  else {
-    \Drupal::logger('capital-news-s3')->error('Save html error: ' . print_r($nid, true));
-  }
+  $external_url = _capital_news_save_file_to_s3($content, $dir_prefix, $basename);
   return $external_url;
+}
+
+/**
+ * Return the news dir prefix for node nid
+ * @param $nid
+ * The node nid that the dir is used for
+ * @return
+ * The news dir prefix
+ */
+function _capital_news_get_news_dir_prefix($nid) {
+  $news_dir = NEWS_DIR;
+  $year = date('Y');
+  $month = date('m');
+  $dir_prefix = implode(DIRECTORY_SEPARATOR, array(
+    $news_dir, $year, $month, $nid));
+  return $dir_prefix;
 }
 
 /**
@@ -722,13 +712,13 @@ function _capital_news_save_news_html_to_s3($content, $nid) {
  * Return the image external url
  * @param $image_url
  * The image src url
- * @param $nid
- * The node nid that the image is used
+ * @param $dir_prefix
+ * The dir prefix that the image is used
  * @return
  * The S3 external link of the image saved
  */
-function _capital_news_save_image_to_s3($image_url, $nid) {
-  \Drupal::logger('capital-news-s3')->debug('Save image: ' . print_r($image_url, true));
+function _capital_news_save_image_to_s3($image_url, $dir_prefix) {
+  //\Drupal::logger('capital-news-s3')->debug('Save image: ' . print_r($image_url, true));
   $content = file_get_contents($image_url);
   // Get file basename
   $basename = basename(parse_url($image_url, PHP_URL_PATH));
@@ -743,21 +733,36 @@ function _capital_news_save_image_to_s3($image_url, $nid) {
     }
   }
 
-  // Save the image to public folder first
-  $image_dir = "news_content";
-  $dir_prefix = $image_dir . '/' . $nid . '/images';
+  $dir_prefix = implode(DIRECTORY_SEPARATOR, array($dir_prefix, 'images'));
+
+  $external_url = _capital_news_save_file_to_s3($content, $dir_prefix, $basename);
+  return $external_url;
+}
+
+/**
+ * Process the file and save the file to remote
+ * Return the s3 external url
+ * @param $content
+ * The file content to be saved
+ * @param $dir_prefix
+ * The dir prefix that the image is used
+ * @param $basename
+ * The file basename to be saved
+ * @return
+ * The S3 external link of the file saved
+ */
+function _capital_news_save_file_to_s3($content, $dir_prefix, $basename) {
+  // Save the file to public folder first
   if (!is_dir("public://$dir_prefix")) {
     mkdir("public://$dir_prefix", 0777, true);
   }
-  $public_uri = "public://$dir_prefix/$basename";
+  $public_uri = "public://$dir_prefix" . DIRECTORY_SEPARATOR . "$basename";
   $file = file_save_data($content, $public_uri, FILE_EXISTS_RENAME);
-  $file_usage = \Drupal::service('file.usage');
-  $file_usage->add($file, 'capital_news', 'node', $nid);
 
   // Copy the file to S3 bucket
   $public_uri = $file->getFileUri();
   $new_basename = drupal_basename($public_uri);
-  $s3_uri = "s3fs://$dir_prefix/$new_basename";
+  $s3_uri = "s3fs://$dir_prefix" . DIRECTORY_SEPARATOR . "$new_basename";
   // add '@' to avoid error: Error executing "HeadObject"
   @copy($public_uri, $s3_uri);
 

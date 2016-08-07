@@ -1,10 +1,3 @@
-capital_news.view.news:
-  path: 'news/{nid}'
-  defaults:
-    _controller: '\Drupal\capital_news\Controller\NewsViewController::content'
-    _title: ''
-  requirements:
-    _permission: 'access news content'
 capital_news.favoritenews:
   path: 'news/{nid}/favorite'
   defaults:
