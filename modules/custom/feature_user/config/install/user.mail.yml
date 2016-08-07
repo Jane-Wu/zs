@@ -20,7 +20,7 @@ status_activated:
   body: "[user:display-name]，\r\n\r\n您在 [site:name] 的帐户已经激活。\r\n\r\n您可以点击下面的链接登录，或者把它复制到浏览器地址栏：\r\n\r\n[user:one-time-login-url]\r\n\r\n此链接只能用于登录一次，它会带您到一个页面让您来设置您的密码。\r\n\r\n设置了密码之后，您以后就可以在 [site:login-url] ，使用如下信息登录：\r\n\r\n用户名： [user:account-name]\r\n密码： 您设置的密码\r\n\r\n--  [site:name] 团队"
   subject: '帐号信息 [user:display-name] 在 [site:name] (核对成功)'
 status_blocked:
-  body: "[user:display-name]，\r\n\r\n您在网站 [site:account-name] 的帐号已被冻结。\r\n\r\n--  [site:name] 团队"
+  body: "[user:display-name]，\r\n\r\n您在网站 [site:name] 的帐号已被冻结。\r\n\r\n--  [site:name] 团队"
   subject: '帐号信息 [user:display-name] 在 [site:name] (已冻结)'
 status_canceled:
   body: "[user:display-name],\r\n\r\n你的帐号在网站 [site:name] 已被取消。\r\n\r\n--  [site:name] 团队"
