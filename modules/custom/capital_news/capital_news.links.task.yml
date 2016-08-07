@@ -2,6 +2,10 @@ view.news_links.page_1:
   title: 谷歌搜索
   route_name: view.news_links.page_1
   base_route: view.news_links.page_1
+view.news_links.page_4:
+  title: 谷歌快讯 
+  route_name: view.news_links.page_4
+  base_route: view.news_links.page_1
 view.news_links.page_2:
   title: 微信公众号
   route_name: view.news_links.page_2
@@ -13,6 +17,10 @@ view.news_links.page_3:
 view.news_links.page_6:
   title: 谷歌搜索
   route_name: view.news_links.page_6
+  base_route: view.news_links.page_6
+view.news_links.page_8:
+  title: 谷歌快讯 
+  route_name: view.news_links.page_8
   base_route: view.news_links.page_6
 view.news_links.page_5:
   title: 微信公众号

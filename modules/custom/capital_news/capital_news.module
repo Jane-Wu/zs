@@ -69,6 +69,7 @@ function capital_news_node_presave(EntityInterface $entity) {
       $fid = $fid[0]['target_id'];
       $feed = Feed::load($fid);
       $entity->field_related_nodes = $feed->get('field_related_nid')->getValue();
+      $entity->field_search_words[] = ['value' => $feed->label()];
     }
   }
 }
@@ -871,9 +872,6 @@ function capital_news_sync_feeds(){
       $correct_feeds[$row->fid] = $row->name;
     }
   }
-  \Drupal::logger('capital-test')->debug(print_r(count($new_feeds), true));
-  \Drupal::logger('capital-test')->debug(print_r(count($correct_feeds), true));
-  \Drupal::logger('capital-test')->debug(print_r(count($correct_feeds + $new_feeds), true));
   $whole_list = $correct_feeds + $new_feeds;
   // @TODO Turn to use entity multiple load when available
   //$feeds = entity_load_multiple('feeds_feed', array_keys($rids));
@@ -889,14 +887,14 @@ function capital_news_sync_feeds(){
           if(count($matches) < 2 || $matches[1] != $feed->label()){
             $message .= 'The RSS source does not match the search key ' . $feed->label() . ' at ' . $base_url . '/feed/' . $feed->id() . '/edit <br>';
             // Delete the old one and create new one
-            deleteAlerts($row->name);
-            $feed->setSource(createAlerts($row->name));
+            deleteAlerts($feed->label());
+            $feed->setSource(createAlerts($feed->label()));
             $feed->save();
           }
         } else{
           $message .= 'Fill in the RSS source for  ' . $feed->label() . ' at ' . $base_url . '/feed/' . $feed->id() . '/edit <br>';
           // Create new one
-          $feed->setSource(createAlerts($row->name));
+          $feed->setSource(createAlerts($feed->label()));
           $feed->save();
         }
       }else{
@@ -904,14 +902,13 @@ function capital_news_sync_feeds(){
         $feed->save();
         $message .= 'Delete alerts for ' . $feed->label() . '<br>';
         // Delete the this one 
-        deleteAlerts($row->name);
+        deleteAlerts($feed->label());
       }
     }
   }
+  $message = date('Y-m-d') . '<br>Numbers of new feed: ' . count($new_feeds) . '<br>Numbers of correct feed: ' . count($correct_feeds) . '<br>Please take following actions:<br>' . $message;
   \Drupal::logger('capital-mail')->debug(print_r($message, true));
-  /*
   if(!$message == null){
-    $message = 'Please take following actions:<br>' . $message;
     $mailManager = \Drupal::service('plugin.manager.mail');
     $module = 'capital_news';
     $key = 'google_alerts_action';
@@ -927,16 +924,15 @@ function capital_news_sync_feeds(){
       drupal_set_message(t('Your message has been sent.'));
     }
   }
-   */
   // Double check the alerts list 
   $alert_list = getAlertsList();
   $missing_list = array_diff($whole_list, $alert_list);
-  \Drupal::logger('capital-mail')->debug(print_r($missing, true));
+  \Drupal::logger('capital-mail')->debug("Alert missing list" . print_r($missing_list, true));
   foreach( $missing_list as $key){
     createAlerts($key);
   }
   $extra_list = array_diff($alert_list, $whole_list);
-  \Drupal::logger('capital-mail')->debug(print_r($extra_list, true));
+  \Drupal::logger('capital-mail')->debug("Alert extra list" . print_r($extra_list, true));
   foreach( $extra_list as $key){
     deleteAlerts($key);
   }

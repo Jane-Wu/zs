@@ -251,6 +251,7 @@ function capital_common_create_google_alert($key) {
     \Drupal::logger('capital-google-alert-error')->error( print_r($results, true));
     return null;
   }
+    \Drupal::logger('capital-google-alert-error')->error( print_r($results, true));
   return $results->responseData->alerts[0];
 }
 function capital_common_delete_google_alert($key) {
