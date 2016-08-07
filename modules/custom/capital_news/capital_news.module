@@ -483,7 +483,6 @@ function _capital_news_save_news_content($nid) {
   }
 
   \Drupal::logger('capital-news-save-content')->debug('Save news content: ' . $nid . ' Request URL: ' . $request_url);
-  $skip_image_save = false;
   $news_type = $node->get('field_search_type')->getValue();
   $is_google_news = ($news_type[0]['target_id'] == GOOGLE_SEARCH_TID);
   if ($is_google_news) {
@@ -497,7 +496,8 @@ function _capital_news_save_news_content($nid) {
 
   $dir_prefix = _capital_news_get_news_dir_prefix($nid);
   $node->set('field_news_dir', array('value' => $dir_prefix));
-  $s3_link = _capital_news_save_news_html_to_s3($request_url, $dir_prefix, $skip_image_save);
+  $s3_link = _capital_news_save_news_html_to_s3($request_url, $dir_prefix);
+
   // fix mixed content error caused by different url scheme
   $origin_scheme = parse_url($request_url, PHP_URL_SCHEME);
   $s3_scheme = parse_url($s3_link, PHP_URL_SCHEME);
@@ -543,12 +543,10 @@ function _capital_news_get_archive_link($url) {
  * The source url to get the content
  * @param $nid
  * The node nid that need to save the content
- * @param $skip_image_save
- * The flag if we need to save all content images to s3
  * @return
  * The html content of the url
  */
-function _capital_news_get_url_content($url, $dir_prefix, $skip_image_save) {
+function _capital_news_get_url_content($url, $dir_prefix) {
   // Get the html content of the url
   $client = \Drupal::httpClient();
 
@@ -571,10 +569,8 @@ function _capital_news_get_url_content($url, $dir_prefix, $skip_image_save) {
 
   //_capital_news_remove_script_elements($dom);
 
-  if (!$skip_image_save) {
-    // Save the images to s3, replace the src with s3 url
-    _capital_news_replace_image_src($dom, $url, $dir_prefix);
-  }
+  // Save the images to s3, replace the src with s3 url
+  _capital_news_replace_image_src($dom, $url, $dir_prefix);
 
   return $dom->saveHTML();
 }
@@ -677,14 +673,12 @@ function _capital_news_rel2abs($rel, $base) {
  * The content of the html page
  * @param $dir_prefix
  * The dir prefix that the news html should be saved
- * @param $skip_image_save
- * The flag if we need to save all content images to s3
  * @return
  * The S3 external link of the content saved
  */
-function _capital_news_save_news_html_to_s3($request_url, $dir_prefix, $skip_image_save) {
+function _capital_news_save_news_html_to_s3($request_url, $dir_prefix) {
   //\Drupal::logger('capital-news-s3')->debug('Save html: ' . print_r($nid, true));
-  $content = _capital_news_get_url_content($request_url, $dir_prefix, $skip_image_save);
+  $content = _capital_news_get_url_content($request_url, $dir_prefix);
 
   $basename = 'index.html';
   $external_url = _capital_news_save_file_to_s3($content, $dir_prefix, $basename);
