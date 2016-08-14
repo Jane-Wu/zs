@@ -45,7 +45,7 @@ display:
         type: basic
         options:
           submit_button: Apply
-          reset_button: false
+          reset_button: true
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
           expose_sort_order: true
@@ -674,6 +674,7 @@ display:
       use_more: false
       use_more_always: true
       use_more_text: more
+      use_ajax: true
     cache_metadata:
       contexts:
         - 'languages:language_content'
