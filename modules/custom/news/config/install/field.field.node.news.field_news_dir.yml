@@ -2,19 +2,17 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - field.storage.node.field_content
+    - field.storage.node.field_news_dir
     - node.type.news
-  module:
-    - text
-id: node.news.field_content
-field_name: field_content
+id: node.news.field_news_dir
+field_name: field_news_dir
 entity_type: node
 bundle: news
-label: Content
+label: 'News Dir'
 description: ''
 required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }
-field_type: text_long
+field_type: string
