@@ -6,10 +6,10 @@ dependencies:
     - field.field.node.news.field_approximate_time
     - field.field.node.news.field_description
     - field.field.node.news.field_news_archive_link
-    - field.field.node.news.field_news_dir
     - field.field.node.news.field_news_link
     - field.field.node.news.field_news_origin
     - field.field.node.news.field_news_s3_link
+    - field.field.node.news.field_news_s3_uri
     - field.field.node.news.field_related_nodes
     - field.field.node.news.field_search_type
     - field.field.node.news.field_search_words
@@ -50,13 +50,6 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
-  field_news_dir:
-    weight: 114
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
   field_news_link:
     weight: 103
     label: above
@@ -86,6 +79,13 @@ content:
       target: ''
     third_party_settings: {  }
     type: link
+  field_news_s3_uri:
+    weight: 114
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
   field_related_nodes:
     weight: 111
     label: above

@@ -2,12 +2,12 @@ langcode: zh-hans
 status: true
 dependencies:
   config:
-    - field.storage.node.field_attachments
+    - field.storage.node.field_material_attachments
     - node.type.material
   module:
     - file
-id: node.material.field_attachments
-field_name: field_attachments
+id: node.material.field_material_attachments
+field_name: field_material_attachments
 entity_type: node
 bundle: material
 label: 附件
@@ -17,10 +17,10 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  file_directory: ''
+  file_directory: 'material_archive/[date:custom:Y]/[date:custom:m]'
   file_extensions: 'txt pdf doc docx ppt pptx zip rar 7z'
   max_filesize: ''
-  description_field: true
+  description_field: false
   handler: 'default:file'
   handler_settings: {  }
 field_type: file

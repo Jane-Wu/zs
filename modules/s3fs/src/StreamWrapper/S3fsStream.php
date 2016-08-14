@@ -695,6 +695,8 @@ class S3fsStream implements StreamWrapperInterface {
       $params['ServerSideEncryption'] = $this->config['encryption'];
     }
 
+    \Drupal::moduleHandler()->alter('s3fs_upload_params', $params);
+
     try {
       $this->s3->putObject($params);
       $this->writeUriToCache($this->uri);

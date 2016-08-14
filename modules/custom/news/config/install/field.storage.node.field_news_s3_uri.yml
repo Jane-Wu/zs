@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - node
-id: node.field_news_dir
-field_name: field_news_dir
+id: node.field_news_s3_uri
+field_name: field_news_s3_uri
 entity_type: node
 type: string
 settings:

@@ -4,14 +4,14 @@ dependencies:
   module:
     - file
     - node
-id: node.field_attachments
-field_name: field_attachments
+id: node.field_material_attachments
+field_name: field_material_attachments
 entity_type: node
 type: file
 settings:
-  display_field: true
-  display_default: true
-  uri_scheme: private
+  display_field: false
+  display_default: false
+  uri_scheme: s3fs
   target_type: file
 module: file
 locked: false

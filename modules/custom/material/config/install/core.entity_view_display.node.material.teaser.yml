@@ -4,12 +4,13 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.material.body
-    - field.field.node.material.field_attachments
     - field.field.node.material.field_company
     - field.field.node.material.field_interview_date
     - field.field.node.material.field_interview_place
     - field.field.node.material.field_interviewee
     - field.field.node.material.field_interviewer
+    - field.field.node.material.field_material_attachments
+    - field.field.node.material.field_notes
     - field.field.node.material.field_tags
     - node.type.material
   module:
@@ -30,11 +31,12 @@ content:
   links:
     weight: 100
 hidden:
-  field_attachments: true
   field_company: true
   field_interview_date: true
   field_interview_place: true
   field_interviewee: true
   field_interviewer: true
+  field_material_attachments: true
+  field_notes: true
   field_tags: true
   langcode: true

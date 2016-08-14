@@ -3,12 +3,12 @@ status: true
 dependencies:
   config:
     - field.field.node.material.body
-    - field.field.node.material.field_attachments
     - field.field.node.material.field_company
     - field.field.node.material.field_interview_date
     - field.field.node.material.field_interview_place
     - field.field.node.material.field_interviewee
     - field.field.node.material.field_interviewer
+    - field.field.node.material.field_material_attachments
     - field.field.node.material.field_notes
     - field.field.node.material.field_tags
     - node.type.material
@@ -29,12 +29,6 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
-  field_attachments:
-    weight: 8
-    settings:
-      progress_indicator: throbber
-    third_party_settings: {  }
-    type: file_generic
   field_company:
     weight: 7
     settings:
@@ -71,6 +65,12 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_material_attachments:
+    weight: 26
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
   field_notes:
     weight: 9
     settings:

@@ -7,7 +7,6 @@ dependencies:
     - field.field.node.news.field_approximate_time
     - field.field.node.news.field_description
     - field.field.node.news.field_news_archive_link
-    - field.field.node.news.field_news_dir
     - field.field.node.news.field_news_link
     - field.field.node.news.field_news_origin
     - field.field.node.news.field_news_s3_link
@@ -30,7 +29,6 @@ hidden:
   field_approximate_time: true
   field_description: true
   field_news_archive_link: true
-  field_news_dir: true
   field_news_link: true
   field_news_origin: true
   field_news_s3_link: true

@@ -64,25 +64,24 @@ function capital_news_node_presave(EntityInterface $entity) {
   $type = $entity->getType();
 
   if($type == "news"){
-  try{
-    if(($entity->get('feeds_item'))){
-
-      $news_link = $entity->get('field_news_link')->getValue();
-      $news_link = $news_link[0]['uri'];
-      preg_match('/url=(.+)&ct=ga/', $news_link, $matches);
-      if(count($matches) == 2){
-        $entity->field_news_link = ['uri' => $matches[1]];
-        $entity->field_news_origin[] = _capital_news_getTidByLinkAndVocabulary($matches[1]);
+    try{
+      if(($entity->get('feeds_item')->getValue())){
+        $news_link = $entity->get('field_news_link')->getValue();
+        $news_link = $news_link[0]['uri'];
+        preg_match('/url=(.+)&ct=ga/', $news_link, $matches);
+        if(count($matches) == 2){
+          $entity->field_news_link = ['uri' => $matches[1]];
+          $entity->field_news_origin[] = _capital_news_getTidByLinkAndVocabulary($matches[1]);
+        }
+        $fid = $entity->get('feeds_item')->getValue();
+        $fid = $fid[0]['target_id'];
+        $feed = Feed::load($fid);
+        $entity->field_related_nodes = $feed->get('field_related_nid')->getValue();
+        $entity->field_search_words[] = ['value' => $feed->label()];
       }
-      $fid = $entity->get('feeds_item')->getValue();
-      $fid = $fid[0]['target_id'];
-      $feed = Feed::load($fid);
-      $entity->field_related_nodes = $feed->get('field_related_nid')->getValue();
-      $entity->field_search_words[] = ['value' => $feed->label()];
-  }
-}catch (Exception $e) {
-}
+    }catch (Exception $e) {
     }
+  }
 }
 
 /**
@@ -501,11 +500,15 @@ function _capital_news_save_news_content($nid) {
   }
 
   $dir_prefix = _capital_news_get_news_dir_prefix($nid);
-  $node->set('field_news_dir', array('value' => $dir_prefix));
-  $s3_link = _capital_news_save_news_html_to_s3($request_url, $dir_prefix);
-  if ($s3_link === FALSE) {
+  $s3_uri = _capital_news_save_news_html_to_s3($request_url, $dir_prefix);
+  if ($s3_uri === FALSE) {
     return;
   }
+  $node->set('field_news_s3_uri', array('value' => $s3_uri));
+
+  $stream = new S3fsStream();
+  $stream->setUri($s3_uri);
+  $s3_link = $stream->getExternalUrl();
 
   // fix mixed content error caused by different url scheme
   $origin_scheme = parse_url($request_url, PHP_URL_SCHEME);
@@ -570,7 +573,8 @@ function _capital_news_get_url_content($url, $dir_prefix) {
       \Drupal::logger('capital-news-save-content')->error('Html content empty: ' . $url . ' ' . print_r($response->getStatusCode(), true));
       return FALSE;
     }
-    if (strpos($url, 'weixin') !== FALSE && strpos($html_content, 'var msg_link = "' . htmlspecialchars($url) . '"') === FALSE) {
+    // Validate if it is valid wechat content
+    if (strpos($url, 'weixin.qq.com/') !== FALSE && strpos($html_content, 'var msg_link = "' . htmlspecialchars($url) . '"') === FALSE) {
       \Drupal::logger('capital-news-save-content')->error('Html content validation failed: ' . $url . ' ' . print_r($html_content, true));
       return FALSE;
     }
@@ -701,7 +705,7 @@ function _capital_news_rel2abs($rel, $base) {
  * @param $dir_prefix
  * The dir prefix that the news html should be saved
  * @return
- * The S3 external link of the content saved
+ * The S3 uri of the content saved
  */
 function _capital_news_save_news_html_to_s3($request_url, $dir_prefix) {
   //\Drupal::logger('capital-news-s3')->debug('Save html: ' . print_r($nid, true));
@@ -711,8 +715,8 @@ function _capital_news_save_news_html_to_s3($request_url, $dir_prefix) {
   }
 
   $basename = 'index.html';
-  $external_url = _capital_news_save_file_to_s3($content, $dir_prefix, $basename);
-  return $external_url;
+  $s3_uri = _capital_news_save_file_to_s3($content, $dir_prefix, $basename);
+  return $s3_uri;
 }
 
 /**
@@ -759,7 +763,12 @@ function _capital_news_save_image_to_s3($image_url, $dir_prefix) {
 
   $dir_prefix = implode(DIRECTORY_SEPARATOR, array($dir_prefix, 'images'));
 
-  $external_url = _capital_news_save_file_to_s3($content, $dir_prefix, $basename);
+  $s3_uri = _capital_news_save_file_to_s3($content, $dir_prefix, $basename);
+
+  $stream = new S3fsStream();
+  $stream->setUri($s3_uri);
+  $external_url = $stream->getExternalUrl();
+
   return $external_url;
 }
 
@@ -773,7 +782,7 @@ function _capital_news_save_image_to_s3($image_url, $dir_prefix) {
  * @param $basename
  * The file basename to be saved
  * @return
- * The S3 external link of the file saved
+ * The S3 uri of the file saved
  */
 function _capital_news_save_file_to_s3($content, $dir_prefix, $basename) {
   // Save the file to public folder first
@@ -803,7 +812,20 @@ function _capital_news_save_file_to_s3($content, $dir_prefix, $basename) {
     \Drupal::logger('capital-news-s3')->error('Save image error: ' . print_r($image_url, true));
     return FALSE;
   }
-  return $external_url;
+  return $s3_uri;
+}
+
+/**
+ * Alters the S3 file parameters when uploading an object.
+ *
+ * @param array $upload_params
+ *   Associative array of upload settings
+ * @see http://docs.aws.amazon.com/aws-sdk-php/latest/class-Aws.S3.S3Client.html#_putObject
+*/
+function capital_news_s3fs_upload_params_alter(&$upload_params) {
+  if (strpos($upload_params['Key'], 'material_archive/') !== FALSE){
+    $upload_params['ACL'] = 'private';
+  }
 }
 
 function createRelation($relation_type, $src_type, $src_id, $target_type, $target_id){
