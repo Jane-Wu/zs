@@ -42,6 +42,10 @@ capital_news.config.wechat:
   title: 微信搜索关键词管理
   route_name: capital_news.config.wechat
   base_route: capital_news.config.google
+view.news_origin.page_1:
+  title: 新闻来源管理 
+  route_name: view.news_origin.page_1
+  base_route: capital_news.config.google
 capital_news.report.google:
   title: 谷歌无内容关键词
   route_name: capital_news.report.google

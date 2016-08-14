@@ -8,9 +8,9 @@ id: taxonomy_term.reliable_news_origins.field_domain_link
 field_name: field_domain_link
 entity_type: taxonomy_term
 bundle: reliable_news_origins
-label: domain_link
+label: 来源网址
 description: ''
-required: false
+required: true
 translatable: true
 default_value: {  }
 default_value_callback: ''

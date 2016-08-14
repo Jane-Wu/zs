@@ -65,8 +65,8 @@ footer.footer{
   position: relative;
 }
 .view-header .view-btn-right {
-  position: absolute;
-  right: 0;
+float: right;
+    margin-left: 3px;
 }
 .block .view-header .view-btn-right {
   top: -43px;

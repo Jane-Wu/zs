@@ -17,6 +17,9 @@ use Drupal\feeds\Entity\Feed;
 define('GOOGLE_SEARCH_TID', 178);
 define('WECHAT_SEARCH_TID', 180);
 define('WECHAT_OFFICIAL_TID', 179);
+define('WECHAT_COMPANY_ACCOUNT_ORIGIN_TID', 232);
+define('WECHAT_OTHER_ACCOUNT_ORIGIN_TID', 235);
+define('WECHAT_SEARCH_ORIGIN_TID', 236);
 
 /**
  * Implements hook_cron().
@@ -271,7 +274,7 @@ function _capital_news_get_wechat_news() {
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
     if($node->get('field_wechat')->value != null){
-      getWechatOfficalNews($company_account_summary, $node->get('field_wechat')->value, $node->id(), $node->getTitle());
+      getWechatOfficalNews($company_account_summary, $node->get('field_wechat')->value, $node->id(), $node->getTitle(), WECHAT_COMPANY_ACCOUNT_ORIGIN_TID);
     }
     getWechatSearchNews($company_news_summary, $node->getTitle(), $node->id());
     getWechatSearchNews($company_news_summary, $node->get('field_short_name')->value, $node->id());
@@ -289,7 +292,7 @@ function _capital_news_get_wechat_news() {
   $account_terms = _capital_news_getTermsByVocabularies(['wechat_accounts']);
   foreach( $account_terms as $account_term){
     $term = Term::load($account_term->tid);
-    getWechatOfficalNews($account_summary, $term->get('field_wechat_account')->value, null, $account_term->name);
+    getWechatOfficalNews($account_summary, $term->get('field_wechat_account')->value, null, $account_term->name, WECHAT_OTHER_ACCOUNT_ORIGIN_TID);
   }
   // Other Wechat Key words
   $keywords_terms = _capital_news_getTermsByVocabularies(['wechat_keywords']);
@@ -344,7 +347,7 @@ function getWechatSearchNews(&$summary, $key, $nid = null){
     $time = (new DateTime($result->date, new DateTimeZone('Etc/GMT+0')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
     $description = preg_replace('/<.?p( |=|"|\w)*>/', '', $result->digest);
     $description = str_replace(['<em>', '</em>'], ['<strong>', '</strong>'], $description);
-    $is_new = _capital_news_createNews($key, $result->title, $description, $result->url, $time, null, WECHAT_SEARCH_TID, $nid);
+    $is_new = _capital_news_createNews($key, $result->title, $description, $result->url, $time, WECHAT_SEARCH_ORIGIN_TID, WECHAT_SEARCH_TID, $nid);
     if($is_new){
       $summary['new_result']++;
     }

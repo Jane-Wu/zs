@@ -2126,7 +2126,7 @@ display:
           exposed: true
           expose:
             operator_id: field_search_words_value_op
-            label: 关键词搜索
+            label: 关键词
             description: ''
             use_operator: false
             operator: field_search_words_value_op
