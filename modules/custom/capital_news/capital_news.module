@@ -32,11 +32,14 @@ function capital_news_cron(){
   } elseif ($hour == 0) {
     _capital_news_delete_obsolete_news();
   }
+// Comment out archive related feature till the Beijing ec2 server is ready
+/*
   // Archive news every 3 hours
   // when hour ==  1, 4, 7, 10, 13, 16, 19, 22
   if (($hour % 3) == 1) {
     _capital_news_archive_linked_news();
   }
+*/
 }
 /**
  * Implements hook_mail().

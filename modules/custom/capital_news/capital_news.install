@@ -5,9 +5,11 @@
  * Contains install and update functions for capital_news.
  */
 
+// Comment out archive related feature till the Beijing ec2 server is ready
 /**
  * Update existing news node content.
  */
+/*
 function capital_news_update_8001(&$sandbox) {
   if (!isset($sandbox['progress'])) {
     // This must be the first run. Initialize the sandbox.
@@ -31,3 +33,4 @@ function capital_news_update_8001(&$sandbox) {
 
   return t('All linked news were updated.');
 }
+*/
