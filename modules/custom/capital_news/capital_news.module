@@ -227,14 +227,10 @@ function _capital_news_get_linked_news($check_content=true) {
 
   if ($check_content) {
     // Get rid of the news has already been archived
-    // Get the news those field content is null
-    $query->leftJoin('node__field_content', 'fc',
-      'nfd.nid=fc.entity_id AND nfd.type=fc.bundle');
-    $query->isNull('fc.field_content_value');
-    // Get the news those field archive link is null
-    $query->leftJoin('node__field_news_archive_link', 'al',
-      'nfd.nid=al.entity_id AND nfd.type=al.bundle');
-    $query->isNull('al.field_news_archive_link_uri');
+    // Get the news those field s3 link is null
+    $query->leftJoin('node__field_news_s3_link', 'sl',
+      'nfd.nid=sl.entity_id AND nfd.type=sl.bundle');
+    $query->isNull('sl.field_news_s3_link_uri');
   }
 
   $result = $query->execute()->fetchAll();
@@ -507,6 +503,9 @@ function _capital_news_save_news_content($nid) {
   $dir_prefix = _capital_news_get_news_dir_prefix($nid);
   $node->set('field_news_dir', array('value' => $dir_prefix));
   $s3_link = _capital_news_save_news_html_to_s3($request_url, $dir_prefix);
+  if ($s3_link === FALSE) {
+    return;
+  }
 
   // fix mixed content error caused by different url scheme
   $origin_scheme = parse_url($request_url, PHP_URL_SCHEME);
@@ -562,9 +561,17 @@ function _capital_news_get_url_content($url, $dir_prefix) {
 
   try {
     $response = $client->get($url);
+    if ($response->getStatusCode() != 200) {
+      \Drupal::logger('capital-news-save-content')->error('Html content status code error: ' . $url . ' ' . print_r($response->getStatusCode(), true));
+      return FALSE;
+    }
     $html_content = (string) $response->getBody();
     if (empty($html_content)) {
-      \Drupal::logger('capital-news-save-content')->error('Can not get html content: ' . $url . ' ' . print_r($response->getStatusCode(), true));
+      \Drupal::logger('capital-news-save-content')->error('Html content empty: ' . $url . ' ' . print_r($response->getStatusCode(), true));
+      return FALSE;
+    }
+    if (strpos($url, 'weixin') !== FALSE && strpos($html_content, 'var msg_link = "' . htmlspecialchars($url) . '"') === FALSE) {
+      \Drupal::logger('capital-news-save-content')->error('Html content validation failed: ' . $url . ' ' . print_r($html_content, true));
       return FALSE;
     }
   }
@@ -580,7 +587,10 @@ function _capital_news_get_url_content($url, $dir_prefix) {
   //_capital_news_remove_script_elements($dom);
 
   // Save the images to s3, replace the src with s3 url
-  _capital_news_replace_image_src($dom, $url, $dir_prefix);
+  $result = _capital_news_replace_image_src($dom, $url, $dir_prefix);
+  if ($result === FALSE) {
+    return FALSE;
+  }
 
   return $dom->saveHTML();
 }
@@ -625,6 +635,9 @@ function _capital_news_replace_image_src($dom, $url, $dir_prefix) {
         if ($new_src_url) {
           $element->setAttribute('src', $new_src_url);
         }
+        else {
+          return FALSE;
+        }
       }
       // Process data-src field for wechat pages
       elseif (strlen($data_src) > 0) {
@@ -635,9 +648,13 @@ function _capital_news_replace_image_src($dom, $url, $dir_prefix) {
           $element->setAttribute('data-src', $new_src_url);
           $element->setAttribute('src', $new_src_url);
         }
+        else {
+          return FALSE;
+        }
       }
     }
   }
+  return TRUE;
 }
 
 /**
@@ -689,6 +706,9 @@ function _capital_news_rel2abs($rel, $base) {
 function _capital_news_save_news_html_to_s3($request_url, $dir_prefix) {
   //\Drupal::logger('capital-news-s3')->debug('Save html: ' . print_r($nid, true));
   $content = _capital_news_get_url_content($request_url, $dir_prefix);
+  if ($content === FALSE) {
+    return FALSE;
+  }
 
   $basename = 'index.html';
   $external_url = _capital_news_save_file_to_s3($content, $dir_prefix, $basename);
@@ -777,9 +797,11 @@ function _capital_news_save_file_to_s3($content, $dir_prefix, $basename) {
 
   if ($external_url) {
     unlink($public_uri);
+    touch($public_uri);
   }
   else {
     \Drupal::logger('capital-news-s3')->error('Save image error: ' . print_r($image_url, true));
+    return FALSE;
   }
   return $external_url;
 }
