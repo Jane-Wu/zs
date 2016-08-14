@@ -55,7 +55,9 @@ function capital_news_mail($key, &$message, $params) {
 }
 function capital_news_node_presave(EntityInterface $entity) {
   $type = $entity->getType();
+
   if($type == "news"){
+  try{
     if(($entity->get('feeds_item'))){
 
       $news_link = $entity->get('field_news_link')->getValue();
@@ -70,8 +72,10 @@ function capital_news_node_presave(EntityInterface $entity) {
       $feed = Feed::load($fid);
       $entity->field_related_nodes = $feed->get('field_related_nid')->getValue();
       $entity->field_search_words[] = ['value' => $feed->label()];
-    }
   }
+}catch (Exception $e) {
+}
+    }
 }
 
 /**
