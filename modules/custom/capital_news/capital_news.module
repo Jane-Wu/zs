@@ -77,8 +77,7 @@ function capital_news_node_presave(EntityInterface $entity) {
         $fid = $entity->get('feeds_item')->getValue();
         $fid = $fid[0]['target_id'];
         $feed = Feed::load($fid);
-        $entity->field_related_nodes = $feed->get('field_related_nid')->getValue();
-        $entity->field_search_words[] = ['value' => $feed->label()];
+$entity = _capital_news_update_news($entity, $feed->label(), $feed->get('field_related_nid')->getValue());
       }
     }catch (Exception $e) {
     }
@@ -398,26 +397,41 @@ function _capital_news_getTidByLinkAndVocabulary($domain_link){
   }
   return $result[0]->entity_id;
 }
+
+function _capital_news_update_news($news, $key, $nid){
+if($key){
+    foreach($news->get('field_search_words')->getValue() as $search_word){
+    \Drupal::logger('capital-google-resource')->warning('Can not find origin for ' . print_r($search_word['value'], true));
+    \Drupal::logger('capital-google-resource')->warning('Can not find origin for ' . print_r($key, true));
+      if($search_word['value'] == $key){
+ $find = true;
+        break;
+       }
+     }
+    if(!isset($find)){
+      $news->field_search_words[] = ['value' => $key];
+     }
+
+    }
+if($nid){
+    foreach($news->get('field_related_nodes')->getValue() as $related_nodes){
+      if($related_nodes['target_id'] == $nid){
+      $news->field_related_nodes[] = $nid;
+break;
+      }
+    }
+    }
+return $news;
+}
+
 function _capital_news_createNews($key, $title, $description, $link, $timestamp, $origin_tid, $type_tid, $nid = null, $link_flag = false){
   // Create/update news
   $db = \Drupal::database();
   $result = $db->select('node__field_news_link','l')->fields('l', ['entity_id'])->condition('field_news_link_uri', $link)->execute()->fetchAll();
   if (count($result)  > 0 ){
     $news = Node::load($result[0]->entity_id);
-    foreach($news->get('field_search_words')->getValue() as $search_word){
-      if($search_word['value'] == $key){
-        $find = true;
-        break;
-      }
-    }
-    if(!isset($find)){
-      $news->field_search_words[] = ['value' => $key];
+$news = _capital_news_update_news($news, $key, $nid);
       $news->save();
-    }
-    if($nid && !in_array($nid, $news->get('field_related_nodes')->getValue())){
-      $news->field_related_nodes[] = $nid;
-      $news->save();
-    }
   } else{
     $content = [
       'type' => 'news',
