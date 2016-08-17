@@ -112,15 +112,16 @@ function _capital_news_delete_obsolete_news() {
  * Implements hook_entity_delete().
  */
 function capital_news_entity_delete(EntityInterface $entity) {
+// Comment out archive related feature till the Beijing ec2 server is ready
+  return;
   if ($entity->getEntityTypeId() == 'node' &&
     $entity->bundle() == 'news' &&
-    $entity->get('field_news_dir')->getValue()) {
+    $entity->get('field_news_s3_uri')->getValue()) {
       \Drupal::logger('capital-news-delete')->debug('delete news archive for node nid: ' . $entity->id());
-      $s3_dir = $entity->get('field_news_dir')->getValue();
-      $handle = fopen('test.txt', 'w'); fwrite($handle, print_r( $s3_dir , TRUE) . PHP_EOL); fclose($handle);
-      $s3_dir = "s3fs://" . $s3_dir[0]['value'];
+      $s3_dir = $entity->get('field_news_s3_uri')->getValue();
+      $s3_dir = dirname($s3_dir[0]['value']);
       // Delete images in the folder first
-      $uri = $s3_dir . '/images';
+      $uri = $s3_dir . DIRECTORY_SEPARATOR . 'images';
       _capital_news_delete_s3_folder($uri);
       $uri = $s3_dir;
       _capital_news_delete_s3_folder($uri);
@@ -133,14 +134,15 @@ function _capital_news_delete_s3_folder($uri) {
     ->fields('f', array('uri'));
   $query->condition('f.uri', $uri . DIRECTORY_SEPARATOR . '%', 'LIKE');
   $result = $query->execute()->fetchAll();
+  $stream = new S3fsStream();
   foreach ($result as $row) {
     //\Drupal::logger('capital-news-delete')->debug('delete s3 file: ' . $row->uri);
-    $stream = new S3fsStream();
     $stream->unlink($row->uri);
+    unlink(str_replace('s3fs', 'public', $row->uri));
   }
   // Delete the folder
-  $stream = new S3fsStream();
   $stream->unlink($uri);
+  unlink(str_replace('s3fs', 'public', $uri));
 }
 
 /**
