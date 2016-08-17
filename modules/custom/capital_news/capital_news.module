@@ -18,9 +18,9 @@ define('GOOGLE_SEARCH_TID', 178);
 define('WECHAT_SEARCH_TID', 180);
 define('WECHAT_OFFICIAL_TID', 179);
 define('NEWS_DIR', 'news_archive');
-define('WECHAT_COMPANY_ACCOUNT_ORIGIN_TID', 232);
-define('WECHAT_OTHER_ACCOUNT_ORIGIN_TID', 235);
-define('WECHAT_SEARCH_ORIGIN_TID', 236);
+define('WECHAT_COMPANY_ACCOUNT_ORIGIN_TID', 297);
+define('WECHAT_OTHER_ACCOUNT_ORIGIN_TID', 298);
+define('WECHAT_SEARCH_ORIGIN_TID', 299);
 
 /**
  * Implements hook_cron().
@@ -69,9 +69,10 @@ function capital_news_node_presave(EntityInterface $entity) {
         $news_link = $entity->get('field_news_link')->getValue();
         $news_link = $news_link[0]['uri'];
         preg_match('/url=(.+)&ct=ga/', $news_link, $matches);
-        if(count($matches) == 2){
+        preg_match('/url=(http.*:\/\/(.+)\/.+)&ct=ga/U', $news_link, $matches);
+        if(count($matches) > 1){
           $entity->field_news_link = ['uri' => $matches[1]];
-          $entity->field_news_origin[] = _capital_news_getTidByLinkAndVocabulary($matches[1]);
+          $entity->field_news_origin[] = _capital_news_getTidByLinkAndVocabulary(isset($matches[2])? $matches[2]: $matches[1]);
         }
         $fid = $entity->get('feeds_item')->getValue();
         $fid = $fid[0]['target_id'];

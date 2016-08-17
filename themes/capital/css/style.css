@@ -105,3 +105,7 @@ ul.ui-autocomplete{
 .view li{
   padding: 1px 0px 1px 0px;
 }
+
+.view-filters button[data-drupal-selector="edit-reset"]{
+  margin-left: 3px;
+}
