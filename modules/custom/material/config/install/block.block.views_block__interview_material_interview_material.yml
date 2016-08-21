@@ -11,7 +11,7 @@ dependencies:
 id: views_block__interview_material_interview_material
 theme: capital
 region: content
-weight: -5
+weight: -12
 provider: null
 plugin: 'views_block:interview_material-interview_material'
 settings:
