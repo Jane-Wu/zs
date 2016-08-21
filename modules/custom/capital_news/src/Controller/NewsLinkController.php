@@ -54,8 +54,6 @@ class NewsLinkController extends ControllerBase implements ContainerInjectionInt
 
     if(empty($rids)){
       $relation->create();
-      // Save the news to local
-      save_news_content($nid);
       return $this->favoriteResponse($request, true, $relation);
     } else{
       $relation->remove();

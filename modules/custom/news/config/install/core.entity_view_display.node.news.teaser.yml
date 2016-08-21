@@ -10,6 +10,7 @@ dependencies:
     - field.field.node.news.field_news_link
     - field.field.node.news.field_news_origin
     - field.field.node.news.field_news_s3_link
+    - field.field.node.news.field_news_s3_uri
     - field.field.node.news.field_related_nodes
     - field.field.node.news.field_search_type
     - field.field.node.news.field_search_words
@@ -32,6 +33,7 @@ hidden:
   field_news_link: true
   field_news_origin: true
   field_news_s3_link: true
+  field_news_s3_uri: true
   field_related_nodes: true
   field_search_type: true
   field_search_words: true
