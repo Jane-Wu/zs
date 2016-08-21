@@ -282,39 +282,37 @@ function _capital_news_get_wechat_news() {
     'new_result' => 0,
   ];
   $config = \Drupal::config('capital_news.wechat');
-  $history = $config->get('search_account_history');
-  \Drupal::logger('capital-wechat-temp-report')->warning('Current history  ' . print_r($history, true));
+  $account_history = $config->get('search_account_history');
+  \Drupal::logger('capital-wechat-temp-report')->warning('Current account_history  ' . print_r($history, true));
   $wait_seconds = 3600;
   $current_timestamp = time();
 
-  return;
   // Company News
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
     if($node->get('field_wechat')->value != null){
       $key = $node->get('field_wechat')->value;
-      if(!isset($history[$key]) || $history[$key] + $wait_seconds < $current_timestamp){
+      if(!isset($account_history[$key]) || $history[$key] + $wait_seconds < $current_timestamp){
         $status = getWechatOfficalNews($company_account_summary, $key, $node->id(), $node->getTitle(), WECHAT_COMPANY_ACCOUNT_ORIGIN_TID);
         if($status){
-          $history[$key] = $current_timestamp;
+          $account_history[$key] = $current_timestamp;
         }else{
           update_wechat_summary($news_summary , $company_news_summary , $account_summary , $company_account_summary);
-          \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_history', $history)->save();
+          \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_account_history', $history)->save();
           return;
         }
       }
     }
-    getWechatSearchNews($company_news_summary, $node->getTitle(), $node->id());
-    getWechatSearchNews($company_news_summary, $node->get('field_short_name')->value, $node->id());
+    //getWechatSearchNews($company_news_summary, $node->getTitle(), $node->id());
+    //getWechatSearchNews($company_news_summary, $node->get('field_short_name')->value, $node->id());
   }
-  return;
   // Core staff news
   $nodes = getNodesByType('staff');
   foreach( $nodes as $node){
     $company = Node::load($node->get('field_company')->target_id);
     if($company && $node->get('field_staff_type')->target_id == 10){
       $key = $node->getTitle() . ' ' . $company->get('field_search_keyword')->value;
-      getWechatSearchNews($company_news_summary, $key, $node->id());
+      //getWechatSearchNews($company_news_summary, $key, $node->id());
     }
   }
   // Other wechat accounts
@@ -322,13 +320,13 @@ function _capital_news_get_wechat_news() {
   foreach( $account_terms as $account_term){
     $term = Term::load($account_term->tid);
     $key = $term->get('field_wechat_account')->value;
-    if(!isset($history[$key]) || $history[$key] + $wait_seconds < $current_timestamp){
+    if(!isset($account_history[$key]) || $history[$key] + $wait_seconds < $current_timestamp){
       $status = getWechatOfficalNews($company_account_summary, $key, null, $account_term->name, WECHAT_OTHER_ACCOUNT_ORIGIN_TID);
       if($status){
-        $history[$key] = $current_timestamp;
+        $account_history[$key] = $current_timestamp;
       }else{
         update_wechat_summary($news_summary , $company_news_summary , $account_summary , $company_account_summary);
-        \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_history', $history)->save();
+        \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_account_history', $history)->save();
         return;
       }
     }
@@ -336,10 +334,10 @@ function _capital_news_get_wechat_news() {
   // Other Wechat Key words
   $keywords_terms = _capital_news_getTermsByVocabularies(['wechat_keywords']);
   foreach( $keywords_terms as $term){
-    getWechatSearchNews($news_summary, $term->name);
+    //getWechatSearchNews($news_summary, $term->name);
   }
   update_wechat_summary($news_summary , $company_news_summary , $account_summary , $company_account_summary);
-  \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_history', $history)->save();
+  \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_account_history', $history)->save();
 }
 function update_wechat_summary($news_summary , $company_news_summary , $account_summary , $company_account_summary){
   _capital_news_search_summary($account_summary, 'page_2');
@@ -384,7 +382,9 @@ function getGoogleNews($date_flag, $from_trusted, &$summary, $key, $nid = null, 
 }
 function getWechatSearchNews(&$summary, $key, $nid = null){
   $json = capital_common_get_wechat_search($key);
-  $summary['count'] ++;
+  if($json == false){
+    return false;
+  }
   foreach($json as $result){
     //$time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
     $time = (new DateTime($result->date, new DateTimeZone('Etc/GMT+0')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
@@ -396,6 +396,8 @@ function getWechatSearchNews(&$summary, $key, $nid = null){
     }
   }
   $summary['all_result'] += count($json);
+  $summary['count'] ++;
+  return true;
 }
 
 function getWechatOfficalNews(&$summary, $key, $nid = null, $display_name, $tid = null){

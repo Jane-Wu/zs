@@ -163,12 +163,12 @@ function capital_common_get_wechat_search($key){
   $encoded_key = implode('+', array_map('_capital_common_wrap_search_key', explode(' ', $key)));
   $url = "http://52.78.7.61:7088/key-day/v1?x=ecbfdae899ab8da4&q=" . $encoded_key;
   $results = capital_common_http_request(CAPITAL_HTTP_METHOD_GET, $url);
-  if($results->responseStatus != 200 ){
+  if(substr($results->responseStatus, 0, 1) != 2 ){
     \Drupal::logger('capital-wechat-error')->error($key . ' ' . print_r($results, true));
     if($results->responseStatus == 503 ){
       \Drupal::logger('capital-wechat-no-service')->error($key . ' ' . print_r($results, true));
+      return false;
     }
-    return false;
   }
   if(count($results->responseData->articles) == 0 ){
     \Drupal::logger('capital-wechat-no-result')->info($key . ' ' . print_r($url, true));
@@ -185,12 +185,12 @@ function capital_common_get_wechat_official_search($key) {
   }
   $url = "http://52.78.7.61:7088/account/v1?x=ecbfdae899ab8da4&q=" . urlencode($key);
   $results = capital_common_http_request(CAPITAL_HTTP_METHOD_GET, $url);
-  if($results->responseStatus != 200 ){
+  if(substr($results->responseStatus, 0, 1) != 2 ){
     \Drupal::logger('capital-wechat-official-error')->error($key . ' ' . print_r($results, true));
     if($results->responseStatus == 503 ){
       \Drupal::logger('capital-wechat-official-no-service')->error($key . ' ' . print_r($results, true));
+      return false;
     }
-    return false;
   }
   if(count($results->responseData->articles) == 0 ){
     \Drupal::logger('capital-wechat-official-no-result')->info($key . ' ' . print_r($url, true));
