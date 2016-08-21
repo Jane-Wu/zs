@@ -58,6 +58,7 @@ footer.footer{
 @media (min-width: 768px){
     .main-container {
         min-height: 600px;
+        width: 80%;
     }
 }
 
@@ -89,6 +90,35 @@ div.view-id-regulations ul{
 }
 
 div.view-id-news_links ul li{
+  height: 40px;
+  overflow: hidden;
+  border-left: 1px solid #FFFFFF;
+  border-right: 1px solid #FFFFFF;
+  border-top: 1px solid #EFEFEF;
+  border-bottom: 1px solid #FFFFFF;
+}
+
+div.view-id-news_links .views-field {
+  height: 40px;
+  line-height: 40px;
+}
+
+div.view-id-news_links .views-field.views-field-field-title a {
+  color: #333;
+  font-weight: 700;
+}
+
+div.view-id-news_links .views-field.views-field-field-title .field-content {
+  color: #757575;
+}
+
+div.view-id-news_links .views-field.pull-right {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+div.view-id-news_links .views-field.views-field-field-approximate-time {
+  padding-left: 15px;
 }
 
 ul.ui-autocomplete{
@@ -97,9 +127,6 @@ ul.ui-autocomplete{
 
 .view li:hover {
   background-color: aliceblue;
-}
-.view li span.pull-right{
-  padding-left: 5px;
 }
 
 .view li{

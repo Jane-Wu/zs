@@ -11,7 +11,7 @@ dependencies:
 id: views_block__company_report_company_report_quarter
 theme: capital
 region: content
-weight: -7
+weight: -14
 provider: null
 plugin: 'views_block:company_report-company_report_quarter'
 settings:

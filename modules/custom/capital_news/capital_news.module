@@ -27,23 +27,27 @@ define('WECHAT_SEARCH_ORIGIN_TID', 299);
  */
 function capital_news_cron(){
   $hour = date('H');
-  if(in_array($hour,  [6, 14 ,18])){
-    _capital_news_get_wechat_news();
-  } elseif ($hour == 7){
+  /*
+  if ($hour == 7){
     _capital_news_get_google_news(false);
   } elseif ($hour == 17){
     _capital_news_get_google_news(true);
   } elseif ($hour == 0) {
     _capital_news_delete_obsolete_news();
+    capital_news_sync_feeds();
   }
-// Comment out archive related feature till the Beijing ec2 server is ready
+   */
+  if (($hour % 2) == 1) {
+    _capital_news_get_wechat_news();
+  }
+  // Comment out archive related feature till the Beijing ec2 server is ready
 /*
   // Archive news every 3 hours
   // when hour ==  1, 4, 7, 10, 13, 16, 19, 22
   if (($hour % 3) == 1) {
     _capital_news_archive_linked_news();
   }
-*/
+ */
 }
 /**
  * Implements hook_mail().
@@ -77,7 +81,7 @@ function capital_news_node_presave(EntityInterface $entity) {
         $fid = $entity->get('feeds_item')->getValue();
         $fid = $fid[0]['target_id'];
         $feed = Feed::load($fid);
-$entity = _capital_news_update_news($entity, $feed->label(), $feed->get('field_related_nid')->getValue());
+        $entity = _capital_news_update_news($entity, $feed->label(), $feed->get('field_related_nid')->getValue());
       }
     }catch (Exception $e) {
     }
@@ -111,7 +115,7 @@ function _capital_news_delete_obsolete_news() {
  * Implements hook_entity_delete().
  */
 function capital_news_entity_delete(EntityInterface $entity) {
-// Comment out archive related feature till the Beijing ec2 server is ready
+  // Comment out archive related feature till the Beijing ec2 server is ready
   return;
   if ($entity->getEntityTypeId() == 'node' &&
     $entity->bundle() == 'news' &&
@@ -124,7 +128,7 @@ function capital_news_entity_delete(EntityInterface $entity) {
       _capital_news_delete_s3_folder($uri);
       $uri = $s3_dir;
       _capital_news_delete_s3_folder($uri);
-  }
+    }
 }
 
 function _capital_news_delete_s3_folder($uri) {
@@ -270,21 +274,40 @@ function _capital_news_get_google_news($date_flag) {
   _capital_news_search_summary($summary, 'page_1');
   _capital_news_search_summary($company_summary, 'page_6');
 }
+
 function _capital_news_get_wechat_news() {
   $news_summary = $company_news_summary = $account_summary = $company_account_summary = [
     'count' => 0,
     'all_result' => 0,
     'new_result' => 0,
   ];
+  $config = \Drupal::config('capital_news.wechat');
+  $history = $config->get('search_account_history');
+  \Drupal::logger('capital-wechat-temp-report')->warning('Current history  ' . print_r($history, true));
+  $wait_seconds = 3600;
+  $current_timestamp = time();
+
+  return;
   // Company News
   $nodes = getNodesByType('company');
   foreach( $nodes as $node){
     if($node->get('field_wechat')->value != null){
-      getWechatOfficalNews($company_account_summary, $node->get('field_wechat')->value, $node->id(), $node->getTitle(), WECHAT_COMPANY_ACCOUNT_ORIGIN_TID);
+      $key = $node->get('field_wechat')->value;
+      if(!isset($history[$key]) || $history[$key] + $wait_seconds < $current_timestamp){
+        $status = getWechatOfficalNews($company_account_summary, $key, $node->id(), $node->getTitle(), WECHAT_COMPANY_ACCOUNT_ORIGIN_TID);
+        if($status){
+          $history[$key] = $current_timestamp;
+        }else{
+          update_wechat_summary($news_summary , $company_news_summary , $account_summary , $company_account_summary);
+          \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_history', $history)->save();
+          return;
+        }
+      }
     }
     getWechatSearchNews($company_news_summary, $node->getTitle(), $node->id());
     getWechatSearchNews($company_news_summary, $node->get('field_short_name')->value, $node->id());
   }
+  return;
   // Core staff news
   $nodes = getNodesByType('staff');
   foreach( $nodes as $node){
@@ -298,13 +321,27 @@ function _capital_news_get_wechat_news() {
   $account_terms = _capital_news_getTermsByVocabularies(['wechat_accounts']);
   foreach( $account_terms as $account_term){
     $term = Term::load($account_term->tid);
-    getWechatOfficalNews($account_summary, $term->get('field_wechat_account')->value, null, $account_term->name, WECHAT_OTHER_ACCOUNT_ORIGIN_TID);
+    $key = $term->get('field_wechat_account')->value;
+    if(!isset($history[$key]) || $history[$key] + $wait_seconds < $current_timestamp){
+      $status = getWechatOfficalNews($company_account_summary, $key, null, $account_term->name, WECHAT_OTHER_ACCOUNT_ORIGIN_TID);
+      if($status){
+        $history[$key] = $current_timestamp;
+      }else{
+        update_wechat_summary($news_summary , $company_news_summary , $account_summary , $company_account_summary);
+        \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_history', $history)->save();
+        return;
+      }
+    }
   }
   // Other Wechat Key words
   $keywords_terms = _capital_news_getTermsByVocabularies(['wechat_keywords']);
   foreach( $keywords_terms as $term){
     getWechatSearchNews($news_summary, $term->name);
   }
+  update_wechat_summary($news_summary , $company_news_summary , $account_summary , $company_account_summary);
+  \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_history', $history)->save();
+}
+function update_wechat_summary($news_summary , $company_news_summary , $account_summary , $company_account_summary){
   _capital_news_search_summary($account_summary, 'page_2');
   _capital_news_search_summary($news_summary, 'page_3');
   _capital_news_search_summary($company_account_summary, 'page_5');
@@ -363,7 +400,9 @@ function getWechatSearchNews(&$summary, $key, $nid = null){
 
 function getWechatOfficalNews(&$summary, $key, $nid = null, $display_name, $tid = null){
   $json = capital_common_get_wechat_official_search($key);
-  $summary['count'] ++;
+  if($json == false){
+    return false;
+  }
   foreach($json as $result){
     //$time = (new DateTime($result->date, new DateTimeZone('Asia/Shanghai')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
     $time = (new DateTime($result->date, new DateTimeZone('Etc/GMT+0')))->setTimezone(new DateTimeZone('Etc/GMT+0'))->format("Y-m-d\TH:i:s");
@@ -373,6 +412,8 @@ function getWechatOfficalNews(&$summary, $key, $nid = null, $display_name, $tid 
     }
   }
   $summary['all_result'] += count($json);
+  $summary['count'] ++;
+  return true;
 }
 
 function _capital_news_getTermsByVocabularies($vids){
@@ -394,36 +435,34 @@ function _capital_news_getTidByLinkAndVocabulary($domain_link){
   $db = \Drupal::database();
   $result = $db->select('taxonomy_term__field_domain_link','l')->fields('l', ['entity_id'])->condition('bundle', ['reliable_news_origins', 'other_news_origins'], 'IN')->condition('field_domain_link_value', $domain_link)->execute()->fetchAll();
   if(count($result) != 1){
-    \Drupal::logger('capital-google-resource')->warning('Can not find origin for ' . print_r($domain_link, true));
+    \Drupal::logger('capital-news-origin-resource')->warning('Can not find origin for ' . print_r($domain_link, true));
     return 0;
   }
   return $result[0]->entity_id;
 }
 
 function _capital_news_update_news($news, $key, $nid){
-if($key){
+  if($key){
     foreach($news->get('field_search_words')->getValue() as $search_word){
-    \Drupal::logger('capital-google-resource')->warning('Can not find origin for ' . print_r($search_word['value'], true));
-    \Drupal::logger('capital-google-resource')->warning('Can not find origin for ' . print_r($key, true));
       if($search_word['value'] == $key){
- $find = true;
+        $find = true;
         break;
-       }
-     }
-    if(!isset($find)){
-      $news->field_search_words[] = ['value' => $key];
-     }
-
-    }
-if($nid){
-    foreach($news->get('field_related_nodes')->getValue() as $related_nodes){
-      if($related_nodes['target_id'] == $nid){
-      $news->field_related_nodes[] = $nid;
-break;
       }
     }
+    if(!isset($find)){
+      $news->field_search_words[] = ['value' => $key];
     }
-return $news;
+
+  }
+  if($nid){
+    foreach($news->get('field_related_nodes')->getValue() as $related_nodes){
+      if($related_nodes['target_id'] == $nid){
+        $news->field_related_nodes[] = $nid;
+        break;
+      }
+    }
+  }
+  return $news;
 }
 
 function _capital_news_createNews($key, $title, $description, $link, $timestamp, $origin_tid, $type_tid, $nid = null, $link_flag = false){
@@ -432,8 +471,8 @@ function _capital_news_createNews($key, $title, $description, $link, $timestamp,
   $result = $db->select('node__field_news_link','l')->fields('l', ['entity_id'])->condition('field_news_link_uri', $link)->execute()->fetchAll();
   if (count($result)  > 0 ){
     $news = Node::load($result[0]->entity_id);
-$news = _capital_news_update_news($news, $key, $nid);
-      $news->save();
+    $news = _capital_news_update_news($news, $key, $nid);
+    $news->save();
   } else{
     $content = [
       'type' => 'news',
@@ -838,7 +877,7 @@ function _capital_news_save_file_to_s3($content, $dir_prefix, $basename) {
  * @param array $upload_params
  *   Associative array of upload settings
  * @see http://docs.aws.amazon.com/aws-sdk-php/latest/class-Aws.S3.S3Client.html#_putObject
-*/
+ */
 function capital_news_s3fs_upload_params_alter(&$upload_params) {
   if (strpos($upload_params['Key'], 'material_archive/') !== FALSE){
     $upload_params['ACL'] = 'private';
@@ -862,7 +901,7 @@ function createRelation($relation_type, $src_type, $src_id, $target_type, $targe
   $relation = Relation::create(array('relation_type' => $relation_type));
   $relation->endpoints = $endpoints;
   $relation->save();
-  \Drupal::logger('capital-relation')->notice('Create relation ' . print_r($relation_type, true));
+  \Drupal::logger('capital-relation')->notice('Create relation ' . $relation_type . ' ' . $src_id . ' ' . $target_id);
 }
 function removeRelation($relation_ids){
   $storage_handler = \Drupal::entityTypeManager()->getStorage('relation');
