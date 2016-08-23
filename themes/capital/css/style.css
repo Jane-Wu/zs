@@ -113,12 +113,11 @@ div.view-id-news_links .views-field.views-field-field-title .field-content {
 }
 
 div.view-id-news_links .views-field.pull-right {
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 5px;
 }
 
 div.view-id-news_links .views-field.views-field-field-approximate-time {
-  padding-left: 15px;
+  padding-left: 10px;
 }
 
 ul.ui-autocomplete{
