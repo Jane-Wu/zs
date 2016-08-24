@@ -35,7 +35,7 @@ function capital_news_cron(){
     _capital_news_delete_obsolete_news();
     capital_news_sync_feeds();
   }
-  if (($hour % 2) == 1) {
+  if (($hour % 4) == 1) {
     _capital_news_get_wechat_news();
   }
   // Comment out archive related feature till the Beijing ec2 server is ready
@@ -301,8 +301,8 @@ function _capital_news_get_wechat_news() {
         }
       }
     }
-    //getWechatSearchNews($company_news_summary, $node->getTitle(), $node->id());
-    //getWechatSearchNews($company_news_summary, $node->get('field_short_name')->value, $node->id());
+    getWechatSearchNews($company_news_summary, $node->getTitle(), $node->id());
+    getWechatSearchNews($company_news_summary, $node->get('field_short_name')->value, $node->id());
   }
   // Core staff news
   $nodes = getNodesByType('staff');
@@ -310,7 +310,7 @@ function _capital_news_get_wechat_news() {
     $company = Node::load($node->get('field_company')->target_id);
     if($company && $node->get('field_staff_type')->target_id == 10){
       $key = $node->getTitle() . ' ' . $company->get('field_search_keyword')->value;
-      //getWechatSearchNews($company_news_summary, $key, $node->id());
+      getWechatSearchNews($company_news_summary, $key, $node->id());
     }
   }
   // Other wechat accounts
@@ -332,7 +332,7 @@ function _capital_news_get_wechat_news() {
   // Other Wechat Key words
   $keywords_terms = _capital_news_getTermsByVocabularies(['wechat_keywords']);
   foreach( $keywords_terms as $term){
-    //getWechatSearchNews($news_summary, $term->name);
+    getWechatSearchNews($news_summary, $term->name);
   }
   update_wechat_summary($news_summary , $company_news_summary , $account_summary , $company_account_summary);
   \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_history', $account_history)->save();
