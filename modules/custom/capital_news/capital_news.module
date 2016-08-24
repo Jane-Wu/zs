@@ -27,7 +27,6 @@ define('WECHAT_SEARCH_ORIGIN_TID', 299);
  */
 function capital_news_cron(){
   $hour = date('H');
-  /*
   if ($hour == 7){
     _capital_news_get_google_news(false);
   } elseif ($hour == 17){
@@ -36,7 +35,6 @@ function capital_news_cron(){
     _capital_news_delete_obsolete_news();
     capital_news_sync_feeds();
   }
-   */
   if (($hour % 2) == 1) {
     _capital_news_get_wechat_news();
   }
@@ -283,8 +281,8 @@ function _capital_news_get_wechat_news() {
   ];
   $config = \Drupal::config('capital_news.wechat');
   $account_history = $config->get('search_account_history');
-  \Drupal::logger('capital-wechat-temp-report')->warning('Current account_history  ' . print_r($history, true));
-  $wait_seconds = 3600;
+  \Drupal::logger('capital-wechat-temp-report')->warning('Current account_history  ' . print_r($account_history, true));
+  $wait_seconds = 86400;
   $current_timestamp = time();
 
   // Company News
@@ -292,13 +290,13 @@ function _capital_news_get_wechat_news() {
   foreach( $nodes as $node){
     if($node->get('field_wechat')->value != null){
       $key = $node->get('field_wechat')->value;
-      if(!isset($account_history[$key]) || $history[$key] + $wait_seconds < $current_timestamp){
+      if(!isset($account_history[$key]) || $account_history[$key] + $wait_seconds < $current_timestamp){
         $status = getWechatOfficalNews($company_account_summary, $key, $node->id(), $node->getTitle(), WECHAT_COMPANY_ACCOUNT_ORIGIN_TID);
         if($status){
           $account_history[$key] = $current_timestamp;
         }else{
           update_wechat_summary($news_summary , $company_news_summary , $account_summary , $company_account_summary);
-          \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_account_history', $history)->save();
+          \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_history', $account_history)->save();
           return;
         }
       }
@@ -320,13 +318,13 @@ function _capital_news_get_wechat_news() {
   foreach( $account_terms as $account_term){
     $term = Term::load($account_term->tid);
     $key = $term->get('field_wechat_account')->value;
-    if(!isset($account_history[$key]) || $history[$key] + $wait_seconds < $current_timestamp){
+    if(!isset($account_history[$key]) || $account_history[$key] + $wait_seconds < $current_timestamp){
       $status = getWechatOfficalNews($company_account_summary, $key, null, $account_term->name, WECHAT_OTHER_ACCOUNT_ORIGIN_TID);
       if($status){
         $account_history[$key] = $current_timestamp;
       }else{
         update_wechat_summary($news_summary , $company_news_summary , $account_summary , $company_account_summary);
-        \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_account_history', $history)->save();
+        \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_history', $account_history)->save();
         return;
       }
     }
@@ -337,7 +335,7 @@ function _capital_news_get_wechat_news() {
     //getWechatSearchNews($news_summary, $term->name);
   }
   update_wechat_summary($news_summary , $company_news_summary , $account_summary , $company_account_summary);
-  \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_account_history', $history)->save();
+  \Drupal::service('config.factory')->getEditable('capital_news.wechat')->set('search_account_history', $account_history)->save();
 }
 function update_wechat_summary($news_summary , $company_news_summary , $account_summary , $company_account_summary){
   _capital_news_search_summary($account_summary, 'page_2');
@@ -382,7 +380,7 @@ function getGoogleNews($date_flag, $from_trusted, &$summary, $key, $nid = null, 
 }
 function getWechatSearchNews(&$summary, $key, $nid = null){
   $json = capital_common_get_wechat_search($key);
-  if($json == false){
+  if($json === false){
     return false;
   }
   foreach($json as $result){
@@ -402,7 +400,7 @@ function getWechatSearchNews(&$summary, $key, $nid = null){
 
 function getWechatOfficalNews(&$summary, $key, $nid = null, $display_name, $tid = null){
   $json = capital_common_get_wechat_official_search($key);
-  if($json == false){
+  if($json === false){
     return false;
   }
   foreach($json as $result){

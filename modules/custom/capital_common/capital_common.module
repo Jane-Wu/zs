@@ -185,6 +185,7 @@ function capital_common_get_wechat_official_search($key) {
   }
   $url = "http://52.78.7.61:7088/account/v1?x=ecbfdae899ab8da4&q=" . urlencode($key);
   $results = capital_common_http_request(CAPITAL_HTTP_METHOD_GET, $url);
+      \Drupal::logger('capital-wechat-temp-report')->error("try to get " . $key . ' ' . print_r($results, true));
   if(substr($results->responseStatus, 0, 1) != 2 ){
     \Drupal::logger('capital-wechat-official-error')->error($key . ' ' . print_r($results, true));
     if($results->responseStatus == 503 ){
